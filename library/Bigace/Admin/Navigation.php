@@ -231,6 +231,7 @@ class Bigace_Admin_Navigation extends Zend_Navigation_Container
                 ),
                 'languages'      => array('permission' => 'language'),
                 'maintenance'    => array('permission' => 'maintenance'),
+                'filemanager'    => array('permission' => 'filemanager'),
               )
         );
 

@@ -1,0 +1,25 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id: index.phtml 553 2011-01-03 13:01:03Z kevin $ */
+
+$options   = $this->finderOptions;
+$finderUrl = $this->directory('public') . $this->finderPath ;
+$locale    = 'de';
+$connector = $this->connectorPath;
+
+?>
+<link rel="stylesheet" href="<?php echo $finderUrl; ?>css/elfinder.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<script src="<?php echo $finderUrl; ?>js/elfinder.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="<?php echo $finderUrl; ?>js/i18n/elfinder.<?php echo $locale; ?>.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	$().ready(function() {
+		var f = $('#finder').elfinder({
+			url : '<?php echo $connector; ?>',
+			lang : 'en',
+			docked : false
+		});
+	})
+</script>
+<div id="finder">finder</div>

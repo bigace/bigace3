@@ -60,12 +60,13 @@
         </antcall>
     </target>
 
-    <!-- phpUnit: Unit Test Framework for PHP -->
+    <!-- phpUnit: Unit Test Framework for PHP
+                       - - coverage-clover ${buildDir}/logs/clover.xml
+    -->
     <target name="phpunit" depends="prepare">
         <exec dir="${srcDir}/tests" executable="phpunit">
             <arg line="--testdox-html ${buildDir}/logs/testdox.html 
-                       --coverage-clover ${buildDir}/logs/clover.xml 
-                       --coverage-html ${buildDir}/coverage/ 
+                       --coverage-html ${buildDir}/coverage/
                        --log-junit ${buildDir}/logs/junit.xml 
                        --configuration ${srcDir}/tests/phpunit.xml 
                        --bootstrap ${srcDir}/tests/bootstrap.php 
