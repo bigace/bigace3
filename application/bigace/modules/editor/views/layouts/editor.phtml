@@ -1,0 +1,325 @@
+<?php /*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+*/
+
+$pubDir = $this->directory('public');
+
+$saveUrlForm = $this->saveUrl;
+if (stripos('?', $saveUrlForm) === false) {
+    $saveUrlForm .= '?ts=__TS__';
+} else {
+    $saveUrlForm .= '?ts=__TS__';
+}
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="<?php echo $pubDir; ?>jquery/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="<?php echo $pubDir; ?>jquery/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="<?php echo $pubDir; ?>jquery/jgrowl/jquery.jgrowl.js"></script>
+    <link rel="stylesheet" href="<?php echo $pubDir; ?>jquery/themes/smoothness/jquery-ui-1.8.custom.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $pubDir; ?>jquery/jgrowl/jquery.jgrowl.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $pubDir; ?>system/css/editor.css" type="text/css" />
+    <title><?php echo $this->t("title") . ' - ' . $this->MENU->getName() . ' ('.$this->MENU->getID().')'; ?></title>
+    <script type="text/javascript">
+    <!--
+
+<?php /* ######################### NOT CACHEABLE ######################### */ ?>
+    var bigaceEditor = {
+        modeSave           : "<?php echo $this->mode_save; ?>",
+        modeClose          : "<?php echo $this->mode_close; ?>", // deprecated
+        menuStartId        : "<?php echo $this->MENU->getID(); ?>",
+        menuStartLanguage  : "<?php echo $this->MENU->getLanguageID(); ?>", // deprecated
+        menuStartJsName    : "<?php echo $this->jsname; ?>", // deprecated
+        msgSaving          : '<?php echo str_replace("'", '"', $this->t("saving")); ?>',
+        msgSave            : '<?php echo str_replace("'", '"', $this->t("save")); ?>', // deprecated
+        styleDir           : '<?php echo $pubDir; ?>',
+        saveDirtyChanges   : '<?php echo str_replace("'", '"', $this->t("save_before_exit")); ?>',
+        previewUrl         : '<?php echo $this->PREVIEW_URL; ?>',
+        growlCloseAll      : '<?php echo str_replace("'", '"', $this->t("jgrowl_close_all")); ?>',
+        languageID         : "<?php echo $this->MENU->getLanguageID(); ?>",
+        name               : "<?php echo $this->jsname; ?>",
+        menuID             : "<?php echo $this->MENU->getID(); ?>",
+        setName            : function(name)  { this.name = name; },
+        getName            : function()      { return this.name; },
+        setMenuID          : function(id)    { this.menuID = id; },
+        getMenuID          : function()      { return this.menuID; },
+        setLanguageID      : function(id)    { this.languageID = id; },
+        getLanguageID      : function()      { return this.languageID; }
+    };
+
+<?php
+	foreach($this->languages as $lang) {
+        echo "    var langTrans_".$lang->getID()."       = '".$lang->getName()."';\n";
+    }
+?>
+
+    function getEditorUrl(mode) {
+        return '<?php echo $this->editorUrl; ?>';
+    }
+
+    function showTranslator(menuid, fromLanguage, toLanguage) {
+        location.href = '<?php echo $this->translateUrl; ?>';
+    }
+
+    function getEditorFrameworkUrl(menuid, menulanguage) {
+        return '<?php echo $this->editFrameworkUrl; ?>';
+    }
+
+    function askForSaveBeforeChanges(callback)
+    {
+        if(isDirtyEditor()) {
+            performEval = true;
+            $("#dialog").show();
+            $("#dialog").dialog({
+                title: "<?php echo $this->t("save_before_title"); ?>",
+                resizable : false,
+                buttons: {
+                    "<?php echo $this->t("save_before_yes"); ?>": function() {
+                        //performEval = false;
+                        saveContent();
+                        $(this).dialog("close");
+                    },
+                    "<?php echo $this->t("save_before_no"); ?>": function() {
+                        resetIsDirtyEditor(); // prevent the windowbeforeunload event to catch it again
+                        $(this).dialog("close");
+                    },
+                    "<?php echo $this->t("save_before_cancel"); ?>": function() {
+                        performEval = false;
+                        $(this).dialog("close");
+                    }
+                } ,
+                modal: true,
+                overlay: {
+                    opacity: 0.7,
+                    background: "black"
+                },
+                close: function() {
+                    if(performEval) {
+                        window.setTimeout(callback, 1000);
+                    }
+                }
+            });
+        }
+        else {
+	        eval(callback);
+        }
+    }
+
+
+<?php /* ########################### CACHEABLE ########################### */ ?>
+    window.onbeforeunload  = askForSaveBeforeUnload;
+
+    function showEditorErrorText(msg, fadeoutTime)
+    {
+        showEditorStatusText('<span id="msg-err">' + msg+'</span>', fadeoutTime);
+    }
+
+    function showEditorStatusText(msg, fadeoutTime)
+    {
+        $.jGrowl.defaults.closerTemplate = '<div>'+bigaceEditor.growlCloseAll+'</div>';
+
+        if(fadeoutTime != null) {
+            $("#jgrowlDiv").jGrowl(msg, { life: fadeoutTime });
+            return;
+        }
+
+        $("#jgrowlDiv").jGrowl(msg, { sticky: true, speed:  'slow' });
+    }
+
+    function previewMenu()
+    {
+        oldTarget = $('#saveForm').attr('target');
+        oldUrl = $('#saveForm').attr('action');
+
+        $('#saveForm').attr('target', '_blank');
+        $('#saveForm').attr('action', bigaceEditor.previewUrl);
+        $('#saveForm').submit();
+
+        $('#saveForm').attr('target', oldTarget);
+        $('#saveForm').attr('action', oldUrl);
+    }
+
+    function askForSaveBeforeUnload() {
+        if(isDirtyEditor()) {
+            return bigaceEditor.saveDirtyChanges;
+        }
+    }
+
+    // save content and exit afterwards
+    function saveAndExit() {
+        saveBigaceMenu(true);
+    }
+
+    function saveContent() {
+        saveBigaceMenu(false);
+    }
+
+    // reload the opener window and close the editor
+    function doClose() {
+        opener.location.reload();
+        window.close();
+    }
+
+    function loadMenuAskForSave(menuid, menulanguage) {
+    	askForSaveBeforeChanges('location.href = "'+getEditorFrameworkUrl(menuid, menulanguage)+'"');
+    }
+
+    function translate(menuid, fromLanguage, toLanguage) {
+    	askForSaveBeforeChanges('showTranslator("'+menuid+'", "'+fromLanguage+'", "'+toLanguage+'")');
+    }
+
+    // parameter doClose indicates if we close the editor after saving
+    function saveBigaceMenu(doClose)
+    {
+        showEditorStatusText( bigaceEditor.msgSaving, 700 );
+
+        if(doClose == null) {
+            doClose = false;
+        }
+
+        try {
+            document.forms["saveForm"].action = getEditorUrl( bigaceEditor.modeSave );
+            document.getElementById("hiddenLanguageID").value = bigaceEditor.getLanguageID();
+            document.getElementById("hiddenMenuID").value = bigaceEditor.getMenuID();
+            if(doClose) {
+                document.getElementById("hiddenSendClose").value = 'true';
+            } else {
+                document.getElementById("hiddenSendClose").value = 'false';
+            }
+
+            var saveUrl = '<?php echo $saveUrlForm; ?>';
+            var nowDate = new Date();
+            document.forms["saveForm"].action = saveUrl.replace(/__TS__/g, nowDate.getTime());
+            document.forms["saveForm"].submit();
+			resetIsDirtyEditor(); // prevent the windowbeforeunload event to catch it again
+        } catch (exc) {
+            alert('Error saving content: ' + exc);
+        }
+    }
+
+    // -->
+    </script>
+</head>
+<body>
+
+<div id="jgrowlDiv"></div>
+
+<div class="bigace-dialog" id="dialog"><?php echo $this->t("save_before_change"); ?></div>
+
+<div class="ba-toolbar ui-widget-header ui-corner-all ui-helper-clearfix">
+
+    <div class="ba-buttonset">
+        <a onclick="saveBigaceMenu(false); return false;" href="#" class="ba-button ui-state-default ba-button-icon-img ui-corner-all ui-state-hover" title="<?php echo $this->t("save"); ?>"><span class="ui-icon ui-icon-disk"><?php echo $this->t('save'); ?></span></a>
+        <a onclick="previewMenu(); return false;" href="#" class="ba-button ui-state-default ba-button-icon-img ui-corner-all ui-state-hover" title="<?php echo $this->t("preview"); ?>"><span class="ui-icon ui-icon-search"><?php echo $this->t("preview"); ?></span></a>
+    </div>
+
+    <div class="ba-buttonset">
+        <div class="ba-toolbar-html">
+        <div class="action-title">
+        	<?php
+            	echo '<img alt="'.$this->MENU->getLanguageID().'" src="'.BIGACE_HOME.'system/admin/languages/'.$this->MENU->getLanguageID().'.gif" class="langFlag">';
+            	echo $this->MENU->getName();
+        	?>
+        </div>
+        </div>
+    </div>
+
+    <div class="ba-buttonset-help">
+        <a href="<?php echo Bigace_Core::manual('editor'); ?>" target="_blank" class="ba-button ui-state-default ba-button-icon-img ui-corner-all ui-state-hover" title="<?php echo $this->t("help"); ?>"><span class="ui-icon ui-icon-help"><?php echo $this->t('help'); ?></span></a>
+    </div>
+
+<?php
+if(count($this->languages) > 1)
+{
+    ?>
+    <div class="ba-buttonset-actions ui-helper-clearfix">
+        <div class="ba-toolbar-html">
+        <div class="action-td">
+        	<span><?php echo $this->t('select_action'); ?></span>
+        	<select onchange="eval(this.value);this.selectedIndex=0;">
+        		<option value=""></option>
+        		<optgroup label="<?php echo $this->t('group_editing'); ?>" id="optGroupEdit">
+        		<?php
+        		foreach($this->languages as $lang)
+        		{
+                	if ($lang->getID() != $this->MENU->getLanguageID() || $this->SHOW_TRANSLATOR != '')
+                	{
+                	    echo '<option value="loadMenuAskForSave(\''.$this->MENU->getID().'\', \''.$lang->getID().'\')">'.$lang->getName().'</option>';
+            		}
+        		}
+        		?>
+        		</optgroup>
+        		<optgroup label="<?php echo $this->t('group_translating'); ?>" id="optGroupTranslate">
+        		<?php
+        		foreach($this->languages as $lang)
+        		{
+            		foreach($this->languages as $lang2)
+            		{
+                    	if ($lang->getID() != $lang2->getID())
+                    	{
+                    	    echo '<option value="translate(\''.$this->MENU->getID().'\', \''.$lang->getID().'\', \''.$lang2->getID().'\')">'.$lang->getName().' -&gt; '.$lang2->getName().'</option>';
+                		}
+            		}
+        		}
+        		?>
+        		</optgroup>
+        	</select>
+        </div>
+        </div>
+    </div>
+    <?php
+}
+?>
+
+</div>
+
+<div style="clear:both"></div>
+
+<div class="outerEditor">
+
+	<div class="ctnEditor">
+		<form action="<?php echo $this->saveUrl; ?>" target="fenster" method="post" id="saveForm" name="saveForm" onsubmit="this.focus()" style="border:0px solid #000000;height:100%">
+		    <input type="hidden" name="mode" value="<?php echo $this->mode_save; ?>" />
+		    <input type="hidden" id="hiddenMenuID" name="data[id]" value="<?php echo $this->MENU->getID(); ?>" />
+		    <input type="hidden" id="hiddenLanguageID" name="data[langid]" value="<?php echo $this->MENU->getLanguageID(); ?>" />
+		    <input type="hidden" id="hiddenSendClose" name="sendClose" value="false" />
+        <?php
+        foreach($this->addContent as $contentPiece)
+        {
+            echo '<h1 id="'.$contentPiece['param'].'Ref" class="contentTitle">&raquo; '.$contentPiece['title'].'</h1>'."\n";
+
+            $showTranslator = false;
+
+	        if(isset($this->SHOW_TRANSLATOR) && $this->SHOW_TRANSLATOR != '' && isset($this->translateContents[$contentPiece['param']]))
+	        {
+	            // TODO include a button to use the google api on the content
+	            // http://code.google.com/intl/de/apis/ajaxlanguage/documentation/#HelloWorld
+	            $temp = $this->translateContents[$contentPiece['param']];
+		        echo '<iframe class="translatorIframe" name="prevIFrame" src="'.$temp['translate'].'" frameborder="no" scrolling="yes"></iframe>';
+		        $showTranslator = true;
+	        }
+
+            echo '<textarea name="'.$contentPiece['param'].'" id="'.$contentPiece['param'].'" dir="ltr" class="ba-editable-content contentBox '.($showTranslator ? ' translated' : '').'">'."\n";
+            echo htmlspecialchars($contentPiece['content']);
+            echo "\n</textarea>\n";
+        }
+        ?>
+    	</form>
+        <iframe name="fenster" src="" width="0" height="0" frameborder="0" scrolling="no" style="display:inline;"></iframe>
+    </div>
+</div>
+
+<?php
+    // -------------------------------------------------------------------------
+    // AND HERE WE GO, THIS IS THE ACTUAL EDITOR
+
+    echo $this->layout()->content;
+    // -------------------------------------------------------------------------
+?>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/** @var $baseUrl string */
+$baseUrl = $this->baseUrl().'/';
+
+?><!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta name="generator" content="BIGACE <?php echo Bigace_Core::VERSION; ?>">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>system/css/error.css" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $baseUrl; ?>system/images/favicon.ico" />
+    <title><?php echo $this->title; ?></title>
+</head>
+<body>
+    <p id="backtosite"><span>Fatal error</span></p>
+
+    <div class="content">
+        <h1>BIGACE could not start</h1>
+        <h2><?php echo $this->message; ?></h2>
+
+        <?php if(isset($this->error)) : ?>
+        <div class="message">
+            <p>
+                Please try the following link, to see if there is more information available about the
+                <a href="<?php echo Bigace_Core::manual($this->error); ?>" target="_blank">Error
+                Code <?php echo $this->error; ?></a>.
+            </p>
+        </div>
+        <?php endif; ?>
+
+        <div class="message">
+            <p>
+            Go to the BIGACE <a href="http://forum.bigace.de/" target="_blank">Forum</a>
+            or <a href="http://wiki.bigace.de/" target="_blank">Documentation</a>
+            and search for the error message to see if there are more information available.
+            </p>
+        </div>
+
+        <?php if (Bigace_Core::isDevelopmentSystem()) : ?>
+        <h3>Exception information:</h3>
+        <p class="error">
+          <b>Code:</b> <?php echo $this->exception->getCode(); ?>
+          <br/>
+          <b>Message:</b> <?php echo $this->exception->getMessage(); ?>
+        </p>
+
+        <h3>Stack trace:</h3>
+        <pre class="stacktrace"><?php echo $this->exception->getTraceAsString(); ?></pre>
+
+        <h3>Request Parameters:</h3>
+        <pre class="params"><?php var_dump($this->request->getParams()) ?></pre>
+        <?php endif; ?>
+    </div>
+
+    <?php echo $this->footer; ?>
+
+</body>
+</html>

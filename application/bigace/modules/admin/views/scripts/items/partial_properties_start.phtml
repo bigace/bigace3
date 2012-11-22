@@ -1,0 +1,70 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+?>
+
+    <script type="text/javascript">
+        dojo.addOnLoad( function() {
+            var listenNode = dojo.byId("unique<?php echo $this->ITEM->getID(); ?>");
+            var listener = function(e) {
+                dojo.byId("permalink<?php echo $this->ITEM->getID(); ?>").innerHTML =
+                        "<?php echo $this->BASE_ITEM_URL; ?>" + listenNode.value;
+            };
+            dojo.connect(listenNode, 'onkeyup', listener);
+            dojo.connect(listenNode, 'onkeydown', listener);
+            dojo.connect(listenNode, 'onchange', listener);
+            dojo.connect(listenNode, 'onblur', listener);
+            dojo.connect(listenNode, 'onkeypress', listener);
+        });
+    </script>
+
+    <form action="<?php echo $this->FORM_ACTION; ?>" name="itemAttributes" method="post">
+    <input type="hidden" name="data[id]" value="<?php echo $this->ITEM->getID(); ?>">
+    <input type="hidden" name="data[langid]" value="<?php echo $this->ITEM->getLanguageID(); ?>">
+    <input type="hidden" name="data[parentid]" value="<?php echo $this->ITEM->getParentID(); ?>">
+
+    <?php if(!$this->supportUniqueName) { ?>
+    <input type="hidden" name="data[unique_name]" value="<?php echo $this->ITEM->getUniqueName(); ?>">
+    <?php } ?>
+
+
+    <?php echo $this->portletHeader(
+            $this->t('edit') . ' ' . $this->t('id') . ': ' . $this->ITEM->getID() . ' ' .
+            '<img alt="' . $this->tempLanguage->getName() . '" src="' . $this->STYLE . 'languages/' . $this->tempLanguage->getLocale() . '.gif"> '
+        );
+    ?>
+        <table border="0" cellspacing="0">
+        <col width="170"/>
+        <col />
+        <tr>
+            <td><label for="title"><?php echo $this->t('name'); ?></label> </td>
+            <td><?php echo $this->formText('data[name]', $this->ITEM->getName(), array('size'=>"35", 'maxlength'=>"250", 'tabindex'=>"1")); ?></td>
+        </tr>
+        <?php if($this->supportUniqueName) { ?>
+        <tr>
+            <td><label for="unique"><?php echo $this->t('unique_name'); ?></label></td>
+            <td>
+                <?php echo $this->formText('data[unique_name]', $this->ITEM->getUniqueName(), array('id' => 'unique'.$this->ITEM->getID(), 'size'=>"35", 'maxlength'=>"200", 'tabindex'=>"2")); ?>
+                <br/>
+                <span class="bgText" id="permalink<?php echo $this->ITEM->getID(); ?>"><?php echo $this->link($this->ITEM); ?></span>
+            </td>
+        </tr>
+        <?php } ?>
+        <tr>
+            <td><label for="catchwords"><?php echo $this->t('catchwords'); ?></label></td>
+            <td><?php echo $this->formText('data[catchwords]', $this->ITEM->getCatchwords(), array('size'=>"35", 'maxlength'=>"250", 'tabindex'=>"3")); ?></td>
+        </tr>
+        <tr>
+            <td><label for="description"><?php echo $this->t('description'); ?></label></td>
+            <?php if ($this->ITEM->getItemtypeID() == _BIGACE_ITEM_MENU) { ?>
+            <td><?php echo $this->formTextarea('data[description]', $this->ITEM->getDescription(), array('rows' => "5", 'tabindex' => "4")); ?></td>
+            <?php } else { ?>
+            <td><?php echo $this->editor('data[description]', $this->ITEM->getDescription(), array('height' => "200px"))->withToolbar('simple'); ?></td>
+            <?php }  ?>
+        </tr>
+        </table>
+        <?php echo $this->saveButton('saveItemAttributes'); ?>
+    <?php echo $this->portletFooter(); ?>
+

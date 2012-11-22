@@ -1,0 +1,67 @@
+<?php /* 
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+   
+*/ 
+
+?>
+
+        <h1 class="loginTitle"><?php echo $this->t("password_title"); ?></h1>  
+
+<?php 
+
+if(isset($this->SUCCESS) && $this->SUCCESS) 
+{ 
+    ?>
+
+        <form action="<?php echo $this->HOME; ?>" method="post" name="login">
+            <p><?php echo sprintf($this->t("password_emailed"), $this->EMAIL); ?></p>
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('register_link_home'); ?>" type="submit" />
+            </p>
+        </form>
+    <?php
+}
+else
+{
+        if(isset($this->ERROR) && $this->ERROR != '') {
+            echo '<div class="error">' . $this->t($this->ERROR) . '</div>';
+        }
+        ?>
+        
+        <form action="<?php echo $this->ACTION; ?>" method="post" name="login">
+        <input type="hidden" name="password" value="do">
+            <p><label><?php echo $this->t("login_username"); ?><br/>
+               <input id="username" name="username" value="<?php echo $this->USERNAME; ?>" class="input" maxlength="30" size="20" type="text" />
+               </label></p>
+                    
+            <?php /* <p><label><?php echo $this->t("login_email"); ?><br/>
+            <input id="email" name="email" value="<?php echo $this->EMAIL; ?>" class="input" maxlength="30" size="20" type="text" /></label></p> */ ?>
+           
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('password_button'); ?>" type="submit" />
+            </p>
+        </form>
+
+    <?php
+}
+
+?>
+
+        <p id="specials">
+           <a href="<?php echo $this->LOGIN_URL; ?>"><?php echo $this->t("login"); ?></a>
+           <?php if($this->ALLOW_REGISTRATION) { ?>
+           | <a href="<?php echo $this->REGISTRATION_URL; ?>"><?php echo $this->t("login_register"); ?></a>
+           <?php } ?>
+        </p>
+
+    <script type="text/javascript">
+    <!--
+       try {
+        document.getElementById('username').select();
+        document.getElementById('username').focus();
+       }catch(e){}
+    //-->
+    </script>
+

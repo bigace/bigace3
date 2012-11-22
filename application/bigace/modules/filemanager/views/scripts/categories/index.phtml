@@ -1,0 +1,33 @@
+<?php 
+/* $Id$ */ 
+
+?>
+    <div style="margin-bottom:5px"><?php echo $this->t("wayhome"); ?>: <?php echo $this->WAYHOME; ?></div>
+    <table class="tablesorter" cellspacing="0">
+    <col width="30" />
+    <col width="40%" />
+    <col />
+      <thead>
+	    <tr>
+		    <th>&nbsp;</th>
+		    <th><?php echo $this->t("category_name"); ?></th>
+		    <th align="center"><?php echo $this->t("cat_display"); ?></th>
+	    </tr>
+      </thead>
+      <tbody>
+    <?php foreach($this->ENTRIES as $entry) : ?>      
+        <tr class="<?php echo $entry['CSS'] ?>">
+            <td>
+	            <?php if($entry['CATEGORY_PARENT_URL'] != "") { ?>
+	            <a href="<?php echo $entry['CATEGORY_PARENT_URL'] ?>"><img src="<?php echo BIGACE_HOME; ?>system/images/arrow_up.gif" border="0"></a>
+	            <?php } ?>
+	            <?php if($entry['CATEGORY_CHILD_URL'] != "") { ?>
+	            <a href="<?php echo $entry['CATEGORY_CHILD_URL'] ?>"><img src="<?php echo BIGACE_HOME; ?>system/images/arrow_down.gif" border="0"></a>
+	            <?php } ?>
+            </td>
+            <td><?php echo $entry['CATEGORY_NAME'] ?></td>
+            <td align="center"><?php echo $entry['ACTION_LINKED'] ?></td>
+        </tr>
+    <?php endforeach; ?>
+      </tbody>
+    </table>

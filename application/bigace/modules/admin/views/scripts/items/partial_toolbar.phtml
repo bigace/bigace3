@@ -1,0 +1,101 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+/*
+$jsFuncName = 'urlFromToolbar'.str_replace('-', '_', $this->ITEM->getId()).$this->ITEM->getLanguageId();
+
+?>
+<script type="text/javascript">
+function <?php echo $jsFuncName; ?>(url, id, language) {
+    Panel.openUrlForActiveItem(url, id, language);
+}
+</script>
+<?php
+*/
+?>
+<div dojoType="dijit.MenuBar" style="margin-bottom:10px;">
+<?php
+
+    // edit content is only avilable for menus
+    if (count($this->TOOLBAR_ENTRIES['content']) > 0) {
+        $temp = $this->TOOLBAR_ENTRIES['content'];
+        echo '<div dojoType="dijit.MenuBarItem" onClick="'.$temp['js'].'">';
+        echo $temp['title'];
+        echo '</div>';
+    }
+
+    if (count($this->TOOLBAR_ENTRIES['edit']) > 0) {
+        foreach ($this->TOOLBAR_ENTRIES['edit'] as $temp) {
+            $js = '';
+            if (isset($temp['js'])) {
+                $js = $temp['js'];
+            } elseif (isset($temp['url'])) {
+                $js = //$jsFuncName.
+                "Panel.openUrlForActiveItem('".$temp['url']."', '".$this->ITEM->getID()."', '".$this->ITEM->getLanguageID()."')";
+            }
+            echo '<div dojoType="dijit.MenuBarItem" onClick="'.$js.'">';
+            echo $temp['title'];
+            echo '</div>';
+        }
+    }
+
+    if (isset($this->TOOLBAR_ENTRIES['language_versions']) && count($this->TOOLBAR_ENTRIES['language_versions']) > 0) {
+        ?>
+        <div dojoType="dijit.PopupMenuBarItem">
+            <span><?php echo $this->t('language_versions'); ?></span>
+            <div dojoType="dijit.Menu">
+            <?php
+            foreach($this->TOOLBAR_ENTRIES['language_versions'] as $group)
+            {
+                if (!is_array($group) && $group == '-') {
+                    echo '<div dojoType="dijit.MenuSeparator"></div>';
+                    continue;
+                }
+
+                $hasGroup = isset($group['children']);
+
+                if ($hasGroup) {
+                    $icon = '';
+                    if (isset($group['icon']) && $group['icon'] != '') {
+                        $icon = 'iconClass="bigaceIcon bigaceIcon'.ucfirst($group['icon']).'" ';
+                    }
+                    ?>
+                    <div <?php echo $icon; ?>dojoType="dijit.PopupMenuItem">
+                        <span><?php echo $group['title']; ?></span>
+                        <div dojoType="dijit.Menu">
+                    <?php
+                    $group = $group['children'];
+                }
+
+                foreach ($group as $temp) {
+                    $js = '';
+                    if (isset($temp['js'])) {
+                        $js = $temp['js'];
+                    } elseif (isset($temp['url'])) {
+                        $js = //$jsFuncName.
+                        "Panel.openUrlForActiveItem('".$temp['url']."', '".$this->ITEM->getID()."', '".$this->ITEM->getLanguageID()."')";
+                    }
+                    $locale = $temp['locale'];
+
+                    echo '<div iconClass="bigaceIcon bigaceIconLocale bigaceIconLocale'.ucfirst($locale).'" dojoType="dijit.MenuItem" onClick="'.$js.'">';
+                    echo $temp['title'];
+                    echo '</div>';
+                }
+
+                if ($hasGroup) {
+                    ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+            </div>
+        </div>
+        <?php
+    }
+
+?>
+</div>

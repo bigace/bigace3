@@ -1,0 +1,100 @@
+<?php
+/* $Id$ */
+
+if(isset($this->ERROR))
+    echo $this->message()->error($this->ERROR);
+
+?>
+
+<script type="text/javascript">
+<!--
+
+    function checkFormular(mform)
+    {
+    /*
+    	// no check, cause there is no default way of handling wrong data
+        if(mform.userName.value == '')
+    	{
+            mform.userName.focus();
+            showJSError('<?php echo $this->t('error'); ?>', '<?php echo $this->t('missing_values'); ?>');
+            return false;
+    	}
+        return comparePasswords(mform);
+	*/
+		return true;
+   	}
+
+    function comparePasswords(mform)
+    {
+    	if(mform.passwordnew.value == '')
+    	{
+            showJSError('<?php echo $this->t('error'); ?>', '<?php echo $this->t('missing_values'); ?>');
+    	    return false;
+	   	}
+
+        if (mform.passwordnew.value != mform.passwordcheck.value)
+    	{
+            showJSError('<?php echo $this->t('error'); ?>', '<?php echo $this->t('msg_pwd_no_match'); ?>');
+            mform.passwordcheck.value = "";
+            mform.passwordcheck.focus();
+    	    return false;
+	   	}
+        return true;
+   	}
+
+// -->
+</script>
+
+<form action="<?php echo $this->CREATE_URL; ?>" method="post" onSubmit="return checkFormular(this);">
+<table width="100%">
+<colgroup>
+    <col width="170px" />
+    <col />
+</colgroup>
+<tbody>
+  <tr>
+    <td><?php echo $this->t('create_user_name'); ?></td>
+    <td><?php echo $this->formText("userName", $this->NEW_USERNAME, array("maxlength" => 100)); ?></td>
+  </tr>
+  <tr>
+    <td><?php echo $this->t('create_user_language'); ?></td>
+    <td>
+    	<select name="language">
+    	<?php foreach($this->LANGUAGES as $langName => $langID) { ?>
+    		<option value="<?php echo $langID; ?>"<?php if($langID == $this->LANGUAGE) echo " selected"; ?>><?php echo $langName; ?></option>
+    	<?php } ?>
+    	</select>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top"><?php echo $this->t('create_user_group'); ?></td>
+    <td><?php echo $this->GROUPS; ?></td>
+  </tr>
+  <tr>
+    <td><?php echo $this->t('user_state'); ?></td>
+    <td>
+		<label for="stateYes"><input type="radio" name="state" value="1" checked id="stateYes"><?php echo $this->t('user_active'); ?></label>
+		<label for="stateNo"><input type="radio" name="state" value="0" id="stateNo"><?php echo $this->t('user_inactive'); ?></label>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top"><?php echo $this->t('email'); ?></td>
+    <td><?php echo $this->formText('email', $this->EMAIL, array('maxlength' => '99')); ?></td>
+  </tr>
+  <tr>
+    <td valign="top"><?php echo $this->t('password'); ?></td>
+    <td><?php echo $this->formPassword('passwordnew', '', array('maxlength' => "30")); ?></td>
+  </tr>
+  <tr>
+    <td valign="top"><?php echo $this->t('rewrite_password'); ?></td>
+    <td><?php echo $this->formPassword('passwordcheck', '', array('maxlength' => "30")); ?></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+        <?php echo $this->createButton('createUser'); ?>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</form>
+

@@ -1,0 +1,57 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+// This screen displays any error that occured during installation
+
+// echo $this->UPDATE_DIRECTORY
+// echo $this->UPDATE_DESCRIPTION
+
+echo $this->backlink($this->BACK_URL);
+
+$ptitle = $this->UPDATE_NAME . ' (' . $this->t('version') . ' ' . $this->UPDATE_VERSION . ')';
+
+echo $this->message()->error($this->t('update_error'));
+
+echo $this->portletHeader($ptitle, array('full' => true)); ?>
+
+<table class="nicetable" cellspacing="0" width="100%">
+<col />
+
+<thead>
+    <tr>
+        <th><?php echo $this->t('update_message'); ?></th>
+    </tr>
+</thead>
+<tbody>
+<?php
+
+foreach ($this->UPDATE_ERROR as $result)
+{
+    if($result->isSeparator())
+    {
+        echo '
+        <tr>
+            <td><b>'.$result->getMessage().'</b></td>
+        </tr>
+        ';
+    }
+    else if(!$result->isSuccess())
+    {
+        echo '
+        <tr>
+            <td style="padding-left: 20px; color:red;">'.$result->getMessage().'</td>
+        </tr>
+        ';
+    }
+}
+?>
+</tbody>
+</table>
+
+<?php
+
+echo $this->portletFooter();
+
+echo $this->backlink($this->BACK_URL);

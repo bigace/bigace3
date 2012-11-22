@@ -1,0 +1,178 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+if (isset($this->ERROR) && count($this->ERROR) > 0) {
+    foreach ($this->ERROR as $msg) {
+        echo $this->message($msg, 'error');
+    }
+}
+
+$this->tabpane()->add($this->t('tab_upload'));
+$this->tabpane()->add($this->t('tab_import'));
+
+?>
+<script type="text/javascript">
+<!--
+    function addUploadBox()
+    {
+        $('#endSpacer').before('<input type="file" multiple="true" size="50" name="userfile[]" />');
+    }
+// -->
+</script>
+
+<?php echo $this->tabpane()->begin(); ?>
+<?php echo $this->tabpane()->next(); ?>
+
+    <form name="uploadForm" id="uploadForm" action="<?php echo $this->ACTION_LINK; ?>" method="post" ENCTYPE="multipart/form-data">
+
+        <input type="hidden" name="mode" value="<?php echo $this->MODE_UPLOAD; ?>">
+        <table width="100%" cellspacing="0">
+        <col width="200" />
+        <col />
+          <tbody>
+            <tr>
+                <td align="left" valign="top">
+                    <label><?php echo $this->t('choose_file'); ?><br/>
+                    <?php echo sprintf($this->t('max_size'), ini_get('upload_max_filesize'), ini_get('post_max_size')); ?></label>
+                </td>
+                <td align="left" id="uploadFileBox">
+                    <?php echo $this->formFile('userfile[]', array('multiple' => 'true', 'size' => 50, 'class' => 'uploader')); ?>
+                    <span id="endSpacer"></span>
+                    <a href="#" onClick="addUploadBox();return false;"><br />[+] <?php echo $this->t('choose_more_files'); ?></a>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br/>
+        <?php echo $this->portletHeader($this->t('details'), array('closed' => true)); ?>
+        
+        <table width="100%" cellspacing="0">
+        <col width="200" />
+        <col />
+          <tbody>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('save_below'); ?></td>
+                <td align="left">
+                    <?php echo $this->parentChooser("data[parentid]")->setParent($this->PARENT); ?>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('name'); ?></td>
+                <td align="left">
+                    <?php echo $this->formText('data[name]', $this->DATA_NAME, array('id' => 'name', 'maxlength' => 200)); ?>
+                    <div id="namingMethod">
+                        <label for="namingUploadFile"><input type="radio" name="namingType" value="namingFile" checked="checked" id="namingUploadFile"> <?php echo $this->t('naming_filename'); ?></label>
+                        <label for="namingUploadCount"><input type="radio" name="namingType" value="namingCount" id="namingUploadCount"> <?php echo $this->t('naming_count'); ?></label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('unique_name'); ?></td>
+                <td align="left">
+                    <?php echo $this->formText('data[unique_name]', $this->UNIQUE_NAME, array('id' => 'unique_name', 'maxlength' => 200)); ?>
+                    <div><?php echo $this->t('replacer'); ?>: {NAME}, {FILENAME}, {COUNTER}</div>
+                </td>
+            </tr>
+            <tr>
+                  <td align="left" valign="top"><?php echo $this->t('description'); ?></td>
+                  <td align="left">
+                      <?php echo $this->formTextarea('data[description]', $this->DATA_DESCRIPTION, array('id' => 'descriptionUpload')); ?>                  
+                  </td>
+            </tr>
+            <tr>
+                <td align="left"><?php echo $this->t('language'); ?></td>
+                <td align="left"><?php echo $this->LANGUAGES; ?></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top"><?php echo $this->t('category'); ?></td>
+              <td align="left"><?php echo $this->CATEGORY_SELECTOR; ?></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <?php echo $this->portletFooter(); ?>
+        <?php echo $this->formButton('upload2', $this->t('process_upload'), array('type' => 'submit')); ?>
+
+    </form>
+
+
+<?php echo $this->tabpane()->next(); ?>
+
+
+    <form name="importForm" id="importForm" action="<?php echo $this->ACTION_LINK; ?>" method="post" ENCTYPE="multipart/form-data">
+
+        <input type="hidden" name="mode" value="<?php echo $this->MODE_IMPORT; ?>">
+        <table width="100%" cellspacing="0">
+        <col width="200" />
+        <col />
+          <tbody>
+            <tr>
+                <td valign="top"><label><?php echo $this->t('import_urls'); ?></label></td>
+                <td id="uploadFileBox">
+                    <?php echo $this->formTextarea('importURLs', $this->IMPORT_URLS, array('style' => 'width:600px')); ?>
+                    <?php echo $this->t('import_info'); ?>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br/>
+        <?php echo $this->portletHeader($this->t('details'), array('closed' => true)); ?>
+        
+        <table width="100%" cellspacing="0">
+        <col width="200" />
+        <col />
+          <tbody>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('save_below'); ?></td>
+                <td align="left">
+                    <?php echo $this->parentChooser("data[parentid]")->setParent($this->PARENT); ?>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('name'); ?></td>
+                <td align="left">
+                    <?php echo $this->formText('data[name]', $this->DATA_NAME, array('id' => 'name', 'maxlength' => 200)); ?>               
+                    <div id="namingMethod">
+                        <label for="namingFile"><input type="radio" name="namingType" value="namingFile" checked="checked" id="namingFile"> <?php echo $this->t('naming_filename'); ?></label>
+                        <label for="namingCount"><input type="radio" name="namingType" value="namingCount" id="namingCount"> <?php echo $this->t('naming_count'); ?></label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" valign="top"><?php echo $this->t('unique_name'); ?></td>
+                <td align="left">
+                    <?php echo $this->formText('data[unique_name]', $this->UNIQUE_NAME, array('id' => 'unique_name', 'maxlength' => 200)); ?>
+                    <div><?php echo $this->t('replacer'); ?>: {NAME}, {FILENAME}, {COUNTER}</div>
+                </td>
+            </tr>
+            <tr>
+                  <td align="left" valign="top">
+                    <?php echo $this->t('description'); ?>
+                  </td>
+                  <td align="left">
+                    <?php echo $this->formTextarea('data[description]', $this->DATA_DESCRIPTION); ?>
+                  </td>
+            </tr>
+            <tr>
+                <td align="left"><?php echo $this->t('language'); ?></td>
+                <td align="left"><?php echo $this->LANGUAGES; ?></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top"><?php echo $this->t('category'); ?></td>
+              <td align="left"><?php echo $this->CATEGORY_SELECTOR; ?></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <?php echo $this->portletFooter(); ?>
+        <?php echo $this->formButton('import2', $this->t('process_import'), array('type' => 'submit')); ?>
+
+    </form>
+
+<?php echo $this->tabpane()->end(); ?>
+

@@ -1,0 +1,180 @@
+<project name="Bigace-Hudson" default="build">
+
+    <description>
+        BIGACE - a PHP based Web CMS.
+
+        Hudson CI - build file for BIGACE Web CMS 3.
+        See http://dev.bigace.org/ for further informations.
+
+        Copyright (C) 2009-2010 Keleo (www.keleo.de).
+        Distributed under the terms of the GNU General Public License.
+        
+        $Id: build.xml 796 2010-05-27 10:11:40Z bigace $
+    </description>
+
+    <!-- Location of all related directories -->
+    <property name="workspace" location="${basedir}/../.." />
+    <property name="buildDir" location="${workspace}/build" />
+    <property name="srcDir" location="${workspace}/svn" />
+	
+	<!-- Load the default build tasks -->
+    <import file="${basedir}/build.xml" />
+
+    <!-- Delete all 3rd party libraries -->
+    <target name="cleanup.3rdparty">
+        <antcall target="remove.3rdparty-files">
+            <param name="release.path" value="${workspace}/svn"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+    </target>
+	
+	<!-- Prepares everything BEFORE a new build is started --> 
+    <target name="clean">
+        <antcall target="cleanup.3rdparty" />
+        <delete dir="${buildDir}"/>
+        <antcall target="cleanup.communityfiles" />
+    </target>
+
+    <!-- Removes all temporary resources AFTER a complete build -->
+    <target name="cleanup">
+        <antcall target="cleanup.3rdparty" />
+        <delete dir="${buildDir}/temp" />
+        <antcall target="cleanup.communityfiles" />
+    </target>
+	
+    <!-- Create all necessary directories to store build artifacts -->
+    <target name="prepare" depends="clean">
+        <mkdir dir="${buildDir}/api"/>
+        <mkdir dir="${buildDir}/code-browser"/>
+        <mkdir dir="${buildDir}/coverage"/>
+        <mkdir dir="${buildDir}/logs"/>
+        <mkdir dir="${buildDir}/artifacts"/>
+        <mkdir dir="${buildDir}/temp"/>
+    </target>
+
+    <!-- Ccopy all 3rd party libs -->
+    <target name="prepare-artifacts" depends="prepare">
+        <antcall target="release.3rdparty-files">
+            <param name="release.path" value="${workspace}/svn"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+    </target>
+
+    <!-- phpUnit: Unit Test Framework for PHP -->
+    <target name="phpunit" depends="prepare">
+        <exec dir="${srcDir}/tests" executable="phpunit">
+            <arg line="--testdox-html ${buildDir}/logs/testdox.html 
+                       --coverage-clover ${buildDir}/logs/clover.xml 
+                       --coverage-html ${buildDir}/coverage/ 
+                       --log-junit ${buildDir}/logs/junit.xml 
+                       --configuration ${srcDir}/tests/phpunit.xml 
+                       --bootstrap ${srcDir}/tests/bootstrap.php 
+                       --strict 
+                       --no-globals-backup 
+                       --syntax-check 
+                       --colors ." />
+        </exec>
+    </target>
+
+    <!-- phpcs: Code Sniffer -->
+    <target name="phpcs" depends="prepare">
+        <exec dir="${workspace}" executable="phpcs" output="${buildDir}/logs/checkstyle.xml">
+            <arg line="--standard=Bigace 
+                       --tab-width=4
+                       --ignore=svn/public/*,*.phtml,Zend_Validate.php 
+                       --report=checkstyle svn"/>
+        </exec>
+    </target>
+	
+	<!-- Creates the API Documentation -->
+    <target name="phpdoc" depends="prepare">
+        <exec dir="${workspace}" executable="phpdoc">
+            <arg line="--title 'BIGACE 3.0 dev' 
+                       -ue on 
+                       -t ${buildDir}/api/
+                       -f ${srcDir}/library/Bigace/constants.inc.php,${srcDir}/library/Bigace/functions.inc.php 
+                       -d ${srcDir}/library/Bigace/
+                       -dn Bigace
+                       -i .htaccess,.svn/,*.svn-base,Entries,Root,Repository,DBItem.php,DBFright.php,DBGroup.php,UpdateManager.php,UpdateModul.php
+                       -ct deprecated 
+                       -o HTML:frames:earthli"/>
+        </exec>
+    </target>
+    
+    <!-- phpcpd: Copy and Paste Detection -->
+    <target name="phpcpd" depends="prepare">
+        <exec dir="${workspace}" executable="phpcpd">
+            <arg line="--exclude svn/library/
+                       --log-pmd build/logs/pmd-cpd.xml svn"/>
+        </exec>
+    </target>
+    
+    <!-- pDepend: Static Code Analysis -->
+    <target name="pdepend" depends="prepare">
+        <exec dir="${workspace}" executable="pdepend">
+            <arg line="--jdepend-xml=build/logs/jdepend.xml svn"/>
+        </exec>
+    </target>
+
+	
+    <!-- PHP Mess Detector -->
+    <target name="phpmd" depends="prepare">
+        <exec dir="${workspace}" executable="phpmd">
+            <arg line="svn xml codesize,unusedcode --reportfile build/logs/pmd.xml" />
+        </exec>
+    </target>
+
+    <!-- Code Browser - depends on PHPUnit as it reads its log files -->
+    <target name="phpcb" depends="phpunit">
+        <exec dir="${workspace}" executable="phpcb">
+            <arg line="--log=${buildDir}/logs/
+                       --source=${srcDir}/
+                       --exclude=*/library/Zend/*
+                       --exclude=*/library/Minify/*
+                       --exclude=*/library/zip/*
+                       --exclude=*/library/phpmailer/*
+                       --exclude=*/public/jquery/*
+                       --exclude=*/public/ckeditor/*
+                       --output=${buildDir}/code-browser/" />
+        </exec>
+    </target>
+
+    <!-- Create the download packages of Bigace - needs 3rd-party-stuff and PHP-Api -->
+    <target name="artifacts" depends="prepare-artifacts">
+        <antcall target="release.version.internal">
+            <param name="release.path" value="${buildDir}/temp"/>
+            <param name="archive.path" value="${buildDir}/artifacts"/>
+        </antcall>
+        <zip destfile="${buildDir}/artifacts/${api.zip.filename}">
+            <fileset dir="${buildDir}/api/" />
+        </zip>
+    </target>
+
+    <!-- Cleans up the mess, which is still caused by the unit-test environment -->
+    <target name="cleanup.communityfiles">
+        <delete file="${srcDir}/application/bigace/configs/bigace.php" />
+        <delete file="${srcDir}/application/bigace/configs/consumer.ini" />
+        <delete dir="${srcDir}/sites/cid999/" />
+        <delete dir="${srcDir}/public/cid999/" />
+    </target>
+
+    <!-- Installs the nightly build version -->
+    <target name="nightly" depends="artifacts">
+        <delete dir="${target.nightly.dir}" />        
+        <mkdir dir="${target.nightly.dir}" />
+        <unzip dest="${target.nightly.dir}" src="${buildDir}/artifacts/${release.zip.filename}" />
+
+        <!-- Copy the script that installs bigace -->
+        <copy file="${srcDir}/storage/scripts/command-line-installer.php" todir="${target.nightly.dir}/storage/scripts/" />
+        <exec dir="${target.nightly.dir}/storage/scripts/" executable="php">
+            <arg line="command-line-installer.php install"/>
+        </exec>
+        <delete file="${target.nightly.dir}/storage/scripts/command-line-installer.php" />
+    </target>
+
+    <!-- All tasks that should be executed -->
+    <target name="build" depends="clean,prepare,phpcs,phpdoc,pdepend,phpcpd,phpmd,prepare-artifacts,artifacts,phpunit,phpcb,nightly,cleanup" />
+	<!-- Quick build with Unit-Tests and CodeSniffer only -->
+    <target name="hudson" depends="clean,prepare,prepare-artifacts,phpcs,phpunit,cleanup" />
+
+</project>

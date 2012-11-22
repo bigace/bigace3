@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * $Id$
+ */
+ 
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" href="<?php echo BIGACE_HOME; ?>system/filemanager/style.css" type="text/css">
+    <script type="text/javascript" src="<?php echo BIGACE_HOME; ?>jquery/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo BIGACE_HOME; ?>jquery/tablesorter/jquery.tablesorter.js"></script>
+    <?php /*
+    <link rel="stylesheet" href="<?php echo BIGACE_HOME; ?>jquery/themes/bigace/bigace.css" type="text/css">
+        <script type="text/javascript" src="<?php echo BIGACE_HOME; ?>jquery/jgrowl/jquery.jgrowl.js"></script>
+        <link rel="stylesheet" href="<?php echo BIGACE_HOME; ?>jquery/jgrowl/jquery.jgrowl.css" type="text/css">
+    function showItemPreview(msg, fadeoutTime)
+    {
+	    $.jGrowl.defaults.closerTemplate = '<div>Close all</div>';
+			
+	    if(fadeoutTime != null) {
+		    $("#jgrowlDiv").jGrowl(msg, { life: fadeoutTime });
+		    return;
+	    }
+
+	    $("#jgrowlDiv").jGrowl(msg, { sticky: true, speed:  'slow' });
+    }
+    */ ?>
+    <script type="text/javascript">
+
+    function chooseItem(itemtype, itemid, languageid, filename, url, mimetype, itemname) 
+    {
+        parent.window.setSelectedItem(itemtype, itemid, languageid, filename, url, mimetype, itemname);
+	    parent.window.acceptItem();
+	    return false;
+    }
+	
+    function setCurrentItem( extension, item, url )
+    {
+        itempreview = item.getName();
+        parent.window.acceptItem();
+        <?php /*
+	    if(item.getItemtype() == 4) {
+	        itempreview = '<img src="'+url+'" height="99">' + itempreview;
+	        showItemPreview('<a href="'+url+'" onclick="buttonAccept();return false;">' + itempreview + '</a>',null);
+	    }
+	    else {
+            if(extension != null)
+        	    itempreview = '<img src="icons/32/' + extension + '.gif">' + itempreview;
+        	    
+	        showItemPreview('<a href="'+url+'" onclick="buttonAccept();return false;">' + itempreview + '</a>',null);
+	    }
+	    */ ?>
+    }
+    </script>
+</head>
+<body>
+    <div id="jgrowlDiv" class="top-right"></div>
+    <?php echo $this->layout()->content; ?>
+</body>
+</html>

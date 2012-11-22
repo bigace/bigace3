@@ -1,0 +1,5 @@
+This folder contains legacy code which will be replaced within the following time.
+Many classes are deprecated and will be deleted within the next release cycles.
+
+Please try to find a class from the new class structure, that can be used as replacement,
+for example: ConfigurationReader is replaced by Bigace_Config

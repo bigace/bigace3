@@ -1,0 +1,672 @@
+<?xml version="1.0"?>
+<!--
+ *
+ * BIGACE - a PHP and MySQL based Web CMS.
+ * 
+ * BIGACE is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * BIGACE is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation, 
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ * For further information visit {@link http://www.bigace.de http://www.bigace.de}.
+ *
+ * @author Kevin Papst 
+ * @copyright Copyright (C) Kevin Papst
+ * @version $Id: structure.xml,v 1.30 2009/02/14 13:51:15 kpapst Exp $
+ *
+-->
+
+<bigace version="3.0">
+
+  <table name="category">
+    <description>This table holds all category definitions.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `parentid` int(11) NOT NULL,
+            `name` varchar(255) NOT NULL DEFAULT '',
+            `description` text,
+            PRIMARY KEY (`id`,`cid`),
+            KEY `category_tree_req` (`cid`,`parentid`)
+        </mysql>
+        <sqlite>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `parentid` int(11) NOT NULL,
+            `name` varchar(255) NOT NULL DEFAULT '',
+            `description` text,
+            PRIMARY KEY (`id`,`cid`)
+        </sqlite>
+    </create>
+    <todo>Name should not have a default value</todo>
+  </table>
+
+  <table name="configuration">
+    <description>This table holds the Configuration settings.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `package` varchar(50) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `value` varchar(255) NOT NULL DEFAULT '',
+            `type` varchar(10) NOT NULL DEFAULT 'string',
+            `extended` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`cid`,`package`,`name`),
+            KEY `configuration_cid_package` (`cid`,`package`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `package` varchar(50) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `value` varchar(255) NOT NULL DEFAULT '',
+            `type` varchar(10) NOT NULL DEFAULT 'string',
+            `extended` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`cid`,`package`,`name`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="content">
+    <description>This table holds all menu contents.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `cnt_type` varchar(20) DEFAULT 'html',
+            `state` varchar(1) DEFAULT 'R',
+            `position` int(11) DEFAULT '0',
+            `valid_from` int(11) DEFAULT '0',
+            `valid_to` int(11) DEFAULT '0',
+            `content` text,
+            PRIMARY KEY (`cid`,`id`,`language`,`name`),
+            KEY `content_item_all` (`cid`,`id`,`language`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `cnt_type` varchar(20) DEFAULT 'html',
+            `state` varchar(1) DEFAULT 'R',
+            `position` int(11) DEFAULT '0',
+            `valid_from` int(11) DEFAULT '0',
+            `valid_to` int(11) DEFAULT '0',
+            `content` text,
+            PRIMARY KEY (`cid`,`id`,`language`,`name`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="frights">
+    <description>This table holds the functional permission definitions.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `description` text,
+            PRIMARY KEY (`cid`,`name`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `description` text,
+            PRIMARY KEY (`cid`,`name`)
+        </sqlite>
+    </create>
+  </table>
+
+
+  <table name="groups">
+    <description>This table holds all usergroup defintions.</description>
+    <create>
+        <mysql>
+            `group_id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `group_name` varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (`group_id`,`cid`)
+        </mysql>
+        <sqlite>
+            `group_id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `group_name` varchar(255) NOT NULL DEFAULT '',
+            PRIMARY KEY (`group_id`,`cid`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="group_frights">
+    <description>This table holds the the Mappings between Functional Rights and Usergroups.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL,
+            `fright` varchar(50) NOT NULL,
+            PRIMARY KEY (`cid`,`group_id`,`fright`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL,
+            `fright` varchar(50) NOT NULL,
+            PRIMARY KEY (`cid`,`group_id`,`fright`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="group_right">
+    <description>This table holds all item right entrys for Usergroups.</description>
+    <create>
+        <mysql>
+            `itemtype` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL,
+            `value` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`itemtype`,`cid`,`itemid`,`group_id`)
+        </mysql>
+        <sqlite>
+            `itemtype` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL,
+            `value` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`itemtype`,`cid`,`itemid`,`group_id`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="id_gen">
+    <description>A simple ID Generator Table.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `name` varchar(255) NOT NULL,
+            `value` int(11) NOT NULL,
+            PRIMARY KEY (`cid`,`name`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `name` varchar(255) NOT NULL,
+            `value` int(11) NOT NULL,
+            PRIMARY KEY (`cid`,`name`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_1">
+    <description>This table holds the Menu definitions.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,      
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`),
+            KEY `item_1_cid` (`cid`),
+            KEY `item_1_all_parent` (`cid`,`parentid`),
+            KEY `item_1_all_parent_language` (`cid`,`language`,`parentid`)
+        </mysql>
+        <sqlite>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,      
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_4">
+    <description>This table holds the Image definitions.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`),
+            KEY `item_4_cid` (`cid`),
+            KEY `item_4_all_parent` (`cid`,`parentid`),
+            KEY `item_4_all_parent_language` (`cid`,`language`,`parentid`)
+        </mysql>
+        <sqlite>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_5">
+    <description>This table holds the Menu definitions.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`),
+            KEY `item_5_cid` (`cid`),
+            KEY `item_5_all_parent` (`cid`,`parentid`),
+            KEY `item_5_all_parent_language` (`cid`,`language`,`parentid`)
+        </mysql>
+        <sqlite>
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `mimetype` varchar(100) NOT NULL DEFAULT '',
+            `name` varchar(255) NOT NULL,
+            `parentid` int(11) NOT NULL DEFAULT '-1',
+            `description` text,
+            `catchwords` varchar(255) DEFAULT NULL,
+            `createdate` int(11) NOT NULL,
+            `createby` int(11) NOT NULL,
+            `modifieddate` int(11) NOT NULL,
+            `modifiedby` int(11) NOT NULL,
+            `unique_name` varchar(255) DEFAULT '',
+            `type` varchar(50) DEFAULT NULL,
+            `valid_from` int(11) NOT NULL DEFAULT '0',
+            `valid_to` int(11) NOT NULL DEFAULT '0',
+            `text_1` text,
+            `text_2` text,
+            `text_3` text,
+            `text_4` text,
+            `num_1` int(11) DEFAULT NULL,
+            `num_2` int(11) DEFAULT NULL,
+            `num_3` int(11) DEFAULT NULL,
+            `num_4` int(11) DEFAULT NULL,
+            `num_5` int(11) DEFAULT NULL,
+            `date_1` int(11) DEFAULT '0',
+            `date_2` int(11) DEFAULT '0',
+            `date_3` int(11) DEFAULT '0',
+            `date_4` int(11) DEFAULT '0',
+            `date_5` int(11) DEFAULT '0',
+            PRIMARY KEY (`id`,`cid`,`language`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_category">
+    <description>This table holds the Item-Category mappings.</description>
+    <create>
+        <mysql>
+            `itemtype` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `categoryid` int(11) NOT NULL,
+            PRIMARY KEY (`itemtype`,`cid`,`itemid`,`categoryid`)
+        </mysql>
+        <sqlite>
+            `itemtype` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `categoryid` int(11) NOT NULL,
+            PRIMARY KEY (`itemtype`,`cid`,`itemid`,`categoryid`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_project_num">
+    <description>This table holds the Item Project values in Numeric Format.</description>
+    <create>
+        <mysql>
+            `itemtype` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `project_key` varchar(50) NOT NULL,
+            `project_value` int(11) DEFAULT '0',
+            PRIMARY KEY (`itemtype`,`id`,`cid`,`language`,`project_key`)
+        </mysql>
+        <sqlite>
+            `itemtype` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `project_key` varchar(50) NOT NULL,
+            `project_value` int(11) DEFAULT '0',
+            PRIMARY KEY (`itemtype`,`id`,`cid`,`language`,`project_key`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="item_project_text">
+    <description>This table holds the item project text values.</description>
+    <create>
+        <mysql>
+            `itemtype` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `project_key` varchar(50) NOT NULL,
+            `project_value` text,
+            PRIMARY KEY (`itemtype`,`id`,`cid`,`language`,`project_key`)
+        </mysql>
+        <sqlite>
+            `itemtype` int(11) NOT NULL,
+            `id` int(11) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `project_key` varchar(50) NOT NULL,
+            `project_value` text,
+            PRIMARY KEY (`itemtype`,`id`,`cid`,`language`,`project_key`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="logging">
+    <description>This table holds logging information.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `timestamp` int(11) NOT NULL,
+            `namespace` varchar(10) DEFAULT '',
+            `level` int(11) NOT NULL,
+            `message` text,
+            `file` varchar(255) DEFAULT '',
+            `line` int(11) DEFAULT NULL,
+            `stacktrace` text,
+            PRIMARY KEY (`id`),
+            KEY `logging_id` (`cid`,`userid`,`timestamp`)
+        </mysql>
+        <sqlite>
+            `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `timestamp` int(11) NOT NULL,
+            `namespace` varchar(10) DEFAULT '',
+            `level` int(11) NOT NULL,
+            `message` text,
+            `file` varchar(255) DEFAULT '',
+            `line` int(11) DEFAULT NULL,
+            `stacktrace` text
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="plugins">
+    <description>Information about installed Plugins.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `version` varchar(50) NOT NULL,
+            PRIMARY KEY (`cid`,`name`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `name` varchar(50) NOT NULL,
+            `version` varchar(50) NOT NULL,
+            PRIMARY KEY (`cid`,`name`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="session">
+    <description>This table holds all active and all not yet removed expired sessions.</description>
+    <create>
+        <mysql>
+            `id` varchar(32) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `ip` varchar(20) NOT NULL,
+            `data` text,
+            `modified` int(11) NOT NULL,
+            `timestamp` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`),
+            KEY `session_timestamp` (`timestamp`)
+        </mysql>
+        <sqlite>
+            `id` varchar(32) NOT NULL,
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `ip` varchar(20) NOT NULL,
+            `data` text,
+            `modified` int(11) NOT NULL,
+            `timestamp` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="unique_name">
+      <description>
+        This table holds information about beauty urls. Table was added for BIGACE 2.4 
+        One item can have multiple urls patterns, but the administration does not support that currently. 
+        "name" is the url including the file extension!      
+      </description>
+      <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `itemtype` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `name` varchar(255) NOT NULL,
+            PRIMARY KEY (`cid`,`itemtype`,`itemid`,`language`,`name`),
+            UNIQUE KEY `unique_name_filename` (`cid`,`name`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `itemtype` int(11) NOT NULL,
+            `itemid` int(11) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `name` varchar(255) NOT NULL,
+            PRIMARY KEY (`cid`,`itemtype`,`itemid`,`language`,`name`),
+            UNIQUE (`cid`,`name`)
+        </sqlite>
+      </create>
+  </table>
+
+  <table name="user">
+    <description>This table is used by the default Authentication and User Management.</description>
+    <create>
+        <mysql>
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `cid` int(11) NOT NULL,
+            `username` varchar(50) NOT NULL,
+            `password` varchar(50) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `active` tinyint(4) NOT NULL DEFAULT '1',
+            `email` varchar(100) NOT NULL DEFAULT '',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `id_cid` (`id`,`cid`),
+            UNIQUE KEY `user_id` (`cid`,`username`)
+        </mysql>
+        <sqlite>
+            `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            `cid` int(11) NOT NULL,
+            `username` varchar(50) NOT NULL,
+            `password` varchar(50) NOT NULL,
+            `language` varchar(20) NOT NULL,
+            `active` tinyint(4) NOT NULL DEFAULT '1',
+            `email` varchar(100) NOT NULL DEFAULT '',
+            UNIQUE (`id`,`cid`),
+            UNIQUE (`cid`,`username`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="user_attributes">
+    <description>This table holds all extended User Attributes.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `attribute_name` varchar(50) NOT NULL,
+            `attribute_value` text,
+            PRIMARY KEY (`cid`,`userid`,`attribute_name`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `attribute_name` varchar(50) NOT NULL,
+            `attribute_value` text,
+            PRIMARY KEY (`cid`,`userid`,`attribute_name`)
+        </sqlite>
+    </create>
+  </table>
+
+  <table name="user_group_mapping">
+    <description>Information of user mapped to groups.</description>
+    <create>
+        <mysql>
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`cid`,`userid`,`group_id`)
+        </mysql>
+        <sqlite>
+            `cid` int(11) NOT NULL,
+            `userid` int(11) NOT NULL,
+            `group_id` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`cid`,`userid`,`group_id`)
+        </sqlite>
+    </create>
+  </table>
+
+</bigace>

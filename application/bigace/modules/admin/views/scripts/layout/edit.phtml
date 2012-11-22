@@ -1,0 +1,17 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+echo $this->backlink();
+
+echo $this->form;

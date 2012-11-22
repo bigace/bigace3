@@ -1,0 +1,35 @@
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id: search.css 66 2010-01-22 11:16:46Z bigace $
+*/
+
+#searchApplication { width:100%; }
+#searchApplication .resultTable { width:100%; border:1px solid #000000; margin-top:10px; }
+#searchApplication .resultHeader { border-bottom:1px solid #000000; }
+#searchApplication .closeButtonDiv { margin-top:10px; margin-bottom:5px; }
+#searchApplication .closeButton { border:1px solid #666666; color:#363636; background-color:#eeeeee; padding:4px; width:150px; }
+#searchApplication .row2 { background-color:#F0F0F0; }
+#searchApplication td { padding:2px; }
+#searchApplication .closeButton:hover { border:1px solid #cccccc; color:#eeeeee; background-color:#666666; padding:4px; width:150px; }
+#searchApplication h1 { margin:0 0 18px 0; }
+#searchApplication table { margin: 0px; }
+
+#searchForm h2 { background: transparent url(../images/search.gif) 0px 2px no-repeat; padding-left:20px; margin-bottom: 10px; font-size: 20px; }
+#searchForm form { margin: 0px; }
+#searchForm input {padding:0px 0px 0px 8px; margin:0px;height:25px;width:300px;}
+#searchForm button {padding:0px 6px; margin:0px;height:27px; font-weight:bold;}
+
+#searchResults { margin-bottom: 10px; margin-top: 10px; }
+#searchResults h2 { margin:10px 0 10px 0; padding:15px 0 0 0; }
+#searchResults span { margin:0px; padding:0px; font-weight:normal; display:block; }
+#searchResults span a.searchImg {float:right;}
+#searchResults p { margin:0px; padding:0px; line-height: 13px; font-size: 13px; }
+#searchResults a { border:0px; }
+#searchResults a:hover { border:0px; }
+#searchResults a.hlink { font-size: 15px; color:blue; text-decoration:underline; }
+#searchResults a.hlink:hover { color:blue; text-decoration:underline; }
+#searchResults .url { color:#0E774A; margin-top:3px; }
+#searchResults .info { color:#000000; border:0px; background-color:inherit; line-height: 1.2;}
+#searchResults .searchResult { margin-bottom:10px; clear:right;}
+#searchResults .searchResult img { border:0px; margin:0px 3px 10px 0px; float:left; }

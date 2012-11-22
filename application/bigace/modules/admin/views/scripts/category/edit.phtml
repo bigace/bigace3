@@ -1,0 +1,58 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+    
+if(isset($this->INFO)) 
+    echo $this->message($this->INFO, 'info');
+
+echo $this->backlink($this->BACK_URL);
+
+echo $this->portletHeader($this->t('edit') . ' ' . $this->t('id') . ': ' . $this->ID);
+
+?>
+
+<form action="<?php echo $this->SAVE_URL; ?>" method="post">
+<input type="hidden" name="id" value="<?php echo $this->ID; ?>" />
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<colgroup>
+    <col width="150px" />
+    <col />
+</colgroup>
+<tbody>
+    <tr>
+    <td>
+        <?php echo $this->t('name'); ?>
+    </td>
+    <td>
+        <?php echo $this->formText('name', $this->NAME); ?>
+    </td>
+    </tr>
+
+    <tr>
+    <td>
+        <?php echo $this->t('category_child_of'); ?><br/>
+    </td>
+    <td>
+        <?php echo $this->PARENT; ?>
+    </td>
+    </tr>
+
+    <tr>
+    <td>
+        <?php echo $this->t('description'); ?>
+    </td>
+    <td>
+        <?php echo $this->formTextarea('description', $this->DESCRIPTION); ?>
+    </td>
+    </tr>
+</tbody>
+</table>
+
+    <?php echo $this->saveButton('saveCategory'); ?>
+
+</form>
+
+<?php echo $this->portletFooter();
+

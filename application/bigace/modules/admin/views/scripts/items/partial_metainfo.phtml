@@ -1,0 +1,49 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+   echo $this->portletHeader($this->t('page_metadata'), array('closed' => true)); ?>
+        <table border="0" width="100%">
+        <tr>
+            <td width="170"><?php echo $this->t('mimetype'); ?></td>
+            <td><?php echo $this->ITEM->getMimetype(); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('created'); ?></td>
+            <td>
+                <?php
+                    echo $this->date($this->ITEM->getCreateDate())->withTime();
+                    echo ' ' . $this->t('by') . ' ';
+                    if(isset($this->CREATE_USER) && !is_null($this->CREATE_USER)) {
+                        echo $this->CREATE_USER->getName();
+                    } else {
+                        echo 'Unknown'; // FIXME add translation
+                    }
+                 ?>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('last_edited'); ?></td>
+            <td>
+                <?php
+                    echo $this->date($this->ITEM->getLastDate())->withTime();
+                    echo ' ' . $this->t('by') . ' ';
+                    if(isset($this->LAST_USER) && !is_null($this->LAST_USER)) {
+                        echo $this->LAST_USER->getName();
+                    } else {
+                        echo 'Unknown'; // FIXME add translation
+                    }
+                 ?>
+            </td>
+        </tr>
+        <tr>
+            <td><?php echo 'Link' ; // FIXME add translation ?></td>
+            <td>
+                <?php
+                    echo '<a href="'.$this->ITEM_URL.'" target="_blank">'.$this->ITEM_URL.'</a>';
+                 ?>
+            </td>
+        </tr>
+        </table>
+<?php
+    echo $this->portletFooter();

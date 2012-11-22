@@ -1,0 +1,88 @@
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id: moduladmin.css 66 2010-01-22 11:16:46Z bigace $
+*/
+body,td,input,font,th,p,button { font-family: Verdana, Arial, sans-serif; font-size:13px; margin:0px; }
+form { padding:0px; margin:0px; }
+input, select, textarea { border-width:1px;border-color:#000000;border-style:solid;vertical-align:middle; }
+input { height:20px; }
+input, select, tr, td { padding:2px; margin:2px; }
+h1 { font-size:18px; font-weight:normal; text-decoration:underline; }
+a:link, a:active { color : #404040; }
+a:visited {	color: #505050; }
+a:hover { text-decoration: underline; color : #B6B6B6; }
+img {border:0px}
+
+button.main {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0; 
+    margin: 5px 4px 5px 0; 
+    padding: 0.3em 0.7em; 
+    text-decoration:none !important; 
+    text-align: center; 
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+}
+select.portletList {
+    border:1px solid #000000;
+    height: 160px;
+}
+.menuID {
+    width:50px;
+}
+select.portlets {
+    min-width:170px;
+    margin-bottom:5px;
+    border:1px solid #000000;
+}
+form.portletColumnForm {
+    padding:0;
+    margin:0;
+}
+iframe {
+    height: 160px;
+    width: 100%;
+    border:1px solid #000000;
+    background-color:#ffffff;
+}
+
+/* Widget admin main windows */
+#edit { padding:3px; margin:0px; }
+#help {
+    background:url(../admin/manual.png) 0 0 no-repeat; 
+    padding-left: 18px; position:absolute; top: 6px; right:6px; 
+    text-decoration:none;
+}
+
+/* Widget detail iframe */
+#details {
+    font-family: Arial; font-size: 12px;
+    line-height: 16px; font-weight: normal;
+}
+#details p, #details td, #details h1, #details th {
+    font-family: Arial; font-size: 12px;
+    line-height: 16px; font-weight: normal;
+}
+#details p, #details h1 { margin:0; padding:0; }
+#details form { margin:0; padding: 3px 3px 3px 3px; }
+#details tr, #details td {margin:0px;padding:0px;}
+#details input, #details select, #details button {
+    margin:0px;padding:0px;font-size: 12px;
+}
+#details button{margin:0px;padding:0px;line-height:10px;}
+#details h1 {
+    margin-bottom: 4px; background-color:#eee; font-weight: bold;
+    padding:3px 0px 3px 6px; font-size: 14px; line-height: 18px;
+}
+#details th {
+    font-weight: bold; text-decoration: underline; text-align: left; 
+}
+#details input, #details select {
+    font-family: Arial; height: 20px; padding:0px; margin:0;
+    border:1px solid #ccc;padding-top: 1px;
+}
+#details p.info { margin:5px 0px 0px 10px; font-weight: bold; }
+

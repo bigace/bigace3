@@ -1,0 +1,6 @@
+#userlisting li {list-style-type:none;font-size: 14px; font-weight: bold; margin-bottom:6px;}
+
+#userdetails span {display:block; margin-bottom: 10px;}
+#userdetails span b {display:block}
+#userdetails img.avatar {float:right;padding:2px; border:1px solid #ddd; margin:0 10px 0 20px;}
+

@@ -1,0 +1,165 @@
+<?php
+/**
+ * BIGACE - a PHP and MySQL based Web CMS.
+ * Copyright (C) Kevin Papst.
+ * 
+ * BIGACE is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * BIGACE is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation, 
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * 
+ * For further information visit {@link http://www.bigace.de http://www.bigace.de}.
+ *
+ * @version $Id$
+ * @author Kevin Papst 
+ * @package bigace.addon.filemanager
+ */
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <script type="text/javascript" src="<?php echo BIGACE_HOME; ?>system/javascript/bigace_ajax.js"></script>
+        <script type="text/javascript">
+        var oIcons = new Object() ;
+        oIcons.AvailableIcons = new Object() ;
+        oIcons.AvailableIconsArray = [ 
+            'ai','avi','bmp','cs','dll','doc','exe','fla','gif','htm','html','jpeg','jpg','js',
+            'mdb','mp3','pdf','ppt','rdp','swf','swt','txt','vsd','xls','xml','zip' ] ;
+
+        for ( var i = 0 ; i < oIcons.AvailableIconsArray.length ; i++ ) {
+            oIcons.AvailableIcons[ oIcons.AvailableIconsArray[i] ] = true ;
+        }
+
+        oIcons.GetIcon = function( fileName )
+        {
+            var sExtension = fileName.substr( fileName.lastIndexOf('.') + 1 ).toLowerCase() ;
+            //  alert(sExtension);
+
+            if ( this.AvailableIcons[ sExtension ] == true )
+                return sExtension ;
+            else
+                return 'default.icon' ;
+        }
+
+        function GetUrlParam( paramName )
+        {
+            var oRegex = new RegExp( '[\?&]' + paramName + '=([^&]+)', 'i' ) ;
+            var oMatch = oRegex.exec( window.top.location.search ) ;
+
+            if ( oMatch && oMatch.length > 1 )
+            return oMatch[1] ;
+            else
+            return '' ;
+        }
+
+        var sActiveItem = {
+            itemID          : null,
+            languageID      : null,
+            name            : '',
+            filename        : '',
+            itemname        : '',
+            url             : '',
+            setItemname     : function (name) { this.itemname = name; },
+            getItemname     : function()    { return this.itemname; },		    
+            setFilename     : function (name) { this.filename = name; },
+            getFilename     : function()    { return this.filename; },
+            setItemID       : function (id) { this.itemID = id; },
+            getItemID       : function()    { return this.itemID; },
+            setLanguageID   : function (id) { this.languageID = id; },
+            getLanguageID   : function()    { return this.languageID; },
+            setURL          : function (url) { this.url = url; },
+            getURL          : function()    { return this.url; }
+        }
+
+        function chooseAndClose(itemid,language,url,itemname,filename) 
+        {
+            myFunc = '<?php echo $this->JS_FUNCTION_URL; ?>';
+            myParam = '<?php echo $this->JS_FUNCTION_PARAM; ?>';
+            
+            var passParams = new Array();
+            passParams["id"] = itemid;
+            passParams["language"] = language;
+            passParams["name"] = itemname;
+            passParams["url"] = encodeURI(url);
+            passParams["file"] = filename;
+            
+            if(myParam.length > 0)
+            {
+                if(passParams[myParam] == "undefined")
+                {
+                    alert("You supplied an invalid parameter to return: " + myParam);
+                }
+                else
+                {
+                    passParams2 = new Array();
+                    passParams2[myParam] = passParams[myParam];
+                    passParams = passParams2;
+                }
+            }
+
+<?php
+    if(isset($this->ADDITIONAL_PARAMS) && count($this->ADDITIONAL_PARAMS) > 0) {
+        foreach($this->ADDITIONAL_PARAMS as $k => $v) {
+            echo '            ';
+            echo 'passParams["'.$k.'"] = "'.$v.'";'."\n";
+        }
+    }
+?>
+
+            if (typeof(window.top.opener.<?php echo $this->JS_FUNCTION_URL; ?>) == "undefined")
+            {
+                alert('<?php echo $this->t('undefined_js_function'); ?>: "<?php echo $this->JS_FUNCTION_URL; ?>"');
+            }
+            else
+            {
+                finalParams = new Array();
+
+                for(x in passParams) {
+                    finalParams.push(passParams[x]);
+                }
+
+                window.top.opener.<?php echo $this->JS_FUNCTION_URL; ?>.apply(this, finalParams);
+                window.top.close();
+                window.top.opener.focus();
+            }
+        }
+
+        function acceptItem() 
+        {
+            if(sActiveItem.getURL() == null || sActiveItem.getURL() == '') {
+                alert('<?php echo $this->t('no_image_selected'); ?>.');
+                return false;
+            }
+            chooseAndClose(sActiveItem.getItemID(), sActiveItem.getLanguageID(), sActiveItem.getURL(), sActiveItem.getItemname(), sActiveItem.getFilename());
+        }
+
+        function getExtension(mimetype)
+        {
+            mimetype = mimetype.toLowerCase();
+	        return oIcons.GetIcon("."+mimetype);
+        }
+
+        function setSelectedItem(itemtype, itemid, languageid, filename, itemUrl, mimetype, itemname)
+        {
+            sActiveItem.setItemID(itemid);
+            sActiveItem.setLanguageID(languageid);
+            sActiveItem.setFilename(filename);
+            sActiveItem.setItemname(itemname);
+            sActiveItem.setURL(itemUrl);
+        }
+        </script>
+    </head>
+    <frameset cols="150,*" framespacing="0" style="border-color:#f1f1e3" bordercolor="#f1f1e3" frameborder="yes">
+            <frame name="folders" src="<?php echo $this->FOLDER_URL; ?>" scrolling="auto" frameborder="yes">
+            <frame name="main" src="<?php echo $this->CONTENT_URL; ?>" scrolling="auto" frameborder="1" border="1">
+    </frameset>
+</html>

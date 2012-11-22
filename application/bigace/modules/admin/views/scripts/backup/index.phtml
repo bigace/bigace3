@@ -1,0 +1,35 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+   
+if(isset($this->INFO)) 
+    echo $this->message($this->INFO, 'info');
+    
+?>
+
+<form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+
+<fieldset>
+    <legend><?php echo $this->t('dump_title'); ?></legend>
+    <label>
+        <input type="checkbox" name="comment" checked="checked" value="1" /><?php echo $this->t('dump_comment'); ?>
+    </label>    
+    <label>
+        <input type="checkbox" name="importable" checked="checked" value="1" /><?php echo $this->t('dump_importable'); ?>
+    </label>    
+</fieldset>
+
+<fieldset>
+    <legend><?php echo $this->t('files_title'); ?></legend>
+    <label>
+        <input type="checkbox" name="files" value="1" /><?php echo $this->t('files_include'); ?>
+    </label>
+    <p><?php echo $this->t('files_memory'); ?></p>
+</fieldset>
+
+<?php echo $this->formButton('startExport', $this->t('create'), array('type' => 'submit')); ?>
+
+</form>
+

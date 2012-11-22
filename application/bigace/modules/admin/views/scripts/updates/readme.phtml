@@ -1,0 +1,34 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst 
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+echo $this->backlink($this->BACK_URL);
+?>
+<h2>&gt;&gt; <?php echo $this->RM_TITLE; ?> &lt;&lt;</h2>
+<p>
+    <b><u><?php echo $this->t('update_attention'); ?></u></b>
+    <br>
+    <?php echo $this->t('update_read_carefully'); ?>
+</p>
+<br />
+<?php 
+if (isset($this->RM_TEXT)) { 
+    ?>
+    <div style="width:100%;height:auto;border:1px solid #000000;height:300px;overflow:auto;">
+        <div style="font-family:Fixedsys,Courier; padding:10px;">
+        <?php
+            echo nl2br($this->RM_TEXT);
+        ?>
+        </div>
+    </div>
+    <?php 
+} else {
+    echo '<b>'.$this->t('error_update_no_readme').'</b>';
+} 
+?>
+<br />
+<br />
+<form action="<?php echo $this->INSTALL_ACTION; ?>" method="post">
+<div align="right"><?php echo $this->formButton('exec', $this->t('update_execute'), array('type' => 'submit')); ?></div>
+</form>

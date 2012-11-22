@@ -1,0 +1,69 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/* @var $baseUrl string */
+$baseUrl = $this->baseUrl().'/';
+
+/* @var $entries array */
+$entries = $this->entries;
+
+?><!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title><?php echo $this->t('object_infos'); ?></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="generator" content="BIGACE <?php echo Bigace_Core::VERSION; ?>">
+        <link rel="stylesheet" href="<?php echo BIGACE_HOME; ?>system/css/iteminfo.css" type="text/css">
+        <script type="text/javascript" src="<?php echo BIGACE_URL_ADDON; ?>jquery/jquery.js"></script>
+        <script type="text/javascript" src="<?php echo BIGACE_URL_ADDON; ?>jquery/tablesorter/jquery.tablesorter.js"></script>
+    </head>
+    <body style="margin:10px;">
+        <h1><?php echo $this->t('object_infos'); ?></h1>
+        <table class="tablesorter" cellspacing="0" width="100%">
+            <col />
+            <col />
+            <tbody>
+            <?php
+            foreach ($entries as $rowName => $rowValue) {
+                ?>
+                <tr>
+                    <td valign="top"><?php echo $rowName; ?></td>
+                    <td><?php echo $rowValue; ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+
+        <script type="text/javascript">
+        <!--
+        $(document).ready( function() {
+               $(".tablesorter").tablesorter({ widgets: ['zebra'], headers: { 0: {sorter: false}, 1: {sorter: false} } });
+            }
+        );
+
+        document.write('<div align="center"><button class="closer" onclick="self.close()"><?php echo $this->t('close'); ?></button></div>');
+        // -->
+        </script>
+    </body>
+</html>

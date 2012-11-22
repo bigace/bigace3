@@ -1,0 +1,34 @@
+<?php
+/* 	@license http://opensource.org/licenses/gpl-license.php GNU Public License
+	@author Kevin Papst
+	@copyright Copyright (C) Kevin Papst
+	@version $Id$ */
+
+$this->t()->load('user_attributes');
+$this->headLink()->appendStylesheet($this->directory('public').'system/css/userpages.css');
+
+echo '<ul id="userlisting">';
+
+// ---------- sort names by users last name ----------
+$allUser = array();
+foreach ($this->allUser as $userData) {
+    $allUser[$userData['attributes']['lastname']] = $userData;
+}
+ksort($allUser, SORT_STRING);
+
+// ---------- show list of users with email addresses ----------
+foreach ($allUser as $lastname => $userData) {
+    $user = $userData['user'];
+    $attributes = $userData['attributes'];
+    $hideBioPage = $userData['hidebio'];
+    $url = $this->userProfileLink($user, $attributes);
+
+    if (!$hideBioPage) {
+        echo '<li>';
+            echo '<a href="'.$url.'" class="username">';
+            echo $attributes['lastname'].', ' . $attributes['firstname'].'</a>';
+        echo '</li>';
+    }
+
+}
+echo '</ul>';

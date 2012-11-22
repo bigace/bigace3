@@ -1,0 +1,26 @@
+<?php /* 
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+   
+*/
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript">
+    <!--
+    <?php if($this->isError) { ?>
+        parent.showEditorErrorText("<?php echo $this->feedback; ?>", null);
+    <?php } else { ?>
+        parent.showEditorStatusText("<?php echo $this->feedback; ?>", 2000);
+    <?php } ?>
+
+    <?php if($this->close) { ?>
+        parent.doClose();
+    <?php } ?>
+    // -->
+    </script>
+</head>
+<body></body>
+</html>

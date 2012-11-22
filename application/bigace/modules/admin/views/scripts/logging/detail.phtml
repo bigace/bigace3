@@ -1,0 +1,33 @@
+<?php echo $this->backlink($this->BACK_LINK); ?>
+
+<form>
+    <!-- label><?php echo $this->t('id'); ?></label>
+    <span><?php echo $this->ID; ?></p -->
+
+    <label><?php echo $this->t('namespace'); ?></label>
+    <span><?php echo $this->NAMESPACE; ?></span>
+
+    <label><?php echo $this->t('date'); ?></label>
+    <span><?php echo $this->TIMESTAMP; ?></span>
+
+    <label><?php echo $this->t('level'); ?></label>
+    <span><?php echo $this->LEVEL; ?></span>
+
+    <label><?php echo $this->t('file'); ?></label>
+    <td valign="top"><?php echo $this->FILE; ?></span>
+
+    <label><?php echo $this->t('line'); ?></label>
+    <span><?php echo $this->LINE; ?></span>
+
+    <!-- label><?php echo $this->t('user'); ?></label>
+    <span><?php echo $this->USER_ID; ?></p -->
+
+    <label><?php echo $this->t('message'); ?></label>
+    <span><?php echo $this->MESSAGE; ?></span>
+
+    <label><?php echo $this->t('stacktrace'); ?></label>
+    <div class="logentry"><pre><?php echo $this->STACKTRACE; ?></pre></div>
+</form>
+
+<?php echo $this->backlink($this->BACK_LINK); ?>
+

@@ -1,0 +1,236 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR) && count($this->ERROR) > 0) {
+    foreach ($this->ERROR as $msg) {
+        echo $this->message()->error($msg);
+    }
+}
+
+if (isset($this->INFO) && count($this->INFO) > 0) {
+    foreach ($this->INFO as $msg) {
+        echo $this->message()->info($msg);
+    }
+}
+
+if (isset($this->SUCCESS)) {
+    echo $this->message()->success(
+        sprintf($this->t('update_installed'), $this->SUCCESS->getTitle(), $this->SUCCESS->getVersion())
+    );
+}
+
+$modTab = (
+    (isset($this->EXT_AVAILABLE) && count($this->EXT_AVAILABLE) > 0 ) ||
+    (isset($this->EXT_INSTALLED) && count($this->EXT_INSTALLED) > 0 ) ||
+    (isset($this->EXT_UPDATEABLE) && count($this->EXT_UPDATEABLE) > 0)
+);
+
+// Tab-Panes
+if ($modTab) {
+    $this->tabpane()->add($this->t('general_legend'));
+}
+if($this->allowUploads) {
+    $this->tabpane()->add($this->t('upload_legend'), ($this->ACTIVE_TAB == "plugins"));
+}
+
+$this->tabpane()->add($this->t('find_legend'), ($this->ACTIVE_TAB == "remote"));
+
+echo $this->tabpane()->begin();
+?>
+
+<?php if ($modTab) { ?>
+    <?php echo $this->tabpane()->next(); ?>
+
+
+    <?php if (isset($this->EXT_UPDATEABLE) && count($this->EXT_UPDATEABLE) > 0) { ?>
+        <?php echo $this->portletHeader($this->t('updateable_extensions'), array('full' => true)); ?>
+        <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+        <col width="150px" />
+        <col width="90px"  />
+        <col />
+        <col width="130px" />
+        <thead>
+            <tr>
+                <th><?php echo $this->t('name'); ?></th>
+                <th class="centered"><?php echo $this->t('version'); ?></th>
+                <th><?php echo $this->t('description'); ?></th>
+                <th class="centered"><?php echo $this->t('action'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        /* @var $module Bigace_Extension_Package */
+        foreach($this->EXT_UPDATEABLE as $module) { ?>
+            <tr class="important">
+                <td><?php echo $module->getTitle(); ?></td>
+                <td class="centered"><?php echo $module->getVersion(); ?></td>
+                <td><?php echo $module->getDescription(); ?></td>
+                <td class="centered">
+                    <form action="<?php echo $this->INSTALL_URL; ?>" method="post">
+                        <input type="hidden" name="extension" value="<?php echo urlencode($module->getId()); ?>" />
+                        <?php echo $this->formButton('installExtension', $this->t('update_install'), array('type' => 'submit')); ?>
+                    </form>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+        </table>
+        <?php echo $this->portletFooter();  ?>
+    <?php } ?>
+
+    <?php if (isset($this->EXT_AVAILABLE) && count($this->EXT_AVAILABLE) > 0) { ?>
+        <?php echo $this->portletHeader($this->t('available_extensions'), array('full' => true)); ?>
+        <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+        <col width="150px" />
+        <col width="90px"  />
+        <col />
+        <col width="130px" />
+        <thead>
+            <tr>
+                <th><?php echo $this->t('name'); ?></th>
+                <th class="centered"><?php echo $this->t('version'); ?></th>
+                <th><?php echo $this->t('description'); ?></th>
+                <th class="centered"><?php echo $this->t('action'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        /* @var $module Bigace_Extension_Package */
+        foreach($this->EXT_AVAILABLE as $module) { ?>
+            <tr>
+                <td><?php echo $module->getTitle(); ?></td>
+                <td class="centered"><?php echo $module->getVersion(); ?></td>
+                <td><?php echo $module->getDescription(); ?></td>
+                <td class="centered">
+                    <form action="<?php echo $this->INSTALL_URL; ?>" method="post">
+                        <input type="hidden" name="extension" value="<?php echo urlencode($module->getId()); ?>" />
+                        <?php echo $this->formButton('installExtension', $this->t('update_install'), array('type' => 'submit')); ?>
+                    </form>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+        </table>
+        <?php echo $this->portletFooter();  ?>
+    <?php } ?>
+
+
+    <?php if (isset($this->EXT_INSTALLED) && count($this->EXT_INSTALLED) > 0) { ?>
+        <?php echo $this->portletHeader($this->t('installed_extensions'), array('full' => true)); ?>
+        <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+        <col width="150px" />
+        <col width="90px"  />
+        <col />
+        <?php if ($this->allowReinstall) { ?>
+        <col width="130px" />
+        <?php } ?>
+        <thead>
+            <tr>
+                <th><?php echo $this->t('name'); ?></th>
+                <th class="centered"><?php echo $this->t('version'); ?></th>
+                <th><?php echo $this->t('description'); ?></th>
+                <?php if ($this->allowReinstall) { ?>
+                <th class="centered"><?php echo $this->t('action'); ?></th>
+                <?php } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        /* @var $module Bigace_Extension_Package */
+        foreach($this->EXT_INSTALLED as $module) { ?>
+            <tr>
+                <td><?php echo $module->getTitle(); ?></td>
+                <td class="centered"><?php echo $module->getVersion(); ?></td>
+                <td><?php echo $module->getDescription(); ?></td>
+                <?php if ($this->allowReinstall) { ?>
+                <td class="centered">
+                    <form action="<?php echo $this->INSTALL_URL; ?>" method="post">
+                        <input type="hidden" name="extension" value="<?php echo urlencode($module->getId()); ?>" />
+                        <?php echo $this->formButton('installExtension', $this->t('update_install'), array('type' => 'submit')); ?>
+                    </form>
+                </td>
+                <?php } ?>
+            </tr>
+        <?php } ?>
+        </tbody>
+        </table>
+        <?php echo $this->portletFooter();  ?>
+    <?php } ?>
+<?php } ?>
+
+
+<?php if ($this->allowUploads) { ?>
+    <?php echo $this->tabpane()->next(); ?>
+    <form method="post" action="<?php echo $this->UPLOAD_URL; ?>" enctype="multipart/form-data">
+        <p>
+            <b><?php echo $this->t('upload_info'); ?></b>
+            <br /><br />
+            <?php echo $this->t('upload_attention'); ?>
+        </p>
+        <input type="file" name="newUpdateZip" size="50" />
+        <?php echo $this->formButton('uploadExtension', $this->t('upload_button'), array('type' => 'submit')); ?>
+    </form>
+<?php } ?>
+
+
+<?php echo $this->tabpane()->next(); ?>
+<p><?php echo $this->t('find_howto'); ?></p>
+<?php if(count($this->REMOTE_EXTENSIONS) == 0) { ?>
+    <form action="<?php echo $this->SEARCH_URL; ?>" method="post">
+      <?php echo $this->formButton('searchRemote', $this->t('find_search'), array('type' => 'submit')); ?>
+    </form>
+<?php } else { ?>
+    <?php echo $this->portletHeader($this->t('all_extensions'), array('full' => true)); ?>
+    <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+        <col width="150px" />
+        <col />
+        <col width="80px" />
+        <thead>
+            <tr>
+                <th><?php echo $this->t('name'); ?></th>
+                <th><?php echo $this->t('description'); ?></th>
+                <th><?php echo $this->t('find_download_head'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            foreach ($this->REMOTE_EXTENSIONS as $extension)
+            {
+              ?>
+              <tr>
+                <td><a href="<?php echo $extension->getHomepage(); ?>" class="tooltip" target="_blank" title="<?php echo $this->t('find_web_link'); ?>"><?php echo $extension->getName(); ?></a></td>
+                <td><?php echo $extension->getDescription(); ?></td>
+                <td class="centered">
+                    <?php if($extension->isCompatible() && $extension->getDownload() !== null) { ?>
+                    <a href="<?php echo $extension->getDownload(); ?>" class="tooltip" target="_blank" title="<?php echo $this->t('find_download_link'); ?>"><img border="0" src="<?php echo $this->STYLE; ?>download.png" alt="<?php echo $this->t('find_download_link'); ?>"></a>
+                    <?php } else { ?>
+                    <a href="#nodownload" class="info"><img src="<?php echo $this->STYLE; ?>info.png" /></a>
+                    <?php } ?>
+                </td>
+              </tr>
+              <?php
+            }
+        ?>
+        </tbody>
+    </table>
+    <?php echo $this->portletFooter();  ?>
+    <p id="nodownload">
+        <img src="<?php echo $this->STYLE; ?>info.png" />
+        <?php echo $this->t('find_howto2'); ?>
+    </p>
+<?php } ?>
+
+<?php if(count($this->REMOTE_EXTENSIONS) > 0) { ?>
+    <form action="<?php echo $this->SEARCH_URL; ?>" method="post">
+        <p><?php echo $this->t('find_refresh'); ?>
+        <?php echo $this->formButton('refreshRemote', $this->t('find_search'), array('type' => 'submit')); ?>
+        </p>
+    </form>
+<?php } ?>
+
+<p><?php echo $this->t('find_wiki'); ?> <a href="http://plugins.bigace.org/" target="_blank">http://plugins.bigace.org/</a>.</p>
+
+<?php echo $this->tabpane()->end(); ?>

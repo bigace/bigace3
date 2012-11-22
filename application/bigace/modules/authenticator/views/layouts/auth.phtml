@@ -1,0 +1,46 @@
+<?php 
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License 
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ * 
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/**
+ *  Authentication layout. 
+ */
+
+?><!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta name="generator" content="BIGACE <?php echo Bigace_Core::VERSION; ?>">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <link rel="stylesheet" href="<?php echo $this->AUTH_DIR; ?>css/login.css" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title><?php echo $this->TITLE; ?></title>
+</head>
+<body>
+    <p id="backtosite"><a href="<?php echo $this->link(''); ?>">&laquo; <?php 
+        echo $this->t("login_back") . ' ' . $this->sitename(); ?></a></p>
+        
+    <div id="login">
+    <?php 
+        echo $this->layout()->content;
+    ?>
+    </div>
+</body>
+</html>

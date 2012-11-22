@@ -1,0 +1,37 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+  echo $this->portletHeader(sprintf($this->t('welcome_title'), $this->NAME)); ?>
+  
+  <div id="userWelcome">
+  <?php if (isset($this->IMAGE)) { ?>
+      <?php if (isset($this->PROFILE_PAGE)) { ?>
+        <a href="<?php echo $this->PROFILE_PAGE; ?>">
+          <img src="<?php echo $this->IMAGE; ?>" title="" alt="" align="right" style="margin-bottom:10px;" />
+        </a>
+      <?php } else { ?>
+          <img src="<?php echo $this->IMAGE; ?>" title="" alt="" align="right" style="margin-bottom:10px;" />
+      <?php } ?>
+  <?php } ?>
+  
+  <p>
+    <?php echo sprintf($this->t('welcome_user'), $this->NAME); ?>
+  </p>
+  
+  <?php if (isset($this->PROFILE_LINK)) { ?>
+      <p>
+      <?php echo sprintf($this->t('welcome_change'), $this->PROFILE_LINK); ?>
+      </p>
+  <?php } ?>
+
+  <?php if (isset($this->PROFILE_PAGE)) { ?>
+    <p>
+        <?php echo sprintf($this->t('welcome_profile'), $this->PROFILE_PAGE, $this->NAME); ?>
+    </p>
+  <?php } ?>
+  
+  </div>
+<?php echo $this->portletFooter(); ?>

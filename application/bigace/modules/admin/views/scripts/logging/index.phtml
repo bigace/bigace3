@@ -1,0 +1,119 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+
+if(isset($this->LOG_ENTRIES))
+{
+?>   
+<script type="text/javascript">
+<!--
+	function deleteAll() {
+	    if(confirm('<?php echo $this->t('confirmdeleteall'); ?>')) {
+	        $('#truncDelete').submit();
+	    }
+	    return false;
+	}
+
+    function changePage(amount,from) {
+       $('#startfrom').val(from);
+       $('#logform').submit();
+       return false;
+    }
+// -->
+</script>
+
+<form id="logform" method="post" action="<?php echo $this->LISTING_URL;?>">
+<input id="startfrom" type="hidden" name="start" value="<?php echo $this->START_ID; ?>">
+<fieldset>
+    <legend><?php echo $this->t('legend'); ?></legend>
+    <table border="0" cellpadding="0" cellspacing="5">
+        <col width="130"/>
+        <col />
+        <tr>
+            <td><label><?php echo $this->t('total'); ?></label></td>
+            <td><?php echo $this->TOTAL; ?></td>
+        </tr>
+        <tr>
+            <td><label for="amount"><?php echo $this->t('amount'); ?></label></td>
+            <td><?php echo $this->ENTRYS_PER_PAGE; ?></td>
+        </tr>
+        <tr>
+            <td><label for="namespace"><?php echo $this->t('namespace'); ?></label></td>
+            <td><?php echo $this->NAMESPACE_SELECT; ?></td>
+        </tr>
+        <tr>
+            <td><label for="level"><?php echo $this->t('filterlevel'); ?></label></td>
+            <td>
+                <?php echo $this->LEVEL_SELECT; ?> 
+                <?php echo $this->formButton('showLogs', $this->t('show'), array('type' => 'submit')); ?>
+            </td>            
+        </tr>
+        <tr>
+            <td valign="top"><label><?php echo $this->t('pages'); ?></label></td>
+            <td>
+                <div class="pagination">
+                <?php
+                    if ($this->TOTAL > $this->AMOUNT_PER_PAGE) {
+                        echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml');
+                    }                
+                ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+<?php 
+    echo $this->portletHeader($this->t('legend'), array('full' => true)); ?>
+    <form style="display:inline" id="bulk" action="<?php echo $this->BULK_DELETE; ?>" method="post">
+      <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+        <thead>
+          <tr>
+            <th width="25" scope="col"><input type="checkbox" class="bulkcheck" /></th>
+		    <th><?php echo $this->t('message'); ?></th>
+		    <th width="80"><?php echo $this->t('namespace'); ?></th>
+		    <th width="100"><?php echo $this->t('level'); ?></th>
+		    <th width="70"><?php echo $this->t('date'); ?></th>
+		    <th align="center" width="50"><?php echo $this->t('action'); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php foreach($this->LOG_ENTRIES as $theRow) : ?>
+          <tr>
+            <td width="25"><label>
+                <input type="checkbox" name="<?php echo $theRow['BULK_PARAMETER']; ?>" value="<?php echo $theRow['ID']; ?>" />
+            </label></td>
+            <td><a href="<?php echo $theRow['INFO_URL']; ?>"><?php echo $theRow['MESSAGE']; ?></a></td>
+            <td><?php echo $theRow['NAMESPACE']; ?></td>
+            <td valign="top"><?php echo $theRow['LEVEL']; ?></td>
+            <td><?php echo $theRow['TIMESTAMP']; ?></td>
+            <td align="center" valign="middle">
+                <?php echo $this->deleteLink($theRow['DELETE_URL']); ?>
+            </td>
+          </tr>
+        <tr>
+        <?php endforeach; ?>
+          <tr class="footer">
+            <td colspan="2">
+                <a href="#" onclick="return deleteAll();" class="delete_inline"><?php echo $this->t('deleteall'); ?></a>
+                <a href="#" onclick="$('#bulk').submit(); return false;" class="delete_inline"><?php echo $this->t('deleteselected'); ?></a>
+            </td>
+            <td colspan="4" align="right">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <?php echo $this->portletFooter(); ?>
+    </form>
+
+    <form id="truncDelete" style="display:inline" action="<?php echo $this->DELETE_ALL; ?>" method="post">
+    <input type="hidden" name="action" value="deleteAll">
+    </form>
+    <?php
+}
+?>

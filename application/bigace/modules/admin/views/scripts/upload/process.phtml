@@ -1,0 +1,39 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+if (isset($this->ERROR) && count($this->ERROR) > 0) {
+    foreach ($this->ERROR as $msg) {
+        echo $this->message($msg, 'error');
+    }
+}
+    
+echo $this->backlink( $this->BACK_URL );
+
+echo $this->portletHeader( $this->t('upload_success'), array('full' => true) ); ?>
+
+<table class="nicetable" width="100%">
+<colgroup>
+    <col width="50" />
+    <col />
+</colgroup>
+<thead>
+    <tr>
+        <th><?php echo $this->t('id'); ?></th>
+        <th><?php echo $this->t('name'); ?></th>
+    </tr>
+</thead>
+<tbody>
+    <?php foreach($this->RESULTS as $theRow) { ?>
+    <tr>
+        <td><?php echo $theRow['ID']; ?></td>
+        <td><a href="<?php echo $theRow['LINK']; ?>"><?php echo $theRow['NAME']; ?></a></td>
+    </tr>
+    <?php } ?>
+</tbody>
+</table>
+
+<?php echo $this->portletFooter(); ?>
+

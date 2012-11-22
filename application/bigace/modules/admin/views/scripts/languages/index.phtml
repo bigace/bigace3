@@ -1,0 +1,72 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+   
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+
+?>
+<?php echo $this->portletHeader($this->t('language'), array('full' => true)); ?>
+<table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+<colgroup>
+    <col />
+    <col width="150" />
+    <col width="150" />
+    <col width="220" />
+</colgroup>
+<thead>
+    <tr>
+        <th><?php echo $this->t('name'); ?></th>
+        <th><?php echo $this->t('lang_locale'); ?></th>
+        <th><?php echo $this->t('lang_charset'); ?></th>
+        <th align="center"><?php echo $this->t('lang_translated'); ?></th>
+    </tr>
+</thead>
+
+<tbody>
+    <?php 
+    
+    
+    foreach ($this->LANGUAGES AS $theRow) { 
+    ?>
+    <tr>
+        <td>
+            <?php 
+                echo $this->localeName($theRow)
+                          ->withIcon(true)
+                          ->withOwnName(true)
+                          ->setDisplayLanguage($this->LANGUAGE);
+            ?>
+        </td>
+        <td>
+            <?php echo $theRow->getLocale(); ?>
+        </td>
+        <td>
+            UTF-8
+        </td>
+        <td align="center">
+            <img alt="" src="<?php 
+            echo $this->STYLE; 
+            if($theRow->hasTranslations())
+                echo 'active.png';
+            else
+                echo 'inactive.png';
+            ?>">
+        </td>
+    </tr>
+    <?php } ?>
+    </tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+
+<?php if (isset($this->AVAILABLE) && count($this->AVAILABLE) > 0) { ?>
+<fieldset>
+    <legend><?php echo $this->t('lang_add'); ?></legend>
+    <form action="<?php echo $this->addAction; ?>" method="post">
+    <?php echo $this->formSelect('newLocale', '', null, $this->AVAILABLE); ?>
+    <?php echo $this->formButton('createLoc', $this->t('add'), array('type' => 'submit')); ?>
+    </form>
+</fieldset>
+<?php } ?>

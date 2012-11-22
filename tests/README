@@ -1,0 +1,10 @@
+
+Setup your test database
+=========================
+
+CREATE USER 'bigace_unit_test'@'localhost' IDENTIFIED BY 'unitTests';
+GRANT USAGE ON * . * TO 'bigace_unit_test'@'localhost' IDENTIFIED BY 'unitTests' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+CREATE DATABASE IF NOT EXISTS `bigace_unit_test` ;
+GRANT ALL PRIVILEGES ON `bigace_unit_test` . * TO 'bigace_unit_test'@'localhost';
+
+

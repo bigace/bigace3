@@ -1,0 +1,19 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+?>
+
+<?php echo $this->portletHeader($this->t('menu_search')); ?>
+      <form method="post" action="<?php echo $this->adminUrl('search', 'index'); ?>">
+	      <?php
+	      if (isset($this->TYPE)) {
+	        echo '<input type="hidden" name="type" value="'.$this->TYPE.'" />';
+	      }
+	      ?>
+        <?php echo $this->formText("query"); ?>
+        <?php echo $this->formButton('searchBtn', $this->t('menu_search'), array('type' => 'submit')); ?>
+      </form>
+<?php echo $this->portletFooter(); ?>

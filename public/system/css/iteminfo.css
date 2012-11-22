@@ -1,0 +1,29 @@
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id: moduladmin.css 66 2010-01-22 11:16:46Z bigace $
+*/
+body,td,input,font,th,p,button { font-family: Verdana, Arial, sans-serif; font-size:13px; margin:0px; }
+body { padding:3px; margin:0px; }
+form { padding:0px; margin:0px; }
+input, select, textarea { border-width:1px;border-color:#000000;border-style:solid;vertical-align:middle; }
+input { height:20px; }
+input, select, tr, td { padding:2px; margin:2px; }
+h1 { font-size:18px; font-weight:bold; text-decoration:none; background-color: #eee; padding: 2px 2px 2px 10px; }
+a:link, a:active { color : #404040; }
+a:visited {	color: #505050; }
+a:hover { text-decoration: underline; color : #B6B6B6; }
+
+button.closer {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0; 
+    margin: 20px 4px 5px 0; 
+    padding: .4em 1em; 
+    text-decoration:none !important; 
+    text-align: center; 
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+}
+

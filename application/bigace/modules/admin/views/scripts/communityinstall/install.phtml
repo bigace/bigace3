@@ -1,0 +1,22 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+
+echo $this->backlink($this->BACK_URL);
+
+if (isset($this->ERROR) && count($this->ERROR) > 0) {
+    foreach ($this->ERROR as $err) {
+        echo $this->message($err, 'error');
+    }
+}
+
+if (isset($this->INFO) && count($this->INFO) > 0) {
+    foreach ($this->INFO as $inf) {
+        echo $this->message($inf, 'success');
+    }
+}
+
+echo $this->linkButton($this->t('preview'), $this->PREVIEW, array('target' => '_blank'));

@@ -1,0 +1,144 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if(isset($this->ERROR))
+    echo $this->message($this->ERROR, 'error');
+
+if(isset($this->INFO))
+    echo $this->message($this->INFO, 'info');
+
+if(isset($this->SUCCESS))
+    echo $this->message($this->SUCCESS, 'success');
+
+?>
+<form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+<input type="hidden" name="nextAdmin" value="<?php echo $this->NEXT_ADMIN; ?>">
+
+    <?php echo $this->portletHeader($this->title); ?>
+    <table border="0" cellspacing="0">
+    <col width="170"/>
+    <col />
+        <tr>
+            <td><?php echo $this->t('language'); ?></td>
+            <td><?php echo $this->NEW_LANGUAGE; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('submenu_of'); ?></td>
+            <td>
+                <?php echo $this->parentChooser('data[parentid]', '', array())->setParent($this->PARENT); ?>
+            </td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('name'); ?></td>
+            <td>
+            <?php echo $this->formText('data[name]', $this->textInput($this->NEW_NAME), array('size'=>"35", 'maxlength'=>"250", 'tabindex'=>"1", 'id' => 'menuName')); ?>
+            </td>
+        </tr>
+    <?php if($this->supportUniqueName) { ?>
+        <tr>
+            <td><?php echo $this->t('unique_name'); ?></td>
+            <td>
+            <?php echo $this->formText('data[unique_name]', $this->textInput($this->NEW_UNIQUE_NAME), array('size'=>"35", 'maxlength'=>"250")); ?>
+            </td>
+        </tr>
+    <?php } ?>
+        <tr>
+            <td><?php echo $this->t('description'); ?></td>
+            <td>
+            <?php echo $this->formTextarea('data[description]', $this->textInput($this->NEW_DESCRIPTION)); ?>
+            </td>
+        </tr>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+
+    <?php
+    echo $this->portletHeader($this->t('content_page'), array('full' => true));
+
+    echo $this->editor(
+        "dataContent",
+        $this->CONTENT,
+        array('width' => '100%', 'height' => '300px', 'defaultLanguage' => $this->LANGUAGE)
+    );
+
+    echo $this->portletFooter();
+    ?>
+
+    <?php echo $this->portletHeader($this->t('properties'), array('closed' => true)); ?>
+    <table border="0" cellspacing="0">
+    <col width="170"/>
+    <col />
+        <tr>
+            <td><?php echo $this->t('pagetype'); ?></td>
+            <td><?php echo $this->PAGETYPE_SELECT; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('layout'); ?></td>
+            <td><?php echo $this->LAYOUT_SELECT; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('modul'); ?></td>
+            <td><?php echo $this->MODUL_SELECT; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('display_state'); ?></td>
+            <td><?php echo $this->NEW_STATE; ?></td>
+        </tr>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+
+    <?php echo $this->portletHeader($this->t('properties_meta'), array('closed' => true)); ?>
+    <table border="0" cellspacing="0">
+    <col width="170"/>
+    <col />
+        <tr>
+            <td><?php echo $this->t('meta_title'); ?></td>
+            <td><?php echo $this->formText('projectText[meta_title]', $this->textInput($this->NEW_META_TITLE), array('size'=>"35", 'maxlength'=>"250")); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_description'); ?></td>
+            <td><?php echo $this->formTextarea('projectText[meta_description]', $this->textInput($this->NEW_META_DESCRIPTION)); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('catchwords'); ?></td>
+            <td>
+            <?php echo $this->formText('data[catchwords]', $this->textInput($this->NEW_CATCHWORDS), array('size'=>"35", 'maxlength'=>"200")); ?>
+            </td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_robots'); ?></td>
+            <td><?php echo $this->NEW_META_ROBOTS; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_author'); ?></td>
+            <td><?php echo $this->formText('projectText[meta_author]', $this->textInput($this->NEW_META_AUTHOR), array('size'=>"35", 'maxlength'=>"250")); ?></td>
+        </tr>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+
+    <?php
+    if(isset($this->META_VALUES) && is_array($this->META_VALUES) && count($this->META_VALUES) > 0) {
+        foreach($this->META_VALUES as $prjTitle => $prjItem) {
+            echo $this->portletHeader($prjTitle, array('closed' => true));
+            echo $prjItem;
+            echo $this->portletFooter();
+        }
+    }
+?>
+
+<?php if(!isset($this->hideAfterOption) || $this->hideAfterOption !== true) { ?>
+<label for="afterCreate">
+    <input type="radio" id="afterCreate" name="after" value="create" checked="checked" />
+    <?php echo $this->t('create_after_create'); ?>
+</label>
+<label for="afterEdit">
+    <input type="radio" id="afterEdit" name="after" value="edit" />
+    <?php echo $this->t('edit_after_create'); ?>
+</label>
+<?php } ?>
+
+<?php echo $this->createButton('createMenu1'); ?>
+
+</form>

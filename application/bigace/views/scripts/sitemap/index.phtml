@@ -1,0 +1,18 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id: index.phtml 617 2011-02-10 19:03:46Z kevin $ */
+
+$pages = $this->pages;
+
+echo '<?xml version="1.0" encoding="utf-8"?>';
+?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?php foreach($pages as $temp) { ?>
+    <url>
+        <loc><?php echo $temp['link']; ?></loc>
+        <lastmod><?php echo date("Y-m-d", $temp['item']->getLastDate()); ?></lastmod>
+    </url>
+<?php } ?>
+</urlset>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content version="1.0">
+<!--
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License 
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ * 
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id: language_de.xml 559 2010-05-05 13:57:59Z bigace $
+-->
+    <table name="item_1" update="false">
+        <row>
+            <id key="true">-1</id>
+            <cid key="true">{CID}</cid>
+            <language key="true">de</language>
+            <mimetype>text/html</mimetype>
+            <name>Startseite</name>
+            <parentid>-9999</parentid>
+            <description>Diese Beschreibung können Sie in der Administration ändern.</description>
+            <catchwords></catchwords>
+            <createdate>{TIME_NOW}</createdate>
+            <createby>1</createby>
+            <modifieddate>{TIME_NOW}</modifieddate>
+            <modifiedby>1</modifiedby>
+            <unique_name>de/</unique_name>
+            <type />
+            <valid_from>0</valid_from>
+            <valid_to>{TIME_MAX}</valid_to>
+            <text_1>-1_de.html</text_1>
+            <text_2>-1_de.html</text_2>
+            <text_3 />
+            <text_4 />
+            <num_1 null="true" />
+            <num_2 null="true" />
+            <num_3>0</num_3>
+            <num_4>0</num_4>
+            <num_5>0</num_5>
+            <date_1>0</date_1>
+            <date_2>0</date_2>
+            <date_3>0</date_3>
+            <date_4>0</date_4>
+            <date_5>0</date_5>
+        </row>
+    </table>
+    
+    <table name="content" update="false">
+        <row>
+            <cid key="true">{CID}</cid>
+            <id key="true">-1</id>
+            <language key="true">de</language>
+            <name>default</name>
+            <cnt_type>html</cnt_type>
+            <state>R</state>
+            <position>1</position>
+            <valid_from>0</valid_from>
+            <valid_to>2147483647</valid_to>
+            <content><![CDATA[ 
+                <h2>Herzlichen Glückwunsch!</h2>
+                <p>
+                   Willkommen zu Ihrer neuen <a href="http://www.bigace.de/" target="_blank">Bigace</a>-basierten Webseite.
+                   Diese Nachricht wird Sie bei den ersten Schritte mit Bigace begleiten.
+                </p>
+                <p>
+                    Um sich am System anzumelden, benutzen Sie den Benutzername und das Passwort welches Sie während der Installation angegeben haben.
+                    Dazu finden Sie zwei Links, einen rechts in der Seitenleiste und und den anderen am rechts unten am Ende der Seite.
+                </p>
+                <p>
+                    Sobald Sie eingeloggt sind, können Sie die Administration öffnen und Bigace konfigurieren.
+                    Wenn Sie zuerst diese Nachricht entfernen wollen, öffnen Sie den Editor, ersetzen den Inhalt und 
+                    speichern anschließend ab.
+                    Wir empfehlen Ihnen, sich in der Administration umzusehen und die verschiedenen Möglichkeiten zu testen,
+                     die Bigace anbietet.
+                </p>
+                <p>
+                    Um weitere Informationen zu Bigace und den dazugehörigen Komponenten zu erhalten, besuchen Sie die 
+                    <a target="_blank" href="http://www.bigace.de" title="Bigace Homepage">Bigace Webseite</a>, 
+                    <a target="_blank" href="http://forum.bigace.de/" title="Bigace Forum">das Forum</a> oder die
+                    <a target="_blank" href="http://wiki.bigace.de/" title="Bigace Handbuch">Dokumentation</a>.
+                
+                </p>
+                <p>
+                    <i>Und jetzt viel Spaß mit Ihrer neuen Webseite!</i>
+                </p>
+            ]]></content>
+        </row>
+    </table>   
+
+    <table name="item_4" update="false">
+        <row>
+            <id key="true">-1</id>
+            <cid key="true">{CID}</cid>
+            <language key="true">de</language>
+            <mimetype>image/gif</mimetype>
+            <name>Images</name>
+            <parentid>-9999</parentid>
+            <description>Image TOP-LEVEL</description>
+            <catchwords></catchwords>
+            <createdate>{TIME_NOW}</createdate>
+            <createby>1</createby>
+            <modifieddate>{TIME_NOW}</modifieddate>
+            <modifiedby>1</modifiedby>
+            <unique_name />
+            <type />
+            <valid_from>0</valid_from>
+            <valid_to>{TIME_MAX}</valid_to>
+            <text_1>empty.gif</text_1>
+            <text_2></text_2>
+            <text_3></text_3>
+            <text_4></text_4>
+            <num_1 null="true" />
+            <num_2 null="true" />
+            <num_3>0</num_3>
+            <num_4>0</num_4>
+            <num_5>0</num_5>
+            <date_1>0</date_1>
+            <date_2>0</date_2>
+            <date_3>0</date_3>
+            <date_4>0</date_4>
+            <date_5>0</date_5>
+        </row>
+    </table>    
+
+    <table name="item_5" update="false">
+        <row>
+            <id key="true">-1</id>
+            <cid key="true">{CID}</cid>
+            <language key="true">de</language>
+            <mimetype>image/gif</mimetype>
+            <name>Files</name>
+            <parentid>-9999</parentid>
+            <description>File TOP-LEVEL</description>
+            <catchwords></catchwords>
+            <createdate>{TIME_NOW}</createdate>
+            <createby>1</createby>
+            <modifieddate>{TIME_NOW}</modifieddate>
+            <modifiedby>1</modifiedby>
+            <unique_name />
+            <type />
+            <valid_from>0</valid_from>
+            <valid_to>{TIME_MAX}</valid_to>
+            <text_1>empty.gif</text_1>
+            <text_2 />
+            <text_3 />
+            <text_4 />
+            <num_1>0</num_1>
+            <num_2>0</num_2>
+            <num_3>0</num_3>
+            <num_4>0</num_4>
+            <num_5>0</num_5>
+            <date_1>0</date_1>
+            <date_2>0</date_2>
+            <date_3>0</date_3>
+            <date_4>0</date_4>
+            <date_5>0</date_5>
+        </row>
+    </table>
+
+    <table name="unique_name" update="false">
+        <row>
+            <cid key="true">{CID}</cid>
+            <itemtype key="true">1</itemtype>
+            <itemid key="true">-1</itemid>
+            <language key="true">de</language>
+            <name>de/</name>
+        </row>
+    </table>
+    
+    <table name="item_project_text">
+        <row>
+            <itemtype key="true">1</itemtype>
+            <id key="true">-1</id>
+            <cid key="true">{CID}</cid>
+            <language key="true">de</language>
+            <project_key key="true">widget.column.1</project_key>
+            <project_value><![CDATA[<?xml version='1.0'?>
+<Widgets>
+    <Tools css="tools" login="1" home="" />
+    <Navigation css="navigationPortlet" hide.if.empty="1" language="" id="" />
+    <LastEditedMenus css="lastEditedItemsPortlet" language="" amount="5" />
+</Widgets>         
+            ]]></project_value>
+        </row>
+    </table>      
+
+</content>

@@ -1,0 +1,13 @@
+    </form>
+
+    <?php if($this->SUPPORT_UPLOAD) { ?>
+        <?php echo $this->portletHeader($this->t('updatemode_1')); ?>
+        <form enctype="multipart/form-data" method="post" action="<?php echo $this->UPLOAD_URL; ?>">
+            <input type="hidden" value="<?php echo $this->ITEM->getID(); ?>" name="data[id]"/>
+            <input type="hidden" value="<?php echo $this->ITEM->getLanguageID(); ?>" name="data[langid]"/> 
+            <input type="file" id="userfile" name="userfile"/>
+            <?php echo $this->formButtonSmall('replaceUpload', $this->t('process_upload'), array('type' => 'submit')); ?>
+        </form>
+        <?php echo $this->portletFooter(); ?>
+    <?php } ?>
+

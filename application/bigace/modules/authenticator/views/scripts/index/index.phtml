@@ -1,0 +1,60 @@
+<?php /* 
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+   
+*/ 
+
+?>
+
+        <h1 class="loginTitle"><?php echo $this->t("login_title"); ?></h1>  
+        <?php if(isset($this->ERROR)) { ?>
+        <div class="error"><?php echo $this->ERROR; ?></div>
+        <?php } ?>
+        
+        <form action="<?php echo $this->ACTION; ?>" method="post" name="login">
+        <?php 
+        foreach($this->HIDDEN as $hiddenParam) {
+            echo $hiddenParam;
+        } 
+        ?>
+            <p><label><?php echo $this->t("login_username"); ?><br/>
+            <input id="UID" name="UID" class="input" maxlength="30" size="20" type="text" /></label></p>
+            <p><label><?php echo $this->t("login_password"); ?><br/>
+            <input id="PW" name="PW" class="input" maxlength="30" size="20" type="password" /></label></p>
+		    <p class="langp">
+				<select id="LANG" name="language">
+				<?php 
+                $allLang = $this->languages();
+				
+				foreach($allLang as $loc => $lang) 
+				{
+				    echo '<option value="'.$loc.'"';
+				    if($this->LANGUAGE->getID() == $loc) { 
+				        echo ' selected'; 
+				    }
+				    echo '>'.$lang.'</option>';
+				} 
+				?>
+				</select>
+	        </p>
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('login_button_login'); ?>" type="submit" />
+            </p>
+        </form>
+        <p id="specials">
+           <?php if($this->ALLOW_REGISTRATION) { ?>
+           <a href="<?php echo $this->REGISTRATION_URL; ?>"><?php echo $this->t("login_register"); ?></a> |
+           <?php } ?>
+           <a href="<?php echo $this->PASSWORD_URL; ?>"><?php echo $this->t("login_forgot_pwd"); ?></a>
+        </p>
+
+    <script type="text/javascript">
+        <!--
+           try {
+            document.getElementById('UID').select();
+            document.getElementById('UID').focus();
+           }catch(e){}
+        //-->
+        </script>
+

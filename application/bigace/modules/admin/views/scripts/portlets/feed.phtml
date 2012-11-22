@@ -1,0 +1,23 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+    if (isset($this->FEED)) {
+        echo $this->portletHeader($this->FEED['name'],array('toggle' => false));
+        echo '<div id="rss'.$this->FEED['id'].'">'.$this->FEED['html'].'</div>';
+        echo $this->portletFooter();
+
+        if (isset($this->FEED['ajax']) && strlen($this->FEED['ajax']) > 0) { ?>
+            <script type="text/javascript">
+	            $(document).ready(function() {
+                    $.get("<?php echo $this->FEED['ajax']; ?>", function(data){
+                        $('#rss<?php echo $this->FEED['id']; ?>').html(data);
+                    });
+                }); 
+            </script>
+            <?php 
+        } 
+
+    }

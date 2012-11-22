@@ -1,0 +1,29 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message()->error($this->t('error_not_writeable'));
+}
+?>
+
+<form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+<input type="hidden" name="<?php echo $this->PARAM_MODE_MAINTENANCE; ?>" value="<?php echo $this->MAINTENANCE_MODE; ?>">
+
+<div>
+    <label for="state2">
+        <input type="checkbox" id="state2" name="state" value="deactive" <?php if($this->STATE_ACTIVE === false) echo 'checked="checked"'; ?>>
+        <?php echo $this->t('community_deactivated'); ?>
+    </label>
+    <i><?php echo $this->t('deactivated_info'); ?></i>
+</div>
+
+<div>
+    <?php echo $this->editor('maintenance', $this->MAINTENANCE_TEXT); ?>
+    <p><i><?php echo $this->t('maintenance_info'); ?></i></p>
+</div>
+
+<?php echo $this->saveButton('saveMaintenance'); ?>
+</form>

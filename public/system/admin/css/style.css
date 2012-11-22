@@ -1,0 +1,617 @@
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id: style.css 752 2010-05-21 11:39:16Z bigace $
+*/
+
+html {
+    width:100%;
+    height:100%;
+}
+body {
+    background:url(../images/bg.png) repeat-x #ccc;
+    /*font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; */
+    font-family:Verdana,Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    color: #333;
+    width:100%;
+    height:100%;
+}
+th {text-align:none; }
+a, a:active, a:link, a:visited { text-decoration:none; color: blue; }
+a:hover { text-decoration: underline; }
+#logo div {
+    font-size:20px;
+    font-style:italic;
+    font-weight:normal;
+    color:white;
+    padding-top:2px;
+    float:left;
+}
+/* Visit site button */
+#logo .ba-site {
+    outline: 0;
+    padding: .1em .4em;
+    text-decoration:none !important;
+    cursor:pointer;
+    text-align: center;
+    font-size: 20px;
+    outline: none !important;
+    color: #fff;
+    cursor: pointer;
+    margin: 0px;
+}
+#logo a:hover { font-weight: bold; }
+#header { height:57px; }
+#content {
+    background:url(../images/bg_content.gif) left top repeat-x #FFFFFF;
+    width:938px !important;
+    border-left:1px solid #9c9c9c;
+    border-right:1px solid #9c9c9c;
+}
+#textcontent { padding:10px !important; width:900px !important; }
+#wrapper {
+    padding-bottom:10px !important;
+    background:url(../images/bg_content_bottom.gif) center bottom no-repeat;
+}
+#footer { text-align:center; padding:15px 0px; color: #666; font-size:11px; }
+.hidden { display:none; }
+.text { padding:10px 15px; }
+.nopadding { padding:0px !important; }
+.floatLeft { float:left; }
+.floatRight { float:right; }
+.centered {text-align:center;}
+p { margin-bottom: 6px; font-size: 13px; }
+/* can be used to show informal (not so important) text */
+.light { font-size: 11px; font-color: #ddd; }
+/* should be used, when trying to attract visual feedback */
+.important, tr.important td { color:#f07746; font-weight: bold; }
+
+/*******************************************************************************
+  Action links - mostly in tables - with icons
+*******************************************************************************/
+a.edit_inline { background:url(../images/edit.png) no-repeat left top; display:inline-block; line-height:16px; color: #069 !important; font-size:11px; padding-left:20px; margin-right:5px; }
+a.add_inline { background:url(../images/add.png) no-repeat left top; display:inline-block; line-height:16px; color: #5a801b !important; font-size:11px; padding-left:20px; margin-right:5px; }
+a.delete_inline { background:url(../images/delete.gif) no-repeat left top; display:inline-block; line-height:16px; color: #D23333 !important; font-size:11px; padding-left:20px; margin-right:5px; }
+a.reject_inline { background:url(../images/action_remove.gif) no-repeat left top; display:inline-block; line-height:16px; color: #D23333 !important; font-size:11px; padding-left:20px; margin-right:5px; }
+a.approve_inline { background:url(../images/action_check.gif) no-repeat left top; display:inline-block; line-height:16px; color: #5a801b !important; font-size:11px; padding-left:20px; margin-right:5px; }
+a.preview_inline { background:url(../preview.png) no-repeat left top; display:inline-block; line-height:16px; font-size:11px; padding-left:20px; margin-right:5px; }
+
+a.manual_inline { font-size:9px;vertical-align:super; } /* To be used as link with ? as only text */
+a.delete { background:url(../images/delete.gif) no-repeat left top; display:inline-block; width: 16px; height:16px; }
+
+/*******************************************************************************
+  General Classes for own usage! Do NEVER use h1 for admin extensions.
+*******************************************************************************/
+h1 { font-size:22px; color: #1b486a; display: block; margin-top: 15px; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
+h2 { font-size:18px !important; }
+h3 { font-size: 13px !important; margin: 10px 0px;}
+
+ul { margin-left: 15px; }
+
+/* Buttons */
+.ba-button {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0;
+    padding: .4em 1em;
+    text-decoration:none !important;
+    text-align: center;
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+/*    display: block;
+    float: left;
+    margin: 5px 4px 5px 0;
+    */
+}
+
+.ba-button-small {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0;
+    margin: 5px 4px 5px 0;
+    padding: .15em 1em;
+    text-decoration:none !important;
+    text-align: center;
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+}
+.back {
+    display: block;
+    margin-bottom: 6px;
+}
+/*******************************************************************************
+  Dashboard
+*******************************************************************************/
+.feeds li { margin:5px 0px 0px 0px; }
+
+/*******************************************************************************
+  Help Modal Dialog and Calendar links
+*******************************************************************************/
+#helpgrid {
+    font-size:11px;
+    text-align:right;
+    position:relative;
+    float:right;
+    width:155px;
+    padding-top: 7px;
+}
+.page_help {
+    padding-left: 18px;
+    background: url(../images/manual.png) no-repeat left top;
+}
+#helpgrid ul {list-style: none; margin: 0px;}
+#helpgrid ul li {padding-left: 15px;}
+a.calendar {
+    padding-left:21px;
+    background:url(../images/calendar.gif) no-repeat left top;
+}
+/*******************************************************************************
+  USER TOOLS
+*******************************************************************************/
+#topTools { height:34px; padding-right:9px; float:right; }
+#topTools span {
+    height:34px;
+    padding-left:9px;
+    line-height: 34px;
+    font-size:11px;
+    color: #b0b0b0;
+    display:block;
+    float:right;
+}
+#topTools a { color: #FFF; text-decoration:none; }
+#topTools a:hover { text-decoration:underline; }
+#lchooser {
+    z-index: 8;
+    display: none;
+    position:absolute;
+    color: white;
+    top:25px;
+    right:22px;
+    border-left:1px solid #333;
+    border-right: 1px solid #333;
+    background:#ddd;
+    width:120px;
+}
+#lchooser a {
+    background-position: 3px 6px;
+    padding:3px 5px 3px 25px;
+    color: #000;
+    display: block;
+    font-size: 12px;
+    text-decoration:none;
+    width: 90px;
+}
+#lchooser a:hover { color:blue; }
+.lchooselast {
+    border-top:1px solid #333;
+    border-bottom:1px solid #333;
+}
+
+/*******************************************************************************
+  TOP MENU
+*******************************************************************************/
+#menu {
+    float: left;
+    width:100%;
+}
+#menu ul.group {
+    margin: 10px 0px 0px 2px;
+    padding: 0px 0px 0px;
+    list-style: none;
+    float: left;
+    z-index:4;
+}
+#menu ul.group li {
+    display: inline;
+    float: left;
+    position: static;
+    z-index: 5;
+/*    margin-left:0px !important;*/
+}
+#menu ul.group li a {
+    display: block;
+    float: left;
+/*  height: 100px; */
+    height: 47px;
+    width: 117px;
+    overflow:hidden;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration:none;
+    color: white;
+    z-index:6;
+}
+#menu ul.group li a * {
+    cursor: pointer;
+}
+#menu ul.group li a span.outer {
+    display: block;
+    height: 60px;
+/*  padding-top: 8px; */
+}
+#menu ul.group li a span.inner {
+    display: block;
+    padding: 15px 10px 9px 20px;
+    white-space: nowrap;
+    height:23px;
+}
+#menu ul.group li.last a span.inner {
+    border: none !important;
+}
+
+#menu ul.group li a:hover, #menu ul.group li a.hover {
+    text-decoration:underline;
+    background-position: left -100px;
+}
+#menu ul.group li.last a:hover, #menu ul.group li.last a.hover  {
+    background-position: right -100px;
+}
+#menu ul.group li.first a:hover, #menu ul.group li.first a.hover  {
+    background-position: left -100px;
+}
+#menu ul.group li a.current {
+    background-position: left -100px;
+}
+#menu ul.group li.last a.current  {
+    background-position: right -100px;
+}
+#menu ul.group li.first a.current  {
+    background-position: left -100px;
+}
+#menu ul.group li a.more {
+}
+#menu .additional a span {
+    border-right:1px solid #DFDCBB;
+}
+/*******************************************************************************
+  SUBMENU
+*******************************************************************************/
+#menu ul.submenus {
+    background:none;
+    width:180px;
+    visibility:hidden;
+    position: absolute;
+    float:left;
+    z-index: 500;
+    margin:47px 0px 0px -1px;
+}
+#menu ul.submenus li {
+    color: #000;
+    position: static;
+    float:left;
+    margin-left: 0px !important;
+}
+#menu ul.submenus li a {
+    display:block;
+    width:165px !important;
+    height:25px !important;
+    padding:5px 5px 0px 20px;
+    font-weight:normal !important;
+    color:#000;
+}
+#menu ul.submenus li a {
+    display: inline-block; /* IE only */
+}
+#menu ul.submenus li a:hover {
+    text-decoration:underline;
+}
+
+/*******************************************************************************
+  PORTLETS AND GRID
+*******************************************************************************/
+#portlets { padding:10px 10px 10px 10px; height:100%; }
+.columnSmall { width: 250px; float: left; padding-bottom: 0px; overflow:auto; }
+.columnMedium { width: 350px; float: left; padding-bottom: 0px; overflow:auto; }
+.columnLarge { width: 650px; float: left; padding-bottom: 0px; }
+.columnSmall#left { margin-right:17px; }
+.column { width: 450px; float: left; padding-bottom: 0px; }
+.column#left { margin-right:17px; }
+.portlet { margin: 0 0em 1em 0; }
+.portlet-header {
+    margin: 0em;
+    padding:4px 6px 5px 6px;
+    font-size:12px;
+    border: none !important;
+    color: #333 !important;
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.column .portlet-header {
+    cursor:move;
+}
+.portlet-header .ui-icon { float: right; cursor:pointer; }
+.portlet-header img { float:left; margin-right:5px; }
+#portlets .fixed { cursor:auto; }
+.portlet-content {
+    padding: 0.8em;
+    font-size:12px !important;
+    color: #333;
+    border-top:1px solid #999 !important;
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.ui-sortable-placeholder {
+    border: 1px dashed #999 !important;
+    visibility: visible !important;
+    height: 100px !important;
+    background: #EBEBEB;
+}
+.ui-sortable-placeholder * { visibility: hidden; }
+#portlets table { margin-bottom: 0px; }
+#portlets .column { min-height:100px; }
+/*******************************************************************************
+  Text Messages
+*******************************************************************************/
+.caution {
+    background: url('../images/icon_warning.gif') no-repeat 0 0 ;
+    font-weight: bold;
+    padding-left: 25px;
+}
+/*******************************************************************************
+  Informational Messages
+*******************************************************************************/
+.message  {
+    display: block;
+    background: url('../images/message_bg.gif') no-repeat 98% center;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom:10px !important;
+    font-size: 12px !important;
+    font-weight: bold;
+    cursor: pointer;
+    border:1px solid #ccc;
+}
+.message:hover  {
+    background: url('../images/message_bg_hover.gif') no-repeat 98% center;
+}
+.message .message_inner {
+  display: block;
+  padding: 6px 25px 6px 35px;
+}
+#success .message_inner {
+  color: #5a801b;
+  background: url('../images/icon_success.gif') no-repeat 8px 7px;
+  border: 0px;
+}
+#success .message_inner a {
+  color: #5a801b;
+}
+#warning .message_inner {
+    color: #E89326;
+    background: url('../images/icon_warning.gif') no-repeat 8px 7px;
+    border: 0px;
+}
+#error .message_inner {
+    color: #C00;
+    background: url('../images/icon_error.gif') no-repeat 8px 7px;
+    border: 0px;
+}
+#info .message_inner {
+    color: #006699;
+    background: url('../images/icon_info.gif') no-repeat 8px 7px;
+    border: 0px;
+}
+/*******************************************************************************
+  TABLE DESIGN
+
+ .nicetable often be used together with
+            $this->portletHeader('title', array('full' => true))
+
+ .selftable to be used for autonoumus tables:
+            <table class="nicetable selftable">
+
+ tr.active => active (hovered) rows in a table
+*******************************************************************************/
+.nicetable {
+    font-size: 12px; margin: 0px; text-align: left; border-collapse: separate;
+    border-bottom:none;
+}
+.selftable { border: 1px solid #CCC; }
+.nicetable th {
+    font-size: 13px; 
+    font-weight: normal; 
+    padding: 8px;
+    background: #EFEFEF;
+    border-top: 1px solid #FFF; color: #333;
+}
+.nicetable td {
+    padding: 8px; 
+    background: none; 
+    border-top: 1px solid #CCC;
+    color: #666; 
+    border-bottom: none !important;
+}
+.nicetable tr.first td { border-top: 0px none; }
+.nicetable tr:hover td { background: #FBFBFB; color: #333; }
+.nicetable tr.footer { background: none !important; }
+.nicetable tr.footer:hover td { background: none !important; }
+.nicetable tr.active {  background: #EBEBEB; color: #333; }
+th, td { padding:1px 0px; vertical-align: top; }
+
+/*******************************************************************************
+  PAGINATION
+*******************************************************************************/
+.pagination {
+    border:0; margin:0 0 10px 0; padding:0; font-size:10px; clear:both;
+}
+.pagination a {
+    border:solid 1px #DEDEDE; margin:2px 0 0 0;
+}
+.pagination .previous-off, .pagination .next-off {
+    color:#888888; display:inline-block; font-weight:normal; padding:3px 4px;
+}
+.pagination .next a,.pagination .previous a {
+    font-weight:bold; border:solid 1px #FFFFFF;
+}
+.pagination .active{
+    border:1px solid #EEE; color:#000000; font-weight:bold;
+    display:inline-block; padding:3px 6px;
+}
+.pagination a:link, .pagination a:visited {
+    display:inline-block; padding:3px 6px; text-decoration:none;
+}
+.pagination a:hover{
+    text-decoration:none; border: 1px solid #999;
+}
+
+/*******************************************************************************
+  FORMS
+*******************************************************************************/
+form label {
+    display:block !important;
+    line-height:normal !important;
+    margin: 4px 0px 4px 0px;
+    font-size:12px;
+    font-weight:bold;
+}
+.iframeInput {
+    border:1px solid #999 !important;
+    margin-left: 0px;
+    background:#FFFFE6;
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif !important;
+    color: #333 !important;
+    font-size:15px !important;
+}
+textarea, .smallInput, .largeInput, select {
+    margin-left: 0px;
+    border:1px solid #999;
+    background:#FFFFE6;
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif !important;
+    color: #333 !important;
+    font-size:15px !important;
+}
+.smallInput[disabled='disabled'], .largeInput[disabled='disabled'] {
+    background:#eee;
+    color:#666 !important;
+}
+/* input[type=text] { display:block !important; } */
+textarea {
+    display: block;
+    width: 300px;
+    padding:4px 5px;
+}
+.smallInput {
+    padding:3px 3px;
+    font-size:12px !important;
+}
+.largeInput {
+    padding:4px 5px;
+    width: 300px;
+}
+form .small { width:150px; }
+form .medium { width:350px; }
+form .wide { width:890px; }
+fieldset {
+    padding: 10px 0px 10px 10px;
+    border: 1px solid #aaa;
+}
+legend {
+    padding: 2px 5px;
+    font-size: 13px;
+    font-weight:bold;
+}
+select { padding:3px 5px; }
+.dateInput { width: 100px; }
+
+/*******************************************************************************
+  jQuery Multiselect
+*******************************************************************************/
+.multiselect { width: 530px; height: 200px; }
+.ui-multiselect input.search { width: 70px !important; }
+#switcher { margin-top: 20px; }
+
+/*******************************************************************************
+  LOGGING
+*******************************************************************************/
+.logentry { width:900px;overflow:auto }
+.logentry pre { font-size:10px; }
+
+/*******************************************************************************
+  Jquery UI Customization
+*******************************************************************************/
+
+.ui-dialog .ui-dialog-titlebar { padding:0.1em 0.1em 0.1em 0.5em; }
+/*
+#content .ui-widget-content { border:0px solid #fff; }
+#tabpanes .ui-widget-header { border-width:0px; border-bottom-width: 1px; background:none; }
+*/
+.ui-widget-content{
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+/*******************************************************************************
+  ABOUT - CREDITS
+*******************************************************************************/
+.credit {
+    border-left:25px solid #dddddd;
+    border-bottom:1px solid #dddddd;
+    padding:0px 0px 2px 5px;
+    text-decoration:none;
+}
+.creditList { margin-bottom: 30px; }
+.creditEntry { margin:0 0 10px 20px; }
+
+/*******************************************************************************
+  ITEM PERMISSION BUTTONS
+*******************************************************************************/
+.permb { padding:6px 4px; border:1px solid #ccc;font-weight:bold; width:30px; }
+.permb:hover { border:1px solid #ccc;font-weight:bold; }
+.permon { cursor:pointer;background-color:green;color:#eeeeee; }
+.permon:hover { cursor:pointer;background-color:red; }
+.permoff { cursor:pointer;background-color:red;color:#000000; }
+.permoff:hover { cursor:pointer;background-color:green; }
+.permdeactive { cursor:auto;background-color:#ccc; }
+.permdeactive:hover { cursor:auto;background-color:#ccc; }
+
+/*******************************************************************************
+  TOOLTIP
+*******************************************************************************/
+#tooltip{
+    position:absolute;
+    border:1px solid #333;
+    background:#f7f5d1;
+    padding:2px 5px;
+    color:#333;
+    display:none;
+}
+
+/*******************************************************************************
+  Javascript toolbar for item attributes
+*******************************************************************************/
+.ba-toolbar { padding: 0.1em 0.5em 0.1em 0.7em; margin: 0 0 10px 0; }
+.ba-toolbar .ba-buttonset { margin-right:1em; padding-left: 1px; }
+.ba-toolbar .ba-button { font-size: 1em;  }
+.ba-toolbar .ba-button { font-size:1em; }
+.ba-buttonset { float:left; }
+.ba-buttonset .ba-button { float:left; }
+.ba-buttonset-single .ba-button, .ba-buttonset-multi .ba-button { margin-right:-1px; }
+.ba-button-icon-solo { display:block; text-indent:-9999px; width:8px; }
+.ba-button-icon-img { display:block; padding: 0.4em 0.7em; }
+.ba-toolbar .ba-toolbar-html { margin: 6px 4px 5px 0; float:left; }
+
+/* Can be used to build hierarchies */
+.level {background:url(../images/level.png) 0 0 no-repeat; padding-left:20px; }
+
+/*******************************************************************************
+  ZEND FORM ELEMENT STYLING
+*******************************************************************************/
+/*dt, dd {display:inline}*/
+dl {margin-bottom:0px;}
+
+.imageSlider {
+    float:left;
+    width:400px;
+}
+.imageSliderValue {
+    margin-left:20px;
+    float:right;
+}
+
+/*******************************************************************************
+  CodeMirror Customization
+*******************************************************************************/
+.CodeMirror-wrapping {
+    margin-bottom:10px;
+}

@@ -1,0 +1,31 @@
+<?php 
+/* 
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+*/ 
+
+?>
+
+        <h1 class="loginTitle"><?php echo $this->t("register_title"); ?></h1>  
+
+        <?php
+        if(isset($this->ERROR) && $this->ERROR != '')
+        {
+            echo '<div class="error">' . $this->t($this->ERROR) . '</div>';
+        }
+        ?>
+        
+        <form action="<?php echo $this->HOME; ?>" method="post" name="login">
+            <p><?php echo $this->t("register_success_name"); ?> <i><?php echo $this->USERNAME; ?></i> </p>
+            <p><?php echo $this->t("register_success_email"); ?> <i><?php echo $this->EMAIL; ?></i></p>
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('register_link_home'); ?>" type="submit" />
+            </p>
+        </form>
+
+        <p id="specials">
+           <a href="<?php echo $this->LOGIN_URL; ?>"><?php echo $this->t("login"); ?></a>
+           | <a href="<?php echo $this->PASSWORD_URL; ?>"><?php echo $this->t("login_forgot_pwd"); ?></a>
+        </p>
+

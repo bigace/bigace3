@@ -1,0 +1,207 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if(isset($this->ERROR))
+    echo $this->message($this->ERROR, 'error');
+
+if(isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+    $limitTo = $this->HEADER_TO;
+    $limitFrom = $this->HEADER_FROM;
+
+    echo '<form id="nextPage" action="'.$this->HEADER_ACTION.'" method="POST">';
+    echo '<input type="hidden" id="itemFrom" name="data[limitFrom]" value="'.$limitFrom.'">';
+
+    echo $this->t('language').': <select id="listLang" name="data[langid]">';
+    foreach($this->ITEM_LANGS As $l) {
+
+        //echo '<a href="'.$l['URL'].'"><img alt="'.$l['NAME'].'" src="'.$this->STYLE.'languages/'.$l['LOCALE'].'.gif"></a>&nbsp;';
+        echo '<option value="'.$l['LOCALE'].'" '.($this->HEADER_LANGUAGE == $l['LOCALE'] ? ' selected': '').'>'.$l['NAME'].'</option>';
+    }
+    echo '</select> ';
+
+    echo $this->t('entrys_page').': <select id="itemTo" name="data[limitTo]">';
+    $ii = 5;
+    while($ii < 51) {
+        echo '<option value="'.$ii.'"';
+        if($limitTo != '' && $limitTo == $ii)
+            echo ' selected';
+        echo '>'.$ii.'</option>';
+        $ii += 5;
+    }
+
+    $ii = 60;
+    while($ii < 101) {
+        echo '<option value="'.$ii.'"';
+        if($limitTo != '' && $limitTo == $ii)
+            echo ' selected';
+        echo '>'.$ii.'</option>';
+        $ii += 10;
+    }
+    $ii = 150;
+    while($ii < 501) {
+        echo '<option value="'.$ii.'"';
+        if($limitTo != '' && $limitTo == $ii)
+            echo ' selected';
+        echo '>'.$ii.'</option>';
+        $ii += 50;
+    }
+    echo '</select> ';
+
+    echo $this->t('sort_orderby').': <select name="data[orderBy]">';
+    echo '<option value="name"'.(strtolower($this->HEADER_ORDERBY) == "name" ? " selected" : "").'>'.$this->t('name').'</option>';
+    echo '<option value="position"'.($this->HEADER_ORDERBY == 'num_4' ? " selected" : "").'>'.$this->t('position').'</option>';
+    echo '</select> ';
+
+    echo $this->t('sort_order').': <select name="data[order]">';
+    echo '<option value="asc"'.(strtolower($this->HEADER_ORDER) == "asc" ? " selected" : "").'>'.$this->t('sort_asc').'</option>';
+    echo '<option value="desc"'.(strtolower($this->HEADER_ORDER) == "desc" ? " selected" : "").'>'.$this->t('sort_desc').'</option>';
+    echo '</select> ';
+
+    echo $this->formButton('listSubmit', $this->t('show'), array('type' => 'submit'));
+    echo '</form>';
+
+    // Show pagination ONLY if there is more than one page
+    if ($this->HEADER_TOTAL > $this->HEADER_AMOUNT && isset($this->paginator)) {
+        echo $this->paginationControl($this->paginator, 'Sliding', 'paginator.phtml');
+    }
+
+?>
+
+<form id="itemEditForm" name="itemEditForm" onSubmit="return checkSubmitSettings()" action="<?php echo $this->FORM_ACTION; ?>" method="POST">
+<input type="hidden" name="data[id]" value="<?php echo $this->ITEM_ID; ?>">
+<input type="hidden" name="data[langid]" value="<?php echo $this->HEADER_LANGUAGE; ?>">
+
+
+<?php
+    $tit = sprintf($this->t('entrys_total'),count($this->ITEMS),$this->HEADER_TOTAL);
+    echo $this->portletHeader($tit, array('full' => true));
+    ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+    <col width="30" />
+    <col width="20" />
+    <col width="200" />
+    <col />
+    <col width="35" />
+    <col width="35" />
+    <col width="35" />
+    <col width="35" />
+
+    <thead>
+        <tr>
+            <th align="center"><input type="checkbox" class="bulkcheck" /></th>
+            <th align="center">&nbsp;</th>
+            <th><?php echo $this->t('name'); ?></th>
+            <th><?php echo $this->t('unique_name'); ?></th>
+            <th align="center" colspan="4"><?php echo $this->t('action'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php
+        if(isset($this->ITEMS) && count($this->ITEMS) > 0)
+        {
+            foreach($this->ITEMS as $theRow)
+            {
+                ?>
+                <tr>
+                    <td><?php echo $theRow['MULTIPLE']; ?></td>
+                    <td><?php
+                    if (isset($theRow['ITEM_MIMETYPE'])) {
+                        $myMimetype = $this->mimetypeIcon($theRow['ITEM_MIMETYPE']);
+                        if(isset($theRow['ADMIN_URL']) && !is_null($theRow['ADMIN_URL']))
+                            echo '<a href="'.$theRow['ADMIN_URL'].'"><img src="'.$myMimetype.'" title="" width="16" height="16" border="0"></a>';
+                        else
+                           echo '<img src="'.$myMimetype.'" title="" width="16" height="16" border="0">';
+                    } else {
+                        echo '<span style="padding-right:16px"></span>';
+                    }
+
+                    ?></td>
+                    <td><?php
+                    if(isset($theRow['ADMIN_URL']) && !is_null($theRow['ADMIN_URL']))
+                        echo '<a href="'.$theRow['ADMIN_URL'].'">'.$theRow['ITEM_NAME'].'</a>';
+                    else
+                        echo $theRow['ITEM_NAME'];
+                    ?></td>
+                    <td><?php echo $theRow['ITEM_URL']; ?></td>
+                    <td align="center"><?php
+                        echo '<a href="'.$theRow['ITEM_PREVIEW'].'" target="_blank"><img src="'.$this->STYLE.'preview.png" class="tooltip" alt="'.$this->t('show').'" title="'.$this->t('show').'"></a>';
+                    ?></td>
+                    <td align="center"><?php
+                        echo '<a href="'.$theRow['ITEM_DOWNLOAD'].'" target="_blank"><img src="'.$this->STYLE.'download.png" class="tooltip" alt="'.$this->t('download').'" title="'.$this->t('download').'"></a>';
+                    ?></td>
+                    <td align="center"><?php
+                        if(isset($theRow['ITEM_PERMS']) && !is_null($theRow['ITEM_PERMS']))
+                            echo '<a href="'.$theRow['ITEM_PERMS'].'"><img src="'.$this->STYLE.'rights.png" class="tooltip" title="'.$this->t('rights').'"></a>';
+                    ?></td>
+                    <td align="center"><?php
+                        echo '<a href="'.$theRow['ITEM_DELETE'].'" onclick="return confirm(\''.$this->t('confirm_delete_item').'\')"><img src="'.$this->STYLE.'delete.png" class="tooltip" alt="'.$this->t('delete').'" title="'.$this->t('delete').'"></a>';
+                    ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+            <tr>
+                <td colspan="8">
+                  <img src="<?php echo $this->STYLE; ?>arrow_ltr.png" border="0">
+                  <?php echo $this->t('action'); ?>: &nbsp;
+                  <select id="multipleMode" name="mode">
+                  <?php
+                    foreach($this->MULTIPLE_METHODS AS $name => $url)
+                    {
+                       echo '<option value="'.$url.'">'.$name.'</option>';
+                    }
+                  ?>
+                  </select>
+                  <?php echo $this->formButton('multiSubmit', $this->t('process'), array('onclick' => 'return multipleUpdate();')); ?>
+                  <?php
+                    if(isset($this->DEFAULT_PERM) && $this->DEFAULT_PERM === true) {
+                        echo $this->linkButton(
+                            $this->t('defaultPermissions'),
+                            $this->PERM_ACTION,
+                            array('style' => 'float:right')
+                        );
+                    }
+                  ?>
+                </td>
+            </tr>
+            <?php
+        }
+        else
+        {
+            echo '<tr>
+                        <td colspan="8"><b>'.$this->t('error_no_items').'</td>
+                  </tr>';
+        }
+
+        ?>
+        </tbody>
+    </table>
+    <?php
+    echo $this->portletFooter();
+?>
+</form>
+
+<script type="text/javascript">
+function multipleUpdate()
+{
+    if($('#multipleMode option:selected').val() != '')
+    {
+        $('#itemEditForm').submit();
+    }
+    return false;
+}
+
+function changePage(amount,from)
+{
+    $('#itemFrom').val(from);
+    $('#itemTo').val(amount);
+    $('#nextPage').submit();
+}
+</script>

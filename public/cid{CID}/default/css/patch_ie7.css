@@ -1,0 +1,19 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.second-navi {
+	border-right:1px #ccc solid;
+	border-bottom:1px #ccc solid;
+	border-left:1px #ccc solid;
+	left:7px
+}
+
+.content .sbmt {  margin-left:8px }
+
+
+.content legend { padding:0;margin-bottom:16px }
+.content fieldset { padding:16px }	
+
+#search-term {
+	margin-top:7px
+}

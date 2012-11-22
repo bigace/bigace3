@@ -1,0 +1,149 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+echo $this->partial('partial_header.phtml', array(
+    'STYLE'    => $this->STYLE,
+    'ITEM'     => $this->ITEM,
+    'URL_MOVE' => $this->URL_MOVE,
+    'URL_MODE' => $this->URL_MODE
+));
+
+// might be hidden in case someone edits the default permissions
+if (!isset($this->hideToolbar)) {
+    echo $this->partial('partial_toolbar.phtml', array(
+        'TOOLBAR_ENTRIES' => $this->TOOLBAR_ENTRIES,
+        'ITEM'            => $this->ITEM,
+        'STYLE'           => $this->STYLE
+    ));
+}
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+if (!isset($this->noBacklink) || $this->noBacklink !== true) {
+    echo $this->backlink($this->BACK_URL);
+}
+
+echo $this->portletHeader($this->t('rights'), array('full' => true)); ?>
+<table class="nicetable" width="100%" cellspacing="0">
+<col />
+<col width="250" />
+<thead>
+    <tr>
+        <th align="left"><?php echo $this->t('group'); ?></th>
+        <th align="left"><?php echo $this->t('rights'); ?></th>
+    </tr>
+</thead>
+<tbody>
+    <?php foreach($this->ALL_PERMS as $curPerm) { ?>
+    <tr>
+        <td>
+            <img src="<?php echo $this->STYLE; ?>user_group.png" border="0" valign="absmiddle" alt="<?php echo $this->t('group'); ?>">
+            <?php echo $curPerm['GROUP_NAME']; ?>
+        </td>
+        <td align="left">
+
+            <?php if($curPerm['IS_NEW']) { ?>
+
+                <form method="post" action="<?php echo $curPerm['CREATE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                    <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                    <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                    <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                    <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_READ']; ?>">
+                    <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_READ']; ?>" title="<?php echo $this->t('read'); ?>">R</button>
+                </form>
+
+                <?php if($this->USER_PERM->canWrite()) { ?>
+                    <form method="post" action="<?php echo $curPerm['CREATE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                        <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                        <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                        <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                        <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_WRITE']; ?>">
+                        <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_WRITE']; ?>" title="<?php echo $this->t('write'); ?>">W</button>
+                    </form>
+                <?php } else { ?>
+                    <button onClick="alert('<?php echo $this->t('no_change_own_right'); ?>');return false;"
+                        class="permb <?php echo $curPerm['BUTTON_STYLE_WRITE']; ?>" title="<?php echo $this->t('write'); ?>">W</button>
+                <?php } ?>
+
+                <?php if($this->USER_PERM->canDelete()) { ?>
+                    <form method="post" action="<?php echo $curPerm['CREATE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                        <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                        <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                        <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                        <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_DELETE']; ?>">
+                        <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_DELETE']; ?>" title="<?php echo $this->t('delete'); ?>">D</button>
+                    </form>
+                <?php } else { ?>
+                    <button onClick="alert('<?php echo $this->t('no_change_own_right'); ?>');return false;"
+                        class="permb <?php echo $curPerm['BUTTON_STYLE_DELETE']; ?>" title="<?php echo $this->t('delete'); ?>">D</button>
+                <?php } ?>
+
+            <?php } else { ?>
+
+                <form method="post" action="<?php echo $curPerm['DELETE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                    <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                    <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                    <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                    <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_READ']; ?>">
+                    <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_READ']; ?>" title="<?php echo $this->t('read'); ?>">R</button>
+                </form>
+
+                <?php if($this->USER_PERM->canWrite()) { ?>
+                    <form method="post" action="<?php echo $curPerm['CHANGE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                        <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                        <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                        <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                        <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_WRITE']; ?>">
+                        <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_WRITE']; ?>" title="<?php echo $this->t('write'); ?>">W</button>
+                    </form>
+                <?php } else { ?>
+                    <button onClick="alert('<?php echo $this->t('no_change_own_right'); ?>');return false;"
+                        class="permb <?php echo $curPerm['BUTTON_STYLE_WRITE']; ?>" title="<?php echo $this->t('write'); ?>">W</button>
+                <?php } ?>
+
+                <?php if($this->USER_PERM->canDelete()) { ?>
+                    <form method="post" action="<?php echo $curPerm['CHANGE_RIGHT_URL']; ?>" style="display:inline;padding:0px;margin:0px">
+                        <input type="hidden" name="data[id]" value="<?php echo $curPerm['ITEM_ID']; ?>">
+                        <input type="hidden" name="data[langid]" value="<?php echo $curPerm['LANGUAGE_ID']; ?>">
+                        <input type="hidden" name="data[group]" value="<?php echo $curPerm['GROUP_ID']; ?>">
+                        <input type="hidden" name="data[rights]" value="<?php echo $curPerm['RIGHT_VALUE_DELETE']; ?>">
+                        <button type="submit" class="permb <?php echo $curPerm['BUTTON_STYLE_DELETE']; ?>" title="<?php echo $this->t('delete'); ?>">D</button>
+                    </form>
+                <?php } else { ?>
+                    <button onClick="alert('<?php echo $this->t('no_change_own_right'); ?>');return false;"
+                        class="permb <?php echo $curPerm['BUTTON_STYLE_DELETE']; ?>" title="<?php echo $this->t('delete'); ?>">D</button>
+                <?php } ?>
+
+            <?php } ?>
+        </td>
+    </tr>
+    <?php } ?>
+
+</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+
+<script type="text/javascript">
+function togglePerm(grpID, myId, newPerm) {
+    if($('#'+myId+grpID).attr('class') == "permoff")
+        $('#'+myId+grpID).attr('class', 'permon')
+    else
+        $('#'+myId+grpID).attr('class', 'permon')
+
+    $("#newPermVal"+grpID).val(newPerm);
+}
+</script>
+<?php
+
+echo $this->partial('partial_footer.phtml', array(
+    'BASE_ITEM_URL' => $this->BASE_ITEM_URL,
+    'REMOVE_LANGUAGE' => $this->REMOVE_LANGUAGE)
+);

@@ -1,0 +1,92 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+   
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+   
+?>
+
+<script type="text/javascript">
+<!--
+    function checkNewConsumerDomain(cid)
+    {
+        if(document.getElementById('newUrl'+cid).value == '') {
+            alert('<?php echo $this->t('error_add_url'); ?>');
+            document.getElementById('newUrl'+cid).focus();
+            return false;
+        }
+
+        return true;
+    }
+// -->
+</script>
+
+<p><?php echo $this->t('community_default_info'); ?></p>
+<?php echo $this->portletHeader($this->t('communities_title'), array('full' => true)); ?>
+<table class="nicetable" width="100%" cellspacing="0">
+<col width="50" />
+<col />
+<col />
+<col />
+<col />
+
+<thead>
+	<tr>
+		<th align="center"><?php echo $this->t('id'); ?></th>
+		<th><?php echo $this->t('community_url'); ?></th>
+		<th align="center"><?php echo $this->t('community_default'); ?></th>
+		<th align="center"><?php echo $this->t('community_deactivated'); ?></th>
+		<th><?php echo $this->t('community_add_title'); ?></th>
+	</tr>
+</thead>
+
+<tbody>
+	<?php foreach($this->COMMUNITIES as $theRow) { ?>
+    <tr>
+        <td valign="top" align="center"><?php echo $theRow['ID']; ?></td>
+        <td valign="top">
+            <?php if(count($theRow['ALIAS']) <= 1) { ?>
+                <?php echo $theRow['URL']; ?>
+            <?php } else { ?>
+                <?php foreach($theRow['ALIAS'] as $alias) { ?>
+                    <a href="<?php echo $alias['DELETE_URL']; ?>"><img alt="<?php echo $this->t('delete'); ?>" src="<?php echo $this->STYLE; ?>delete.png" border="0"></a>
+                    <a href="http://<?php echo $alias['URL']; ?>" target="_blank"><?php echo $alias['URL']; ?></a>
+                    <br/>
+                <?php } ?>
+            <?php } ?>
+        </td>
+        <td valign="top" align="center">
+            <?php if ($theRow['DEFAULT']) { ?>
+                <img src="<?php echo $this->STYLE; ?>active.png" border="0">
+                <form action="<?php echo $this->DEFAULT_ACTION; ?>" method="post">
+                    <input type="hidden" name="community" value="<?php echo $theRow['URL']; ?>">
+                    <?php echo $this->formButtonSmall('setDefault'.$theRow['ID'], $this->t('deactivate'), array('type' => 'submit')); ?>
+                </form>
+            <?php } else {?>
+                <img src="<?php echo $this->STYLE; ?>inactive.png" border="0">
+                <form action="<?php echo $this->DEFAULT_ACTION; ?>" method="post">
+                    <input type="hidden" name="community" value="<?php echo $theRow['URL']; ?>">
+                    <?php echo $this->formButtonSmall('setDefault'.$theRow['ID'], $this->t('activate'), array('type' => 'submit')); ?>
+                </form>
+            <?php } ?>
+		</td>
+        <td valign="top" align="center">
+            <?php if ($theRow['STATUS_ACTIVE'] === false) { ?>
+            <img src="<?php echo $this->STYLE; ?>sign_yes.png" border="0">
+            <?php } ?>
+        </td>
+        <td valign="top">
+            <form action="<?php echo $this->ALIAS_ACTION; ?>" method="post">
+                <input type="hidden" name="community" value="<?php echo $theRow['URL']; ?>">
+                http://<?php echo $this->formTextSmall('alias', '', array('id' => 'newUrl'.$theRow['ID'])); ?>
+                <?php echo $this->formButtonSmall('addAlias'.$theRow['ID'], $this->t('add'), array('type' => 'submit')); ?>
+            </form>
+		</td>
+    </tr>
+    <?php } ?>
+	</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>

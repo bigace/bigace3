@@ -1,0 +1,33 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+    echo $this->portletHeader($this->t('security_title'), array('toggle' => false));
+
+    if (isset($this->ERROR) && $this->ERROR !== null && count($this->ERROR) > 0) {
+        foreach ($this->ERROR as $msg) {
+            echo $this->message($msg, 'error');
+        }
+    }
+
+    if (count($this->INFO) > 0) {
+        foreach ($this->INFO as $msg) {
+            echo $this->message($msg, 'info');
+        }
+    }
+
+    if (count($this->FILES) > 0) {
+        echo '<div class="caution">' . $this->t('hint_security') . '</div>';
+        echo '<ul>';
+        foreach ($this->FILES as $file) {
+            echo '<li>'.str_replace(BIGACE_ROOT, '', $file).'</li>';
+        }
+        echo '</ul>';
+        echo '<form action="'.$this->DELETE.'" method="post">';
+        echo $this->deleteButton('deleteFiles');
+        echo '</form>';
+    }
+
+    echo $this->portletFooter();

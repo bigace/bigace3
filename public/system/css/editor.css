@@ -1,0 +1,84 @@
+body{font:13px/1.5 Arial, Helvetica, sans-serif; margin:3px 3px 10px 3px; padding:0px;}
+div { margin:0px; padding:0px; }
+img { border-width:0px; }
+.outerBody {}
+
+/* Content Pieces */
+.pieces{border-right:1px solid #666666;float:left;height:25px;}
+.pieces span {display:inline;float:left;padding:4px 0px 0px 10px;}
+.pieces a:link {font-weight:bold;float:left;padding:4px 5px 0px 10px;margin:0px;border:0px;}
+.pieces a:hover{color:white;background-color:#cccccc;}
+
+.helpTextInput {width:100%; color:#000000; font-size:10px; padding:3px;}
+h1.contentTitle {font-size:14px;font-weight:bold;margin:5px 0px 5px 0px;padding:0px;text-decoration:none;clear:both;}
+
+/* Editor Area */
+.outerEditor {padding:0px;}
+.translatorIframe {margin:0px 1% 0px 0px;padding:0px;border:1px solid #666666; height:400px; width:30%; float:left;}
+textarea.ba-editable-content {border:1px solid #666666; height:300px; width:99%; margin:0px 0.5%;}
+textarea.translated {width:68%;margin:0px; height:100%;}
+.translator {float:left;width:34%;height:100%;margin-top:0px;}
+.ctnEditorTranslate {float:right;width:64%;height:400px;}
+.ctnEditor {height:400px;padding:0px;}
+.readonly {float:right;}
+
+/* JGrowl */
+#jgrowlDiv, #jgrowlDiv div.jGrowl, div.jGrowl {position:absolute;top:0px;right:0px;z-index:100;}
+#msg-err { font-weight: bold; color: red; }
+#msg-err a, #msg-err a:link { font-weight: bold; color: #ffffff; }
+div.jGrowl {}
+div.jGrowl div.jGrowl-notification {font-size:14px;}
+
+.bigace-dialog {display:none; }
+
+.action-td {padding:0px 2px 0px 7px; float:right;}
+.action-title {margin-left: 10px; padding:1px 10px 0px 10px; font-size:1.2em; }
+.action-title img {margin-right: 10px;}
+
+/*
+    Button and toolbar copied from /system/admin/css/style.css 
+ */
+.ba-button {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:10px;
+    outline: 0; 
+    margin: 2px 4px 2px 0; 
+    padding: .4em 1em; 
+    text-decoration:none !important; 
+    text-align: center; 
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+    float: left;
+}
+
+.ba-button-small {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0; 
+    margin: 5px 4px 5px 0; 
+    padding: .15em 1em; 
+    text-decoration:none !important; 
+    text-align: center; 
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+}
+
+.ba-toolbar { padding-left: 0.4em; margin: 0 0 5px 0; }
+.ba-toolbar .ba-buttonset { margin-right:1em; padding-left: 1px; }
+.ba-toolbar .ba-button { font-size: 1em;  }
+.ba-toolbar .ba-button { font-size:1em; }
+.ba-buttonset { float:left; }
+.ba-buttonset-actions { float:right; }
+.ba-buttonset-help { float:right; }
+.ba-buttonset .ba-button, .ba-buttonset-help .ba-button, .ba-buttonset-actions .ba-button { float:left; }
+.ba-buttonset-single .ba-button, .ba-buttonset-multi .ba-button { margin-right:-1px; }
+.ba-button-icon-solo { display:block; text-indent:-9999px; width:8px; }
+.ba-button-icon-img { display:block; padding: 0.3em 0.5em; }
+.ba-toolbar .ba-toolbar-html { margin: 2px 4px 2px 0; float:left; } 
+
+/* changes to the jquery ui css to fit into the editor */
+.ui-dialog .ui-dialog-titlebar {padding:0.2em 1em 0.1em;}
+.ui-dialog .ui-dialog-buttonpane button { padding: 0px; margin: 0.2em 0.4em 0.2em 0; }
+.ui-dialog .ui-dialog-buttonpane button .ui-button-text {padding. 0.4em 0.7em; }

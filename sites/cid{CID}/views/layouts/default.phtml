@@ -1,0 +1,239 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/*
+Description: The default template for Bigace 3.
+Options: css=editor.css
+$Id$
+*/
+
+$this->adminBar()->includeJQuery(false)->enable();
+
+$this->t()->load('bigace');
+
+$menu       = $this->MENU;
+$allLinks   = $this->tplLinks($menu, $this->USER);
+$widgets    = $this->widgets($menu);
+$topLevel   = Bigace_Item_Basic::get(_BIGACE_ITEM_MENU, _BIGACE_TOP_LEVEL, $menu->getLanguageID());
+
+// fallback if top-level does not exist in current language
+if ($topLevel === null) {
+    $topLevel = Bigace_Item_Basic::get(_BIGACE_ITEM_MENU, _BIGACE_TOP_LEVEL);
+}
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $menu->getLanguageID(); ?>" lang="<?php echo $menu->getLanguageID(); ?>">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <?php echo $this->headStyle(); ?>
+    <?php echo $this->headLink(); ?>
+
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->directory('public'); ?>system/images/favicon.ico" />
+    <?php echo $this->headMeta(); ?>
+
+    <?php echo $this->metatags($menu); ?>
+
+    <link href="<?php echo $this->tpl('css/core.css'); ?>" rel="stylesheet" type="text/css" />
+    <script src="<?php echo $this->tpl('js/jquery.min.js'); ?>" language="javascript" type="text/javascript"></script>
+    <script src="<?php echo $this->tpl('js/scripts.js'); ?>" language="javascript" type="text/javascript"></script>
+    <!--[if lt IE 7]><link href="<?php echo $this->tpl('css/patch_ie6.css'); ?>" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if IE 7]><link href="<?php echo $this->tpl('css/patch_ie7.css'); ?>" rel="stylesheet" type="text/css" /><![endif]-->
+    <?php echo $this->headScript(); ?>
+
+    <?php Bigace_Hooks::do_action('tpl_header', $menu); ?>
+</head>
+
+<body>
+
+<div id="container">
+
+    <div id="page">
+
+        <div id="head">
+
+            <div class="title"><a href="<?php echo $this->link($topLevel); ?>"><?php echo htmlspecialchars($this->sitename()); ?></a></div>
+            <div class="languages"><?php echo $this->languageChooser(array(), array('hideActive' => true, 'images' => false)); ?></div>
+            <?php
+             /* important: there is no space allowed between <div#navibar> and <img>,
+                otherwise IE6 and IE7 will display some whitespace between image and navigation! */
+            ?>
+            <img id="lead" src="<?php echo $this->tpl('img/lead.jpg'); ?>" /><div id="navibar">
+
+                <ul id="navi">
+                <?php
+                    echo '<li><a href="'.$this->link($topLevel).'">'.$topLevel->getName().'</a></li>';
+
+                    echo $this->menu(
+                        $topLevel,
+                        array(
+                            'prefix' => '<li>', 'suffix' => '</li>', 'select' => $menu,
+                            'levelPrefix' => '<ul class="second-navi">', 'levelSuffix' => '</ul>',  'level' => 1
+                        )
+                    );
+                ?>
+                </ul>
+
+                <div id="search">
+
+                    <form action="<?php echo $allLinks['search']; ?>" method="post">
+                        <input type="text" name="search" value="" id="search-term" />
+                        <input type="submit" value="" id="search-sbmt" />
+                    </form>
+
+                </div>
+
+            </div>
+
+            <?php
+                $wayHome = $this->wayHome($menu);
+                if(count($wayHome) > 1) {
+                    echo '<ol id="breadcrumb" class="horizontal">';
+                    foreach ($wayHome as $item) {
+                        echo '<li>';
+                        if ($item->getID() == $menu->getID()) {
+                            echo $item->getName();
+                        } else {
+                            echo '<a href="'.$this->link($item).'">'.$item->getName().'</a><span></span>';
+                        }
+                        echo '</li>';
+                    }
+                    echo '</ol>';
+                }
+            ?>
+
+        </div>
+
+        <div id="columns">
+
+            <div id="posting" class="content">
+                <?php echo $this->content(); ?>
+                <p id="posting-foot" class="clear">
+                <?php
+                    echo sprintf(
+                        $this->t("page_footer"),
+                        $this->date($menu->getCreateDate()),
+                        $this->userProfileLink($menu->getCreateByID(), null, true)
+                    );
+                ?>
+                </p>
+
+                <?php echo Bigace_Hooks::do_action('tpl_footer', $menu); ?>
+
+            </div>
+
+            <div id="sidebar">
+
+                <?php
+                foreach ($widgets as $widget) {
+                   echo '<h5>' . $widget->getTitle() . '</h5>';
+                   echo '<div class="box">'.$widget->getHtml().'</div>';
+                }
+                ?>
+                <?php
+                /*
+
+                <h5>Über mich</h5>
+
+                <div class="box">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent iaculis ante at enim vulputate viverra. Morbi sit amet nibh enim. Mauris felis est, ullamcorper       at volutpat ut, scelerisque vitae metus.
+                </div>
+
+                <h5>Empfehlungen</h5>
+
+                <div class="box">
+                    <ul class="linklist">
+                        <li><a href="<?php echo $this->link($topLevel); ?>"><?php echo $topLevel->getName(); ?></a></li>
+                        <?php
+                        echo $this->menu(
+                            $topLevel,
+                            array('prefix' => '<li>', 'suffix' => '</li>', 'select' => $menu,)
+                        );
+                        ?>
+                    </ul>
+                </div>
+
+                <h5>Kontakt</h5>
+
+                <div class="box">
+                    <ul class="linklist">
+                        <li><a href="#" class="icon mail"><span></span>kontakt@example.com</a></li>
+                        <li><a href="#" class="icon icq"><span></span>Marius im ICQ</a></li>
+                        <li><a href="#" class="icon rss"><span></span>RSS Feeds</a></li>
+                        <li><a href="#" class="icon myspace"><span></span>Marius bei MySpace</a></li>
+                        <li><a href="#" class="icon picasa"><span></span>Fotoalben bei Picasa</a></li>
+                        <li><a href="#" class="icon flickr"><span></span>Fotoalben bei Flickr</a></li>
+                        <li><a href="#" class="icon buzz"><span></span>Folgen auf Google Buzz</a></li>
+                        <li><a href="#" class="icon facebook"><span></span>Marius bei Facebook</a></li>
+                        <li><a href="#" class="icon yahoo"><span></span>Marius bei Yahoo</a></li>
+                        <li><a href="#" class="icon xing"><span></span>Xing Profil</a></li>
+                        <li><a href="#" class="icon twitter"><span></span>Folgen auf Twitter</a></li>
+                        <li><a href="#" class="icon skype"><span></span>Skype</a></li>
+                    </ul>
+                    … oder nutze das <a href="#">Kontaktformular</a>
+                </div>
+                */
+                ?>
+
+                <?php echo Bigace_Hooks::do_action('tpl_sidebar', $menu); ?>
+
+            </div>
+
+            <div class="clear"></div>
+
+        </div>
+
+    </div>
+
+    <div id="foot">
+
+        <ul id="foot-links" class="horizontal">
+            <li><a href="<?php echo $this->link($topLevel); ?>"><?php echo $topLevel->getName(); ?></a></li>
+            <?php
+            echo $this->menu(
+                $topLevel,
+                array('prefix' => '<li>', 'suffix' => '</li>', 'select' => $menu)
+            );
+            ?>
+        </ul>
+
+        <p id="copyright">
+            Copyright <?php echo date('Y', time()); ?>
+            <?php echo Bigace_Config::get("community", "copyright.holder", "BIGACE CMS"); ?>.
+            <?php /* Please leave this link to spread the word for Bigace :) Thank you! */ ?>
+            Powered by <?php echo $this->copyright(true); ?>
+            <?php
+            if ($this->USER->isAnonymous()) {
+                echo ' | <a rel="nofollow" target="_self" href="'.$allLinks['login'].'">'.$this->t("login").'</a>';
+            } else {
+                echo '.<br/><a target="_blank" href="' . $allLinks['admin'] . '">' . $this->t("admin") . '</a> | ';
+                echo '<a target="_self" href="' . $allLinks['logout'] . '">' . $this->t("logout") . '</a>';
+            }
+            ?>
+        </p>
+
+    </div>
+
+</div>
+<?php echo $this->adminBar(); ?>
+</body>
+</html>

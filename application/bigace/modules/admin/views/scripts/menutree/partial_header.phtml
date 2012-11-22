@@ -1,0 +1,42 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+/**
+ * ATTENTION:
+ * This file is declared in items/partial_header.phtml
+ *
+ * Changes might need to be copied there as well.
+ */
+
+$this->dojo()->enable()
+             ->requireModule('dijit.MenuBar')
+             ->requireModule('dijit.MenuBarItem')
+             ->requireModule('dijit.MenuItem')
+             ->requireModule('dijit.PopupMenuBarItem')
+             ->requireModule('dijit.MenuSeparator');
+
+import('classes.util.links.EditorLink');
+import('classes.util.links.MenuChooserLink');
+import('classes.util.html.JavascriptHelper');
+
+$link = new MenuChooserLink();
+$link->setJavascriptCallback('setMenu'.str_replace('-', '_', $this->ITEM->getID()));
+$link->setItemID(_BIGACE_TOP_LEVEL);
+
+?>
+<script type="text/javascript">
+function setMenu<?php echo str_replace('-', '_', $this->ITEM->getID()); ?>(id, language, mname)
+{
+    Panel.moveItem(<?php echo $this->ITEM->getId(); ?>, "<?php echo $this->ITEM->getLanguageId(); ?>", id, 'inside');
+}
+
+<?php
+    echo JavascriptHelper::createJSPopup(
+        'parentSelector'.str_replace('-', '_', $this->ITEM->getID()),
+        'SelectParent', '400', '350',
+        LinkHelper::getUrlFromCMSLink($link), array('hideTree'), 'yes'
+    );
+?>
+</script>

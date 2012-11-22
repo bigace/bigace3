@@ -1,0 +1,67 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id: search.phtml 2 2010-07-25 14:27:00Z kevin $ */
+
+$amount = array(
+    '' => $this->t('search_reindex_all')
+);
+$from = array(
+    0 => 0
+);
+for ($i = 5; $i < 101; $i = $i + 5) {
+    $amount[$i] = $i;
+    $from[$i] = $i;
+}
+for ($i = 100; $i < 500; $i = $i + 50) {
+    $amount[$i] = $i;
+    $from[$i] = $i;
+}
+for ($i = 500; $i < 2500; $i = $i + 100) {
+    $amount[$i] = $i;
+    $from[$i] = $i;
+}
+for ($i = 2500; $i < 10000; $i = $i + 500) {
+    $amount[$i] = $i;
+    $from[$i] = $i;
+}
+
+
+$engines = array(
+    '' => $this->t('search_reindex_all')
+);
+foreach($this->engines as $engine) {
+    $name = get_class($engine);
+    $engines[$name] = $this->t('search_reindex_'.$name);
+}
+
+?>
+    <?php echo $this->portletHeader($this->t('search_reindex')); ?>
+        <form method="post" action="<?php echo $this->REINDEX; ?>">
+            <?php if (isset($this->duration)) { ?>
+                <?php
+                echo $this->message()->success(
+                    sprintf($this->t('search_reindex_time'), $this->duration, $this->reindex)
+                );
+                ?>
+            <?php } ?>
+            <p>
+              <?php echo $this->t('search_reindex_info'); ?>
+            </p>
+            <p>
+            <?php
+            echo sprintf(
+                $this->t('search_reindex_options'),
+                $this->formSelect('start', $this->start, array(), $from),
+                $this->formSelect('amount', $this->amount, array(), $amount),
+                $this->formSelect('engine', $this->engine, array(), $engines)
+            );
+            ?>
+            </p>
+            <p>
+              <a href="<?php echo Bigace_Core::manual('lucene')?>" target="_blank"><?php echo $this->t('search_reindex_link'); ?></a>
+            </p>
+            <?php echo $this->formButton('reindexBtn', $this->t('process'), array('type' => 'submit')); ?>
+          </form>
+    <?php echo $this->portletFooter(); ?>

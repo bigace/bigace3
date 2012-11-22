@@ -1,0 +1,119 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message()->error($this->ERROR);
+}
+
+if (isset($this->INFO)) {
+    echo $this->message()->info($this->INFO);
+}
+
+$this->tabpane()->add($this->t('tab_title_group_permissions'));
+$this->tabpane()->add($this->t('tab_title_new_permission'));
+$this->tabpane()->add($this->t('tab_title_import_export'), (isset($this->ACTIVE_TAB) && $this->ACTIVE_TAB == "export"));
+
+echo $this->tabpane()->begin();
+?>
+<?php echo $this->tabpane()->next(); ?>
+
+    <form action="<?php echo $this->ACTION_CHOOSE_GROUP; ?>" method="POST">
+        <p><?php echo $this->t('admin_group_frights'); ?> <?php echo $this->GROUP_SELECT; ?></p>
+    </form>
+
+    <?php echo $this->portletHeader($this->t('user_list'), array('full' => true)); ?>
+    <table width="100%" cellspacing="0" class="nicetable">
+    <col width="25"/>
+    <col />
+    <col />
+    <col />
+
+    <thead>
+        <tr>
+            <th></th>
+            <th><?php echo $this->t('name'); ?></th>
+            <th><?php echo $this->t('description'); ?></th>
+            <th align="center"><?php echo $this->t('action'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php foreach($this->PERMISSIONS AS $theRow) { ?>
+            <tr>
+            <?php if($theRow['ACTIVE']) { ?>
+                <td><a href="<?php echo $theRow['ACTION_URL']; ?>"><img src="<?php echo $this->STYLE; ?>active.png" border="0" alt="<?php echo $this->t('active'); ?>" title="<?php echo $this->t('active'); ?>"></a></td>
+            <?php } else { ?>
+                <td><a href="<?php echo $theRow['ACTION_URL']; ?>"><img src="<?php echo $this->STYLE; ?>inactive.png" border="0" alt="<?php echo $this->t('inactive'); ?>" title="<?php echo $this->t('inactive'); ?>"></a></td>
+            <?php } ?>
+                <td><?php echo $theRow['PERM']->getName(); ?></td>
+                <td><?php echo $theRow['PERM']->getDescription(); ?></td>
+            <?php if($theRow['ACTIVE']) { ?>
+                <td align="center">
+                    <form action="<?php echo $theRow['ACTION_URL']; ?>" method="post">
+                        <?php echo $this->formButton($theRow['PERM']->getID().'deactivate', $this->t('deactivate'), array('type' => 'submit')); ?>
+                    </form>
+                </td>
+            <?php } else { ?>
+                <td align="center">
+                    <form action="<?php echo $theRow['ACTION_URL']; ?>" method="post">
+                        <?php echo $this->formButton($theRow['PERM']->getID().'activate', $this->t('activate'), array('type' => 'submit')); ?>
+                    </form>
+                </td>
+            <?php } ?>
+            </tr>
+            </form>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+
+<?php echo $this->tabpane()->next(); ?>
+
+    <form action="<?php echo $this->CREATE_URL; ?>" method="post" onreset="">
+    <table cellspacing="1" cellpadding="4" width="100%">
+    <tr>
+        <td><label for="data-name"><?php echo $this->t('name'); ?></label></td>
+        <td>
+            <?php echo $this->formText('data[name]', null, array('maxlength' => '255')); ?>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="data-description"><?php echo $this->t('description'); ?></label></td>
+        <td>
+            <?php echo $this->formTextarea('data[description]'); ?>
+        </td>
+    </tr>
+    </table>
+    <br/>
+        <?php echo $this->createButton("createPerm"); ?>
+    </form>
+
+<?php echo $this->tabpane()->next(); ?>
+
+    <fieldset>
+        <legend><?php echo $this->t('fieldset_export'); ?></legend>
+        <?php if (isset($this->EXPORT_XML)) { ?>
+        <?php echo $this->formTextarea("exported", $this->EXPORT_XML, array('style' => "width:95%;height:400px;")); ?>
+        <?php } else { ?>
+        <form action="<?php echo $this->EXPORT_URL; ?>" method="post">
+            <?php echo $this->formButton('export', $this->t('export_button'), array('type' => 'submit')); ?>
+        </form>
+        <?php } ?>
+    </fieldset>
+
+    <fieldset>
+        <legend><?php echo $this->t('fieldset_import'); ?></legend>
+        <form action="<?php echo $this->IMPORT_URL; ?>" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="mode" value="importFile">
+            <label><?php echo $this->t('import_file_title'); ?>
+                <input type="file" name="XMLFILE"></label>
+            <?php echo $this->formButton('import', $this->t('import_button'), array('type' => 'submit')); ?>
+        </form>
+    </fieldset>
+</div>
+
+<?php echo $this->tabpane()->end(); ?>
+

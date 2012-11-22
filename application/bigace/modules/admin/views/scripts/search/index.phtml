@@ -1,0 +1,172 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message()->error($this->ERROR);
+}
+
+if (isset($this->INFO)) {
+    echo $this->message()->info($this->INFO);
+}
+
+/* @var $result Bigace_Search_Result */
+
+if(isset($this->RESULT_MENU))
+{
+    echo $this->portletHeader($this->t('item_1') . ' ('.count($this->RESULT_MENU).')', array('full' => true));
+    if (count($this->RESULT_MENU) > 0) { ?>
+	<table class="nicetable" width="100%" cellspacing="0">
+		<col width="80" />
+		<col width="40" />
+		<col />
+		<col width="100" />
+		<thead>
+			<tr>
+				<th align="center"><?php echo $this->t('language'); ?></th>
+				<th align="center"><?php echo $this->t('id'); ?></th>
+				<th><?php echo $this->t('name'); ?></th>
+				<th align="center"><?php echo $this->t('action'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($this->RESULT_MENU as $result) { ?>
+			<tr>
+				<td align="center"><img src="<?php echo $this->STYLE; ?>languages/<?php echo $result->getLanguage(); ?>.gif"></td>
+				<td align="center"><?php echo $result->getField('itemid'); ?></td>
+				<td><a href="<?php echo $result->getAdminUrl(); ?>" class="edit"><?php echo $result->getTitle(); ?></a></td>
+				<td align="center"><?php echo $this->actionLink($this->t('preview'), 'preview', $result->getUrl()); ?>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+<?php
+    } else {
+        echo '<b>' . $this->t('msg_no_result') . '</b>';
+    }
+
+    echo $this->portletFooter();
+}
+
+if(isset($this->RESULT_IMAGE))
+{
+    echo $this->portletHeader($this->t('item_4') . ' ('.count($this->RESULT_IMAGE).')', array('full' => true));
+    if(count($this->RESULT_IMAGE) > 0) { ?>
+	<table class="nicetable" width="100%" cellspacing="0">
+		<col width="80" />
+		<col width="40" />
+		<col />
+		<col width="100" />
+		<thead>
+			<tr>
+				<th align="center"><?php echo $this->t('language'); ?></th>
+				<th align="center"><?php echo $this->t('id'); ?></th>
+				<th><?php echo $this->t('name'); ?></th>
+				<th align="center"><?php echo $this->t('action'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($this->RESULT_IMAGE as $result) { ?>
+			<tr>
+                <td align="center"><img src="<?php echo $this->STYLE; ?>languages/<?php echo $result->getLanguage(); ?>.gif"></td>
+                <td align="center"><?php echo $result->getField('itemid'); ?></td>
+                <td><a href="<?php echo $result->getAdminUrl(); ?>" class="edit"><?php echo $result->getTitle(); ?></a></td>
+                <td align="center"><?php echo $this->actionLink($this->t('preview'), 'preview', $result->getUrl()); ?>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+<?php
+    } else {
+        echo '<b>' . $this->t('msg_no_result') . '</b>';
+    }
+
+    echo $this->portletFooter();
+}
+
+if(isset($this->RESULT_FILE))
+{
+    echo $this->portletHeader($this->t('item_5') . ' ('.count($this->RESULT_FILE).')', array('full' => true));
+    if(count($this->RESULT_FILE) > 0) { ?>
+	<table class="nicetable" width="100%" cellspacing="0">
+		<col width="80" />
+		<col width="40" />
+		<col />
+		<col width="100" />
+		<thead>
+			<tr>
+				<th align="center"><?php echo $this->t('language'); ?></th>
+				<th align="center"><?php echo $this->t('id'); ?></th>
+				<th><?php echo $this->t('name'); ?></th>
+				<th align="center"><?php echo $this->t('action'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($this->RESULT_FILE as $result) { ?>
+			<tr>
+                <td align="center"><img src="<?php echo $this->STYLE; ?>languages/<?php echo $result->getLanguage(); ?>.gif"></td>
+                <td align="center"><?php echo $result->getField('itemid'); ?></td>
+                <td><a href="<?php echo $result->getAdminUrl(); ?>" class="edit"><?php echo $result->getTitle(); ?></a></td>
+                <td align="center"><?php echo $this->actionLink($this->t('preview'), 'preview', $result->getUrl()); ?>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+<?php
+    } else {
+        echo '<b>' . $this->t('msg_no_result') . '</b>';
+    }
+
+    echo $this->portletFooter();
+}
+
+if(isset($this->RESULT_USER))
+{
+    echo $this->portletHeader($this->t('user') . ' ('.count($this->RESULT_USER).')', array('full' => true));
+    if (count($this->RESULT_USER) > 0) { ?>
+	<table class="nicetable" width="100%" cellspacing="0">
+		<col width="80" />
+		<col width="40" />
+		<col />
+		<col />
+		<col width="100" />
+        <col width="80" />
+		<thead>
+			<tr>
+                <th align="center"><?php echo $this->t('language'); ?></th>
+                <th align="center"><?php echo $this->t('id'); ?></th>
+                <th><?php echo $this->t('name'); ?></th>
+                <th><?php echo $this->t('email'); ?></th>
+                <th align="center"><?php echo $this->t('state'); ?></th>
+                <th align="center"><?php echo $this->t('action'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($this->RESULT_USER as $result) { ?>
+			<tr>
+                <td align="center"><img src="<?php echo $this->STYLE; ?>languages/<?php echo $result->getLanguage(); ?>.gif"></td>
+                <td align="center"><?php echo $result->getField('userid'); ?></td>
+                <td><a href="<?php echo $result->getAdminUrl(); ?>" class="useredit"><?php echo $result->getTitle(); ?></a></td>
+                <td><?php echo $result->getField('email'); ?></td>
+                <td align="center">
+                <?php if($result->getField('active')) { ?>
+                    <img src="<?php echo $this->STYLE; ?>active.png" border="0" alt="<?php echo $this->t('user_active'); ?>" title="<?php echo $this->t('user_active'); ?>" class="tooltip" />
+                <?php } else { ?>
+                    <img src="<?php echo $this->STYLE; ?>inactive.png" border="0" alt="<?php echo $this->t('user_inactive'); ?>" title="<?php echo $this->t('user_inactive'); ?>" class="tooltip" />
+                <?php } ?>
+                </td>
+                <td align="center"><?php if ($result->getUrl() !== null) { echo $this->actionLink($this->t('preview'), 'preview', $result->getUrl()); }; ?>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+<?php
+    } else {
+        echo '<b>' . $this->t('msg_no_result') . '</b>';
+    }
+
+    echo $this->portletFooter();
+}
+?>

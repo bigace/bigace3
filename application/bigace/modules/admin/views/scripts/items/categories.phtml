@@ -1,0 +1,91 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+echo $this->partial('partial_header.phtml', array(
+    'STYLE'    => $this->STYLE,
+    'ITEM'     => $this->ITEM,
+    'URL_MOVE' => $this->URL_MOVE,
+    'URL_MODE' => $this->URL_MODE
+));
+
+echo $this->partial('partial_toolbar.phtml', array(
+    'TOOLBAR_ENTRIES' => $this->TOOLBAR_ENTRIES,
+    'ITEM'            => $this->ITEM,
+    'STYLE'           => $this->STYLE
+));
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+if (!isset($this->noBacklink) || $this->noBacklink !== true) {
+    echo $this->backlink($this->BACK_URL);
+}
+
+if(count($this->AMOUNT) > 0)
+{
+
+    if(isset($this->FORM_ACTION))
+    {
+    ?>
+    <form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+        <input type="hidden" name="data[id]" value="<?php echo $this->ITEM_ID; ?>">
+        <input type="hidden" name="data[langid]" value="<?php echo $this->ITEM_LANGUAGE_ID; ?>">
+        <?php echo $this->t('link_category'); ?> <?php echo $this->CATEGORY_SELECTOR; ?>
+        <?php echo $this->formButtonSmall('addCategory', $this->t('process'), array('type' => 'submit')); ?>
+    </form>
+    <?php
+    }
+
+    if(count($this->CATEGORIES) > 0)
+    {
+        ?>
+        <?php echo $this->portletHeader($this->t('item_category'), array('full' => true)); ?>
+        <table class="nicetable" width="100%" cellspacing="0">
+        <col />
+        <col width="60"/>
+        <col width="20%"/>
+
+        <thead>
+	        <tr>
+		        <th><?php echo $this->t('name'); ?></th>
+		        <th><?php echo $this->t('id'); ?></th>
+		        <th align="center"><?php echo $this->t('remove_category'); ?></th>
+	        </tr>
+        </thead>
+
+        <tbody>
+            <?php foreach($this->CATEGORIES AS $theRow) { ?>
+            <tr>
+                <td><?php echo $theRow['CATEGORY_NAME']; ?></td>
+                <td><?php echo $theRow['CATEGORY_ID']; ?></td>
+                <td align="center">
+                    <?php echo $this->deleteLink($theRow['CATEGORY_DELETE']) ; ?>
+                </td>
+            </tr>
+            <?php } ?>
+	        </tbody>
+        </table>
+        <?php echo $this->portletFooter(); ?>
+        <?php
+    }
+    else
+    {
+        echo $this->message($this->t('no_category_links'), 'info');
+    }
+}
+else
+{
+    echo $this->message($this->t('no_categorys'), 'info');
+}
+
+echo $this->partial('partial_footer.phtml', array(
+    'BASE_ITEM_URL' => $this->BASE_ITEM_URL,
+    'REMOVE_LANGUAGE' => $this->REMOVE_LANGUAGE)
+);

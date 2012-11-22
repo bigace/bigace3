@@ -1,0 +1,18 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+?>
+    <?php echo $this->portletHeader($this->t('cache_flush')); ?>
+        <form method="post" action="<?php echo $this->ACTION; ?>">
+            <?php if (isset($this->DURATION)) { ?>
+                <?php echo $this->message()->success(sprintf($this->t('cache_flush_time'), $this->DURATION)); ?>
+            <?php } ?>
+            <p>
+                <?php echo $this->t('cache_flush_info'); ?>
+            </p>
+            <?php echo $this->formButton('cacheFlushBtn', $this->t('process'), array('type' => 'submit')); ?>
+	      </form>
+    <?php echo $this->portletFooter(); ?>

@@ -1,0 +1,85 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+/* @var $feedback array */
+$feedback = isset($this->FEEDBACK) ? $this->FEEDBACK : array();
+/* @var $action string */
+$action = $this->ACTION;
+
+$this->tabpane()->add($this->t('menu_credits'));
+$this->tabpane()->add($this->t('menu_license'));
+$this->tabpane()->add($this->t('menu_feedback'), ($action == "feedback"));
+
+echo $this->tabpane()->begin();
+?>
+
+<?php echo $this->tabpane()->next(); ?>
+      <img src="<?php echo $this->directory('public'); ?>system/logo/bigace_87.png" style="margin:10px;" align="right" />
+
+      <h2><?php echo $this->t('title_credits'); ?></h2>
+      <p><i><?php echo $this->t('credits_intro'); ?></i></p>
+
+      <h1 class="credit">Credits</h1>
+      <p>
+        BIGACE <?php echo $this->t('created_by'); ?> <b>Kevin Papst</b>
+        (<a href="http://www.kevinpapst.de/" target="_blank">http://www.kevinpapst.de/</a>)
+        <br /><br /><i><?php echo $this->t('third_party_intro'); ?></i>
+      </p>
+
+        <?php foreach ($this->CREDITS as $title => $creditlist) { ?>
+            <h1 class="credit"><?php echo $title; ?></h1>
+            <ul class="creditList">
+                <?php foreach ($creditlist as $creditTitle => $credit) { ?>
+                    <li class="creditEntry">
+                        <b><?php echo $creditTitle; ?></b> by <?php echo $credit['copyright']; ?>
+                        <br /><?php echo $credit['description']; ?><br />
+                        <a href="<?php echo $credit['weblink']; ?>" target="_blank"><?php echo $credit['weblink']; ?></a>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+
+<?php echo $this->tabpane()->next(); ?>        
+
+      <h2><?php echo $this->t('title_license'); ?></h2>
+      <div class="license">
+          <b>BIGACE <?php echo Bigace_Core::VERSION . ' ' . Bigace_Core::BUILD; ?> - Copyright (C) 2002-<?php echo $this->YEAR_TODAY; ?> Kevin Papst</b>
+            <br>
+            See
+            <a href="http://www.opensource.org/licenses/gpl-license.php" target="_blank">Opensource.org</a> and
+            <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU.org</A>.
+            <br/><br/>
+            <div><?php
+            echo nl2br( file_get_contents(dirname(__FILE__).'/gpl.txt') );
+            ?></div>
+       </div>
+
+<?php echo $this->tabpane()->next(); ?>
+
+      <h2><?php echo $this->t('title_feedback'); ?></h2>
+        <?php if ($feedback['status'] != '') { ?><div class="info"><?php echo $feedback['status']; ?></div><?php } ?>
+        <?php if ($feedback['error'] != '') { ?><div class="error"><?php echo $feedback['error']; ?></div><?php } ?>
+        <form action="<?php echo $feedback['url']; ?>" method="post">
+            <label><?php echo $this->t('feedback_name'); ?>:</label>
+            <?php echo $this->formText('data[name]', $feedback['name']); ?>
+
+            <label><?php  echo $this->t('feedback_email'); ?>:</label>
+            <?php echo $this->formText('data[email]', $feedback['email']); ?>
+
+            <label><?php echo $this->t('feedback_subject'); ?>*:</label>
+            <?php echo $this->formText('data[subject]', $feedback['subject']); ?>
+
+            <label><?php echo $this->t('feedback_message'); ?>*:</label>
+            <?php echo $this->formTextarea('data[message]', $feedback['message']); ?>
+
+            <span style="font-size:85%">* <?php echo $this->t('feedback_required'); ?></span>
+            <br/>
+            <label><input type="checkbox" name="data[emailOwn]"> <?php echo $this->t('feedback_emailcopy'); ?></label>
+            <?php echo $this->formButton('send', $this->t('feedback_send'), array('type' => "submit")); ?>
+        </form>
+   </div>
+
+<?php echo $this->tabpane()->end(); ?>
+

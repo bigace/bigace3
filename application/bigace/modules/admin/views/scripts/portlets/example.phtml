@@ -1,0 +1,32 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+?>
+    <?php echo $this->portletHeader( $this->TITLE ); ?>
+	      <p>This can be any content you want. I placed a basic form here with text editor so you can see the functionality of the forms too.</p>
+	      <h1>This is a form heading 1</h1>
+	      <h2>This is a form heading 2</h2>
+	      <h3>This is a form heading 3</h3>
+	      <form id="form1" name="form1" method="post" action="<?php echo $this->ACTION_URL; ?>">
+	        <label>Some title</label>
+	        <?php echo $this->formTextSmall("textfield1"); ?>
+		    <label>Large input box</label>
+	        <?php echo $this->formText("textfield2"); ?>
+            <label>This is a textarea</label>
+	        <?php echo $this->formTextarea("textfield2", 'Default content', array('cols'=>"45", 'rows'=>"3")); ?>
+            <label for="selectExample">This is a Select Box</label>
+	        <?php echo $this->formSelect('selectExample', '2', null, array('1' => 'Test 1', '2' => 'Test 2', '3' => 'A longer entry to test large options')); ?>
+<?php /*
+            <label for="multiSelect1">This is a jQuery Multiselect</label>
+	        <?php echo $this->multiSelect('multiSelect1', '2', null, array('1' => 'Test 1', '2' => 'Test 2', '3' => 'A longer entry to test large options')); ?>
+
+            <label for="multiSelect2">This is another jQuery Multiselect</label>
+	        <?php echo $this->multiSelect2('multiSelect2', '2', array('minWidth' => 100), array('1' => 'Test 1', '1' => 'Test 2', '3' => 'A longer entry to test large options')); ?>
+*/ ?><br/>
+            <?php echo $this->linkButton('Save'); ?>
+            <?php echo $this->formButton('xxx', 'Submit', array('type' => 'submit')); ?>
+            <?php echo $this->saveButton('id1111'); ?>
+	      </form>
+    <?php echo $this->portletFooter(); ?>

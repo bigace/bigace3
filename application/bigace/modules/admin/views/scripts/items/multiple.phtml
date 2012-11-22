@@ -1,0 +1,83 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (!isset($this->noBacklink)) {
+    echo $this->backlink($this->BACK_URL);
+}
+
+if(isset($this->ERROR))
+    echo $this->message($this->ERROR, 'error');
+
+if(isset($this->INFO))
+    echo $this->message($this->INFO, 'info');
+
+if(isset($this->SUCCESS))
+    echo $this->message($this->SUCCESS, 'success');
+
+/*
+
+    fenster = open(<?php echo $this->MENU_CHOOSER_LINK; ?>,"SelectParent","menubar=no,toolbar=no,statusbar=no,directories=no,location=no,scrollbars=yes,resizable=no,height=350,width=400,screenX=0,screenY=0");
+*/
+?>
+
+<h2><?php echo $this->t('update_multiple'); ?></h2>
+
+<form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+<input type="hidden" name="language" value="<?php echo $this->FORM_LANGUAGE; ?>" />
+
+<table border="0" cellpadding="5" width="100%">
+<tr>
+  <td valign="top">
+    <table border="0" cellspacing="0" style="margin-top:0px">
+    <?php foreach($this->ITEMS as $item) { ?>
+        <tr>
+	        <td width="30"><input type="checkbox" name="data[ids][]" value="<?php echo $item->getID(); ?>" checked="checked"></td>
+	        <td>
+    	        <?php
+	                echo $this->previewLink($this->link($item), array('text' => $item->getName(), 'target' => "_blank"));
+	            ?>
+	        </td>
+        </tr>
+    <?php } ?>
+    </table>
+  </td>
+  <td width="415px" valign="top">
+    <label for="updateMultiple">
+        <input type="radio" name="mode" value="list" id="updateMultiple" checked="checked">
+        <?php echo $this->t('multipleReload'); ?>
+    </label>
+
+    <!-- label for="dwnldZip">
+        <input type="radio" name="mode" value="zip" id="dwnldZip">
+        <?php echo $this->t('mode_download'); ?>
+    </label -->
+
+    <label for="deleteMultiple">
+        <input type="radio" name="mode" value="delete" id="deleteMultiple">
+        <?php echo $this->t('delete'); ?>
+    </label>
+
+    <label for="setGroupPerm">
+        <input type="radio" name="mode" value="permission" id="setGroupPerm">
+        <?php echo $this->t('multiplePermission'); ?>
+    </label>
+    <?php echo $this->GROUP_SELECT; ?> <?php echo $this->PERMISSION_SELECT; ?>
+
+    <label for="parentMultiple">
+        <input type="radio" name="mode" value="move" id="parentMultiple">
+        <?php echo $this->t('save_below'); ?>
+    </label>
+
+    <?php echo $this->parentChooser('parentID'); ?>
+
+  </td>
+</tr>
+</table>
+
+<?php echo $this->formButton('multiSubmit', $this->t('multipleButton'), array('type' => 'submit')); ?>
+
+</form>
+

@@ -1,0 +1,477 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+/**
+Panel.getTree().cut();
+    this.action_cut_context(Panel.getTree().selected);
+Panel.getTree().copy();
+Panel.getTree().paste();
+    this.action_paste_context(Panel.getTree().selected);
+
+action_categories_context(Panel.getTree().selected);
+action_remove_context(Panel.getTree().selected);
+*/
+
+
+$this->dojo()->enable()
+             ->requireModule('dojo.parser')
+             ->requireModule('dijit.Dialog')
+             ->requireModule('dijit.layout.ContentPane')
+             ->requireModule('dijit.layout.TabContainer')
+             ->requireModule('dijit.layout.BorderContainer')
+             ->requireModule('dijit.MenuBar')
+             ->requireModule('dijit.MenuBarItem')
+             ->requireModule('dijit.MenuItem')
+             ->requireModule('dijit.PopupMenuBarItem')
+             ->requireModule('dijit.MenuSeparator')
+             ->requireModule('bigace.admin.Menus');
+
+$localeService = new Bigace_Locale_Service();
+$allLocales    = $localeService->getAll();
+$am            = new Bigace_Locale($this->TREE_LANGUAGE);
+
+?>
+<div dojoType="dijit.layout.BorderContainer" design="sidebar" gutters="false"
+    liveSplitters="true" style="width:100%;height:900px;">
+
+    <div dojoType="dijit.layout.ContentPane" splitter="true" region="leading" gutters="false"
+        style="width:250px;height:100%;" id="menuTree">
+
+        <div dojoType="dijit.MenuBar">
+            <div dojoType="dijit.PopupMenuBarItem">
+                <span>
+                    <?php echo $this->t('action'); ?>
+                </span>
+                <div dojoType="dijit.Menu" id="actionMenu">
+                <?php /* ?>
+                    <div dojoType="dijit.MenuItem" onClick="Panel.createMenu()" iconClass="bigaceIconCreatePage">
+                        <?php echo $this->t('item_action_newpage'); ?>
+                    </div>
+                <?php */ ?>
+                    <div dojoType="dijit.MenuItem" onClick="Panel.refresh()" iconClass="bigaceIconReload">
+                        <?php echo $this->t('tree_action_reloadTree'); ?>
+                    </div>
+                    <div dojoType="dijit.CheckedMenuItem" onClick="Panel.switchTreeMode()">
+                        <?php echo $this->t('tree_action_multiple'); ?>
+                    </div>
+                    <div dojoType="dijit.MenuSeparator">&nbsp;</div>
+	                <div id="openOnSelect" dojoType="dijit.CheckedMenuItem" <?php if ($this->OPEN_ON_SELECT) { echo ' checked="checked"'; } ?>>
+	                    <?php echo $this->t('tree_action_openOnSelect'); ?>
+	                </div>
+                </div>
+            </div>
+            <div dojoType="dijit.PopupMenuBarItem">
+                <span>
+                    <?php echo $this->t('language'); ?>
+                </span>
+                <div dojoType="dijit.Menu" id="editMenu">
+                <?php
+                    echo '
+                    <div iconClass="bigaceIcon bigaceIconLocale bigaceIconLocale'.ucfirst($am->getLocale()).'" dojoType="dijit.MenuItem" onClick="Panel.loadLanguageTree(\''.$am->getLocale().'\')">
+                        '.$am->getName($this->LANGUAGE).'
+                    </div>
+                    ' . "\n";
+
+                    foreach ($allLocales as $langTemp) {
+                        if($langTemp->getLocale() == $this->TREE_LANGUAGE) {
+                            continue;
+                        }
+                        echo '
+                        <div iconClass="bigaceIcon bigaceIconLocale bigaceIconLocale'.ucfirst($langTemp->getLocale()).'" dojoType="dijit.MenuItem" onClick="Panel.loadLanguageTree(\''.$langTemp->getLocale().'\')">
+                            '.$langTemp->getName($this->LANGUAGE).'
+                        </div>
+                        ' . "\n";
+                    }
+                ?>
+                </div>
+            </div>
+        </div>
+
+        <div id="treePane">
+            <form id="multipleForm" method="post" action="<?php echo $this->URL_MULTIPLE; ?>">
+            <input type="hidden" name="language" value="<?php echo $this->TREE_LANGUAGE; ?>" />
+            </form>
+            <div id="tree-data"></div>
+        </div>
+
+    </div>
+
+    <div dojoType="dijit.layout.TabContainer" doLayout="true" gutters="false" region="center"
+        id="tabsAdminPages" tabStrip="true" useMenu="true">
+
+        <div dojoType="dijit.layout.ContentPane" id="welcomePanelTab"
+            title="<?php echo $this->t('welcome_tab_title'); ?>" style="height:400px"
+            href="<?php echo $this->URL_OVERVIEW; ?>">
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+<!--
+
+Panel = null;
+
+// on page load
+dojo.addOnLoad(function () {
+
+    Panel = new bigace.admin.Menus({
+        iconFolder: "<?php echo $this->STYLE; ?>",
+        tabContainerId: 'tabsAdminPages',
+        treeId: 'tree-data',
+        welcomeId: 'welcomePanelTab',
+        rootID: <?php echo $this->TOPLEVEL->getID(); ?>,
+        rootParent: <?php echo _BIGACE_TOP_PARENT; ?>,
+        rootLang: "<?php echo $this->TREE_LANGUAGE; ?>",
+        translations: {
+            errorDefault:      "<?php echo $this->t('error_default'); ?>: ",
+            errorDelete:       "<?php echo $this->t('error_delete'); ?>",
+            errorMove:         "<?php echo $this->t('error_move'); ?>",
+            errorPreview:      "<?php echo $this->t('error_preview'); ?>: ",
+            loading:           "<?php echo $this->t('tree_loading'); ?>",
+            confirmDeletePage: "<?php echo addslashes($this->t('confirm_delete_node')); ?>",
+            confirmDeleteTree: "<?php echo addslashes($this->t('confirm_delete_tree')); ?>",
+            createPage:        "<?php echo $this->t('item_action_newpage'); ?>",
+            newTreeNode:       "<?php echo $this->t('tree_new_node'); ?>",
+            confirmChangeLang: "<?php echo $this->t('confirm_change_language'); ?>"
+        },
+        urls: {
+            remove:  "<?php echo $this->URL_DELETE; ?>",
+            move:    "<?php echo $this->URL_MOVE; ?>",
+            info:    "<?php echo $this->URL_INFO; ?>",
+            create:  "<?php echo $this->URL_CREATE; ?>",
+            mode:    "<?php echo $this->URL_MODE; ?>",
+            edit:    "<?php echo $this->URL_EDIT; ?>",
+<?php if ($this->PERM_EDIT_CONTENT) { ?>
+            wysiwyg: "<?php echo $this->URL_EDITOR; ?>",
+<?php } ?>
+            tree:    "<?php echo $this->URL_TREE; ?>"
+        }
+    });
+
+    Panel.contextNormal = [
+        {
+            label   : "<?php echo $this->t('admin'); ?>",
+            icon    : Panel.getIconUrl("menu_fckeditor.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                    return false;
+
+                if(NODE.length != 1)
+                    return false;
+
+                return TREE_OBJ.check("renameable", NODE);
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.adminPage(NODE); }
+        },
+        <?php if ($this->PERM_EDIT_CONTENT) { ?>
+        {
+            label   : "<?php echo $this->t('edit_content'); ?>",
+            icon    : Panel.getIconUrl("menu_htmleditor.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                    return false;
+
+                if(NODE.length != 1)
+                    return false;
+
+                return TREE_OBJ.check("renameable", NODE);
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.editPageContent(NODE); },
+            separator_after : true
+        },
+        <?php } ?>
+        /*
+        {
+            label   : "Rename",
+            icon    : "rename.png",
+            visible : function (NODE, TREE_OBJ) { if(NODE.length != 1) return false; return TREE_OBJ.check("renameable", NODE); },
+            action  : function (NODE, TREE_OBJ) { TREE_OBJ.rename(); }
+        },*/
+        {
+            label   : "<?php echo $this->t('item_category'); ?>",
+            icon    : Panel.getIconUrl("images/tag_blue.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                    return false;
+
+                if(NODE.length != 1)
+                    return false;
+
+                return TREE_OBJ.check("renameable", NODE);
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.editCategories(NODE); }
+        },
+        {
+            label   : "<?php echo $this->t('rights'); ?>",
+            icon    : Panel.getIconUrl("rights.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                    return false;
+
+                if(NODE.length != 1)
+                    return false;
+
+                return TREE_OBJ.check("renameable", NODE);
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.editPermissions(NODE); }
+        },
+        {
+            label   : "<?php echo $this->t('preview'); ?>",
+            icon    : Panel.getIconUrl("preview.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                    return false;
+
+                if(NODE.length != 1)
+                    return false;
+
+                return true;
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.preview(NODE.metadata().url); },
+            separator_after : true
+        },
+        {
+            label   : "<?php echo $this->t('tree_context_multiple'); ?>",
+            icon    : "",
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox')
+                {
+                    var visi = false;
+                    TREE_OBJ.container.find("a.checked").each(function(i) {
+                        var data = TREE_OBJ.get_node(this).metadata();
+                        if (typeof data.id != 'undefined') {
+                            visi = true;
+                        }
+                    });
+                    return visi;
+                }
+
+                return false;
+            },
+            action  : function (NODE, TREE_OBJ) {
+                var inForm = '<input type="hidden" name="mode" value="list" />';
+                var state = 0;
+                $("#tree-data").find("a.checked").each(function(i) {
+                    var node = Panel.getTree().get_node(this);
+                    var data = node.metadata();
+                    if (typeof data.id != 'undefined') {
+                        // if node and metadata is already loaded use those
+                        inForm += '<input type="hidden" name="data[ids][]" value="'+data.id+'" />';
+                        state = 1;
+                    } else if (node.attr('itemid') != null) {
+                        // otherwise use the fallback attribute which is always there
+                        inForm += '<input type="hidden" name="data[ids][]" value="'+node.attr('itemid')+'" />';
+                        state = 1;
+                    }
+                });
+
+                if(state == 0) {
+                    alert('Please choose at least one page.'); // TODO translate
+                } else {
+                    $("#multipleForm").html(inForm);
+
+                    var multiplePane = Panel.openTreeRefreshingTab(null, '<?php echo $this->t('tree_action_multiple'); ?>');
+
+                    var xhrArgs = {
+                        form: dojo.byId("multipleForm"),
+                        handleAs: "text",
+                        load: function(data) {
+                            multiplePane.set('content', data);
+                            multiplePane.connectFormAndLinks();
+                        },
+                        error: function(error) {
+                            multiplePane.set('content', "Could not load multiple-update form."); // TODO translate
+                        }
+                    }
+                    var deferred = dojo.xhrPost(xhrArgs);
+                }
+            },
+            separator_after : true
+        },
+        {
+            label   : "<?php echo $this->t('item_action_newpage'); ?>",
+            icon    : Panel.getIconUrl("item_1_new.png"),
+            visible : function (NODE, TREE_OBJ) {
+                if (Panel.treeConfig.ui.theme_name == 'checkbox') {
+                    return false;
+                }
+
+                if (NODE.length != 1) {
+                    return false;
+                }
+
+                return TREE_OBJ.check("creatable", NODE);
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.createMenuByNode(NODE); },
+            separator_after : true
+        },
+        {
+            label   : "<?php echo $this->t('delete'); ?>",
+            icon    : Panel.getIconUrl("delete.png"), // deleteNode()
+            visible : function (NODE, TREE_OBJ) {
+                if(Panel.treeConfig.ui.theme_name == 'checkbox') {
+                    return false;
+                }
+                var ok = true;
+                $.each(NODE, function () {
+                    if (TREE_OBJ.check("deletable", this) == false) {
+                        ok = false;
+                    }
+                    return false;
+                });
+                return ok;
+            },
+            action  : function (NODE, TREE_OBJ) { Panel.deletePage(NODE); }
+        }
+    ];
+
+    Panel.treeConfig = {
+        data : {
+            type : "json",
+            async : true,
+            opts : {
+                method : "GET",
+                url : "<?php echo $this->URL_TREE; ?>"
+            }
+        },
+        ui : {
+            theme_name  : "bigace",
+        },
+        plugins : {
+		    metadata : {
+			    attribute : "mdata"
+		    },
+		    contextmenu : {
+		        items : Panel.contextNormal
+		    }
+	    },
+        rules   : {
+            multiple    : false,
+            multitree   : "none",
+            drag_copy   : false
+        },
+        lang : {
+            new_node    : Panel.translations.newTreeNode,
+            loading     : Panel.translations.loading
+        },
+        callback    : {
+            beforedata : function (NODE,TREE_OBJ) {
+                return { treeID : $(NODE).attr("id") || Panel.rootParent, treeLng: Panel.rootLang }
+            },
+            onselect    : function(NODE,TREE_OBJ) {
+                // When changing back form checkbox tree, a select will be triggered
+                if(Panel.multi) {
+                    TREE_OBJ.deselect_branch(NODE);
+                    Panel.multi = false;
+                    return false;
+                }
+                if(TREE_OBJ.settings.ui.theme_name != "checkbox") {
+                    var data = Panel.getTree().selected.metadata();
+                    if(Panel.openAdminTabOnSelect() && TREE_OBJ.check("renameable", NODE)) {
+                        Panel.openMenuAdministration(data);
+                    }
+                }
+            },
+            onchange: function(NODE,TREE_OBJ) {
+                if(TREE_OBJ.settings.ui.theme_name == "checkbox") {
+	                var elem = $(NODE).is("li") ? $(NODE) : $(NODE).parent();
+	                if(elem.children("a.unchecked").size() == 0) {
+		                TREE_OBJ.container.find("a").addClass("unchecked");
+	                }
+	                elem.children("a").removeClass("clicked");
+	                if(elem.children("a").hasClass("checked")) {
+		                elem.find("li").andSelf().children("a").removeClass("checked").removeClass("undetermined").addClass("unchecked");
+	                }
+	                else {
+		                elem.find("li").andSelf().children("a").removeClass("unchecked").removeClass("undetermined").addClass("checked");
+	                }
+                }
+            },
+            onmove: function(NODE,REF_NODE,TYPE,TREE_OBJ,ROLLBACK) {
+                // make sure the metadata is really loaded. this might not be the case
+                // if the drop is performed on a node, that was not accessed before
+                $(REF_NODE).metadata({ type : "attr", name : Panel.treeConfig.plugins.metadata.attribute });
+
+                var dataMoved   = $.metadata.get(NODE);
+                var dataMovedTo = $.metadata.get(REF_NODE);
+
+                if (typeof dataMovedTo.id == 'undefined') {
+                    $.tree.rollback(ROLLBACK);
+                    TREE_OBJ.lock(false);
+                    return;
+                }
+
+                var moveToId = dataMovedTo.id;
+
+                if (moveToId == <?php echo _BIGACE_TOP_PARENT; ?>) {
+                    moveToId = <?php echo _BIGACE_TOP_LEVEL; ?>;
+                }
+
+                try {
+                    var posturl = Panel.urls.move;
+                    posturl = posturl.replace(/__ID__/g, dataMoved.id);
+                    posturl = posturl.replace(/__LANGUAGE__/g, dataMoved.language);
+                    posturl = posturl.replace(/__PARENT__/g, moveToId);
+                    posturl = posturl.replace(/__TYPE__/g, TYPE);
+
+                    var xhrArgs = {
+                        url: posturl,
+                        postData: '',
+                        handleAs: "json",
+                        load: function(data) {
+                            if (typeof data.result == 'undefined') {
+                                $.tree.rollback(ROLLBACK);
+                                TREE_OBJ.lock(false);
+                                alert(Panel.translations.errorMove);
+                            } else {
+                                if (data.result == false || data.type != 'success') {
+                                    $.tree.rollback(ROLLBACK);
+                                    TREE_OBJ.lock(false);
+                                    alert(Panel.translations.errorMove + ' = ' + data.message);
+                                }
+                            }
+                            Panel.refresh();
+                        },
+                        error: function(error) {
+                            $.tree.rollback(ROLLBACK);
+                            TREE_OBJ.lock(false);
+                            alert(Panel.translations.errorMove + ": " + error);
+                        }
+                    }
+                    var deferred = dojo.xhrPost(xhrArgs);
+                } catch(ex) {
+                    alert(Panel.translations.errorMove + ex);
+                }
+            },
+            ondblclk: function(NODE, TREE_OBJ) {
+                TREE_OBJ.toggle_branch.call(TREE_OBJ, NODE);
+                TREE_OBJ.select_branch.call(TREE_OBJ, NODE);
+                var data = Panel.getTree().selected.metadata();
+                Panel.openMenuAdministration(data);
+            }
+        }
+    };
+
+    Panel.jsTree = $.tree.create();
+    Panel.getTree().init($("#tree-data"),$.extend({},Panel.treeConfig));
+
+    <?php
+        // open tabs to edit requested pages
+        if(isset($this->previewPages) && count($this->previewPages) > 0) {
+            foreach ($this->previewPages as $page) {
+                echo 'Panel.openMenuAdministrationRaw("'.$page->getID().'", "'.$page->getLanguageID().'", "'.$page->getName().'");
+    ';
+            }
+        }
+    ?>
+
+});
+
+// -->
+</script>

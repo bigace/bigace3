@@ -1,0 +1,93 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+if(isset($this->ERROR))
+    echo $this->message()->error($this->ERROR);
+
+if(isset($this->INFO))
+    echo $this->message()->info($this->INFO);
+
+if(count($this->PLUGINS_ACTIVE) == 0 && count($this->PLUGINS_DEACTIVE) == 0) { 
+  echo $this->message($this->t('plugins_none'), 'info');
+}
+
+?>
+  <p><?php echo $this->t('plugins_info'); ?></p>
+
+  <?php if(count($this->PLUGINS_ACTIVE) > 0) { ?>
+  <?php echo $this->portletHeader($this->t('active_plugins'), array('full' => true)); ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+	<col width="150px" />
+	<col width="90px"  />
+	<col />
+	<col width="130px" />
+    <thead>
+    	<tr>
+		    <th><?php echo $this->t('name'); ?></th>
+			<th align="center"><?php echo $this->t('version'); ?></th>
+	    	<th><?php echo $this->t('description'); ?></th>
+	    	<th align="center"><?php echo $this->t('action'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->PLUGINS_ACTIVE as $modName => $plugin) { ?>
+      <tr>
+	    <td><?php echo $plugin['title']; ?></td>
+        <td align="center"><?php echo $plugin['version']; ?></td>
+   		<td><?php echo $plugin['description']; ?>
+   		     <i>By <?php echo $plugin['author']; ?>.</i>
+   		</td>
+        <td align="center">
+            <form action="<?php echo $this->DEACTIVATE_URL; ?>" method="post">
+                <input type="hidden" name="plugin" value="<?php echo $plugin['id']; ?>" />
+                <?php echo $this->formButton('plugin'.$plugin['id'].'Deactivate',$this->t('action_deactivate'), array('type' => 'submit')); ?>
+	        </form>
+        </td>
+      </tr>
+    <?php } ?>
+  	</tbody>
+    </table>
+  <?php echo $this->portletFooter(); ?>
+  <?php } ?>
+
+  <?php if(count($this->PLUGINS_DEACTIVE) > 0) { ?>
+  <?php echo $this->portletHeader($this->t('deactive_plugins'), array('full' => true)); ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+	<col width="150px" />
+	<col width="90px"  />
+	<col />
+	<col width="130px" />
+    <thead>
+    	<tr>
+		    <th><?php echo $this->t('name'); ?></th>
+			<th align="center"><?php echo $this->t('version'); ?></th>
+	    	<th><?php echo $this->t('description'); ?></th>
+	    	<th align="center"><?php echo $this->t('action'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->PLUGINS_DEACTIVE as $plugin) { ?>
+      <tr>
+	    <td><?php echo $plugin['title']; ?></td>
+        <td align="center"><?php echo $plugin['version']; ?></td>
+   		<td><?php echo $plugin['description']; ?>
+   		     <i>By <?php echo $plugin['author']; ?>.</i>
+   		</td>
+        <td align="center">
+            <form action="<?php echo $this->ACTIVATE_URL; ?>" method="post">
+                <input type="hidden" name="plugin" value="<?php echo $plugin['id']; ?>" />
+                <?php echo $this->formButton('plugin'.$plugin['id'].'Activate',$this->t('action_activate'), array('type' => 'submit')); ?>
+	        </form>
+        </td>
+      </tr>
+    <?php } ?>
+  	</tbody>
+    </table>
+  <?php echo $this->portletFooter(); ?>
+  <?php } ?>
+
+  <p><?php echo $this->t('plugins_hint'); ?></p>
+

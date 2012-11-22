@@ -1,0 +1,202 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message()->error($this->ERROR);
+}
+
+if (isset($this->INFO)) {
+    echo $this->message()->info($this->INFO);
+}
+
+$active = isset($this->ACTIVE_TAB) ? $this->ACTIVE_TAB : '';
+
+// prepare tabs
+$this->tabpane()->add($this->t('tab_settings'), ($active == 'settings'));
+$this->tabpane()->add($this->t('tab_userdata'), ($active == 'tabPageUserData'));
+if($this->PRINCIPAL->getID() != Bigace_Core::USER_ANONYMOUS) {
+    $this->tabpane()->add($this->t('tab_password'), ($active == 'password'));
+}
+if(isset($this->ALLOW_GROUP_MGMT)) {
+    $this->tabpane()->add($this->t('tab_groups'), ($active == 'groups'));
+}
+if(isset($this->ALLOW_DELETE)) {
+    $this->tabpane()->add($this->t('tab_delete'), ($active == 'delete'));
+}
+
+?>
+
+<script type="text/javascript">
+<!--
+function comparePasswords(mform) {
+    if(document.password.passwordnew.value == document.password.passwordcheck.value) {
+      return true;
+    } else{
+        alert("<?php echo $this->t('msg_pwd_no_match'); ?>");
+        document.password.passwordcheck.value = "";
+        document.password.passwordcheck.focus();
+    }
+    return false;
+}
+//-->
+</script>
+
+<?php echo $this->tabpane()->begin(); ?>
+
+<?php echo $this->tabpane()->next(); ?>
+    <form action="<?php echo $this->SETTINGS_ACTION; ?>" method="post">
+        <input type="hidden" name="pid" value="<?php echo $this->PRINCIPAL->getID(); ?>">
+        <table width="100%">
+        <colgroup>
+            <col width="200px" />
+            <col />
+        </colgroup>
+        <tbody>
+            <tr>
+                <td><label><?php echo $this->t('name'); ?></label></td>
+                <td><?php echo $this->PRINCIPAL->getName(); ?></td>
+            </tr>
+            <tr>
+                <td><label for="email"><?php echo $this->t('email'); ?></label></td>
+                <td><?php echo $this->formText('email', $this->PRINCIPAL->getEmail(), array('maxlength' => 99)); ?></td>
+            </tr>
+            <tr>
+                <td><label for="language"><?php echo $this->t('language'); ?></label></td>
+                <td><?php echo $this->localeSelect('language', $this->PRINCIPAL->getLanguageID()); ?></td>
+            </tr>
+            <?php if(isset($this->ALLOW_EDIT) && $this->ALLOW_EDIT) { ?>
+            <tr>
+                <td><label><?php echo $this->t('admin_user_active'); ?></label></td>
+                <td>
+                    <label for="stateYes">
+                        <input type="radio" id="stateYes" name="active" value="1"<?php if($this->PRINCIPAL->isActive()) echo ' checked'; ?>>
+                        <?php echo $this->t('user_active'); ?>
+                    </label>
+                    <label for="stateNo">
+                        <input type="radio" id="stateNo" name="active" value="0"<?php if(!$this->PRINCIPAL->isActive()) echo ' checked'; ?>>
+                        <?php echo $this->t('user_inactive'); ?>
+                    </label>
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+        </table>
+        <?php echo $this->saveButton('saveSettings'); ?>
+    </form>
+
+<?php echo $this->tabpane()->next(); ?>
+
+<?php echo $this->USER_DATA_FORM; ?>
+
+<?php if($this->PRINCIPAL->getID() != Bigace_Core::USER_ANONYMOUS) { ?>
+    <?php echo $this->tabpane()->next(); ?>
+
+        <form action="<?php echo $this->PASSWORD_ACTION; ?>" method="post" onsubmit="return comparePasswords(this)" name="password" id="password">
+        <input type="hidden" name="pid" value="<?php echo $this->PRINCIPAL->getID(); ?>">
+        <table width="100%" cellspacing="0">
+            <colgroup>
+                <col width="200px" />
+                <col />
+            </colgroup>
+            <tbody>
+            <tr>
+                <td><label for="passwordnew"><?php echo $this->t('new_password'); ?></label></td>
+                <td><?php echo $this->formPassword('passwordnew', '', array('maxlength' => "30")); ?></td>
+            </tr>
+            <tr>
+                <td><label for="passwordcheck"><?php echo $this->t('rewrite_password'); ?></label></td>
+                <td><?php echo $this->formPassword('passwordcheck', '', array('maxlength' => "30")); ?></td>
+            </tr>
+            <tr>
+                <td colspan="2"><?php echo $this->saveButton('savePWD'); ?></td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+
+<?php } ?>
+
+<?php if(isset($this->ALLOW_GROUP_MGMT)) { ?>
+    <?php echo $this->tabpane()->next(); ?>
+        <?php
+        if ($this->ALLOW_GROUP_MGMT)
+        {
+            if(isset($this->addToGroupForm))
+            {
+            ?>
+            <form action="<?php echo $this->addToGroupForm['ADD_TO_GROUP_LINK']; ?>" method="post">
+                <input type="hidden" name="pid" value="<?php echo $this->PRINCIPAL->getID(); ?>">
+                <label for="group"><?php echo $this->t('group_add_user'); ?>: <?php echo $this->addToGroupForm['GROUP_SELECT']; ?>
+                <?php echo $this->formButtonSmall('addToGroup', $this->t('add_to_group_button'), array('type'=>"submit")); ?></label>
+            </form>
+            <?php
+            }
+
+            ?>
+            <?php echo $this->portletHeader($this->t('group_name'), array('full' => true)); ?>
+            <table width="100%" cellspacing="0" class="nicetable">
+            <col>
+            <col width="200"/>
+            <thead>
+                <tr>
+                    <th><?php echo $this->t('name'); ?></th>
+                    <th align="center"><?php echo $this->t('action'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(isset($this->noGroupMember)) { ?>
+                    <tr>
+                        <td colspan="2"><?php echo $this->t('group_not_linked'); ?></td>
+                    </tr>
+                <?php } ?>
+                <?php foreach($this->MEMBERSHIPS AS $theRow) { ?>
+                <tr>
+                    <td><?php echo $theRow['GROUP_NAME']; ?></td>
+                    <td align="center">
+                        <?php echo $this->deleteLink($theRow['REMOVE_URL']); ?>
+                    </td>
+                </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+            <?php echo $this->portletFooter(); ?>
+            <?php
+        }
+        else
+        {
+        ?>
+            <?php echo $this->portletHeader($this->t('group_name'), array('full' => true)); ?>
+            <table width="100%" cellspacing="0" class="nicetable">
+            <col />
+
+            <tbody>
+                <?php foreach($this->MEMBERSHIPS AS $theRow) { ?>
+                <tr>
+                    <td><?php echo $theRow['GROUP_NAME']; ?></td>
+                </tr>
+                <?php } ?>
+            </tbody>
+            </table>
+            <?php echo $this->portletFooter(); ?>
+        <?php
+        }
+        ?>
+<?php } ?>
+
+<?php if(isset($this->ALLOW_DELETE)) { ?>
+    <?php echo $this->tabpane()->next(); ?>
+
+    <form action="<?php echo $this->DELETE_ACTION; ?>" method="post" name="deleteUserForm" id="deleteUserForm">
+        <input type="hidden" name="pid" value="<?php echo $this->PRINCIPAL->getID(); ?>">
+        <label for=""><img src="<?php echo $this->STYLE; ?>user_delete.png" vspace="0" hspace="0" align="absbottom"> <?php echo $this->t('delete_user'); ?></label>
+        <input type="checkbox" name="confirmDelete" value="<?php echo $this->PRINCIPAL->getID(); ?>"> <?php echo $this->t('delete_user_info'); ?>
+        <br/>
+        <?php echo $this->formButton('delete', $this->t('delete'), array('type' => 'submit')); ?>
+    </form>
+
+<?php } ?>
+
+<?php echo $this->tabpane()->end(); ?>

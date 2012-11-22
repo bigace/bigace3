@@ -1,0 +1,102 @@
+<?php
+/* 	@license http://opensource.org/licenses/gpl-license.php GNU Public License
+	@author Kevin Papst
+	@copyright Copyright (C) Kevin Papst
+	@version $Id$ */
+
+/* @var $user Bigace_Principal */
+$user = $this->principal;
+$attr = $this->attributes;
+
+$this->t()->load('user_attributes');
+$this->headLink()->appendStylesheet($this->directory('public').'system/css/userpages.css');
+
+if (isset($attr['hidebio']) && $attr['hidebio']) {
+    echo '<h2 class="error">'.$this->t('hiddenprofile').'</h2>';
+} else {
+    $name  = isset($attr['firstname']) ? $attr['firstname'] . ' ' : '';
+    $name .= isset($attr['lastname']) ? $attr['lastname'] : '';
+    if (strlen(trim($name)) == 0) {
+        $name = $user->getName();
+    }
+    echo '<div id="userdetails">';
+    echo '<h1>'.$name.'</h1>';
+
+    echo '<div>';
+
+    if (isset($attr['avatar']) && strlen(trim($attr['avatar'])) > 0) {
+        $avatar = Bigace_Item_Basic::get(_BIGACE_ITEM_IMAGE, $attr['avatar']);
+        $imgUrl = $this->thumbnail($avatar, array('height' => '150'));
+        echo '<img class="avatar" src="'.$imgUrl.'" title="'.$name.'" alt="'.$name.'" />';
+    }
+
+    echo '<span class="email"><b>'.$this->t('Email').'</b> ';
+    echo $this->email($user->getEmail());
+    echo '<noscript>'.$this->t('protected_email').'</noscript></span>';
+
+    if (isset($attr['phone']) && strlen(trim($attr['phone'])) > 0) {
+        echo '<span class="phone"><b>'.$this->t('Phone').'</b> '.$attr['phone'].'</span>';
+    }
+
+    if (isset($attr['mobile']) && strlen(trim($attr['mobile'])) > 0) {
+        echo '<span class="mobile"><b>'.$this->t('Mobile').'</b> '.$attr['mobile'].'</span>';
+    }
+
+    if (isset($attr['fax']) && strlen(trim($attr['fax'])) > 0) {
+        echo '<span class="fax"><b>'.$this->t('Fax').'</b> ';
+        echo $attr['fax'].'</span>';
+    }
+
+    $address = '';
+    if (isset($attr['street']) && strlen(trim($attr['street'])) > 0) {
+        $address .= $attr['street'];
+    }
+    if (isset($attr['citycode']) && strlen(trim($attr['citycode'])) > 0) {
+        $address .= '<br/>' . $attr['citycode'] . ' ';
+    }
+    if (isset($attr['city']) && strlen(trim($attr['city'])) > 0) {
+        $address .= $attr['city'] . ' ';
+    }
+    if (isset($attr['country']) && strlen(trim($attr['country'])) > 0) {
+        $address .= '<br/>' . $attr['country'] . ' ';
+    }
+
+    if (strlen(trim($address)) > 0) {
+        echo '<span class="address"><b>'.$this->t('Address', 'Address');
+        echo '</b> ' . $address . '</span>';
+    }
+
+    if (isset($attr['homepage']) && strlen(trim($attr['homepage'])) > 3) {
+        if (strpos($attr['homepage'], '://') === false) {
+            echo '<span class="homepage"><b>'.$this->t('Homepage').'</b> ';
+            echo '<a href="http://'.$attr['homepage'].'">'.$attr['homepage'].'</a></span>';
+        } else {
+            echo '<span class="homepage"><b>'.$this->t('Homepage').'</b> ';
+            echo '<a href="'.$attr['homepage'].'">'.$attr['homepage'].'</a></span>';
+        }
+    }
+
+    if (isset($attr['twitter']) && strlen(trim($attr['twitter'])) > 0) {
+        $twitURL = $attr['twitter'];
+        if (strpos($twitURL, '://') === false) {
+            $twitURL = 'http://twitter.com/' . $attr['twitter'];
+        }
+        echo '<span class="twitter"><b>'.$this->t('Twitter').'</b> ';
+        echo '<a href="'.$twitURL.'">'.ucfirst($attr['twitter']).'</a>';
+        echo '</span>';
+    }
+
+    if (isset($attr['skype']) && strlen(trim($attr['skype'])) > 0) {
+        echo '<span class="skype"><b>'.$this->t('Skype').'</b> ';
+        echo '<a href="skype:'.$attr['skype'].'?call">';
+        echo ucfirst($attr['skype']).'</a></span>';
+    }
+
+    if (isset($attr['about']) && strlen($attr['about']) > 0) {
+        echo '<div class="about"><b>'.$this->t('About').'</b> ';
+        echo '<div>'.$attr['about'].'</div></div>';
+    }
+    echo '</div>';
+
+    echo '</div>';
+}

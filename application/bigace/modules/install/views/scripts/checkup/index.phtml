@@ -1,0 +1,234 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/** @var $nextLink string */
+$nextLink    = $this->nextLink;
+
+// ########################## WRONG PHP INI SETTINGS ###########################
+
+if(isset($this->allSettings))
+{
+    /** @var $allSettings array(array())*/
+    $allSettings = $this->allSettings;
+    ?>
+    <h1><?php echo installTranslate('required_settings_title'); ?></h1>
+    <table border="0" cellspacing="0" width="100%">
+        <tr>
+            <td class="checkupInfo">
+                <?php echo installTranslate('check_install_help'); ?>
+            </td>
+            <td class="checkupContent">
+                <table border="0" width="100%">
+                <?php
+                foreach($allSettings as $setting)
+                {
+                    $cssClass  = ($setting['state'] == _CHECKUP_NO) ? "checkupFailure" : "checkupSuccess";
+                    ?>
+                        <tr>
+                            <td><?php echo $setting['label']; ?></td>
+                            <td align="right" style="padding-right:20px;"><span class="<?php echo $cssClass; ?>">
+                            <?php
+                                if($setting['state'] == _CHECKUP_NO) {
+                                    echo '<img src="'.INSTALL_PUBLIC.'/redled.png">';
+                                } else if($setting['state'] == _CHECKUP_YES) {
+                                    echo '<img src="'.INSTALL_PUBLIC.'/greenled.png">';
+                                } else {
+                                    echo $setting['state'];
+                                }
+                            ?>
+                            </span>
+                            </td>
+                        </tr>
+                    <?php
+                }
+                ?>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+if(isset($this->checkupErrors)) {
+    foreach($this->checkupErrors AS $ce) {
+        displayError($ce);
+    }
+}
+
+
+// ############################# PHP EXTENSIONS ################################
+
+if(isset($this->phpSettings))
+{
+    /** @var $phpSettings array(array()) */
+    $phpSettings = $this->phpSettings;
+
+    ?>
+    <h1><?php echo installTranslate('check_settings_title'); ?></h1>
+    <table border="0" cellspacing="0" width="100%">
+        <tr>
+            <td class="checkupInfo">
+                <?php echo installTranslate('check_settings_help'); ?>
+            </td>
+            <td class="checkupContent">
+                <table border="0" width="100%">
+                <?php
+                foreach($phpSettings as $setting)
+                {
+                    $cssClass  = ($setting['state'] == _CHECKUP_NO) ? "checkupFailure" : "checkupSuccess";
+                    if($setting['state'] != _CHECKUP_YES)
+                    {
+                    ?>
+                        <tr>
+                            <td><?php echo $setting['label']; ?></td>
+                            <td align="right" style="padding-right:20px;">
+                                <span class="<?php echo $cssClass; ?>">
+                                <?php
+                                    $recommended = $setting['setting'];
+                                    $current = ($setting['state'] == _CHECKUP_YES ? $setting['setting'] : ($setting['setting'] == _CHECKUP_ON ? _CHECKUP_OFF : _CHECKUP_ON));
+
+                                    if($setting['state'] == _CHECKUP_NO) {
+                                        echo '<img src="'.INSTALL_PUBLIC.'/yellowled.png" onMouseOver="overlib(\''.
+                                            installTranslate('check_recommended_setting').
+                                            ' <b>'.$recommended.'</b><br>'.
+                                            installTranslate('check_current_setting').
+                                            ' <b>'.$current.'</b>\')" onMouseOut="nd()">';
+
+                                        if(isset($setting['msg']) && strlen(trim($setting['msg'])) > 0) {
+                                            echo '</span></td></tr><tr><td align="right" colspan="2">';
+                                            echo '<span class="'. $cssClass . '">'.$setting['msg'];
+                                        }
+                                    }
+                                    else if($setting['state'] == _CHECKUP_YES) {
+                                        echo '<img src="'.INSTALL_PUBLIC.'/greenled.png" onMouseOver="overlib(\''.installTranslate('check_recommended_setting').' <b>'.$recommended.'</b><br>'.installTranslate('check_current_setting').' <b>'.$current.'</b>\')" onMouseOut="nd()">';
+                                    }
+                                    else if($setting['state'] != _CHECKUP_NO){
+                                        echo $setting['state'];
+                                    }
+                                ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                }
+                ?>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+// ######################## MISSING EMPTY DIRECTORIES ##########################
+
+if(isset($this->missingEmptyDirs))
+{
+    /** @var $missingEmptyDirs array(string) */
+    $missingEmptyDirs = $this->missingEmptyDirs;
+
+    ?>
+    <h1><?php echo installTranslate('required_empty_dirs'); ?></h1>
+    <table border="0" cellspacing="5" width="100%">
+        <tr>
+            <td class="checkupInfo">
+                <?php echo installTranslate('empty_dirs_description'); ?>
+            </td>
+            <td class="checkupContent">
+                <table border="0" width="100%">
+                <?php
+                foreach($missingEmptyDirs as $oe)
+                {
+                    ?>
+                        <tr>
+                            <td><?php echo $oe; ?></td>
+                            <td align="right" style="padding-right:20px;"><span class="checkupFailure">
+                            <?php
+                                echo '<img src="'. INSTALL_PUBLIC .'/redled.png" />';
+                            ?>
+                            </span>
+                            </td>
+                        </tr>
+                    <?php
+                }
+                ?>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+// ######################## WRONG FOLDER PERMISSIONS ###########################
+
+if(isset($this->folderPermissions))
+{
+    /** @var $folderPermissions array(array()) */
+    $folderPermissions = $this->folderPermissions;
+
+    ?>
+    <h1><?php echo installTranslate('check_files_title'); ?></h1>
+    <table border="0" cellspacing="0" width="100%">
+        <tr>
+            <td class="checkupInfo">
+                <?php echo installTranslate('check_files_help'); ?>
+            </td>
+            <td class="checkupContent">
+                <table border="0" width="100%">
+                <?php
+
+                foreach($folderPermissions as $folder)
+                {
+                    $cssClass  = ($folder['state'] == _CHECKUP_NO) ? "checkupFailure" : "checkupSuccess";
+                    if($folder['state'] != _CHECKUP_YES)
+                    {
+                        $noError = false;
+                    ?>
+                        <tr>
+                            <td><?php echo $folder['label']; ?></td>
+                            <td align="right" style="padding-right:20px;"><span class="<?php echo $cssClass; ?>">
+                            <?php
+                                if($folder['state'] == _CHECKUP_NO)
+                                    echo '<img src="'. INSTALL_PUBLIC .'/redled.png">';
+                                else if($folder['state'] == _CHECKUP_YES)
+                                    echo '<img src="'. INSTALL_PUBLIC .'/greenled.png">';
+                                else
+                                    echo $folder['state'];
+                            ?></span>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                }
+                ?>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+
+echo '<br/>';
+echo $nextLink;
+
+?>

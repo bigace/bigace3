@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /cid{CID}/
+Disallow: /system/
+Disallow: /ckeditor/
+Disallow: /dojo-1.5.0/
+Disallow: /jquery/
+Allow: /
+Allow: /index.php

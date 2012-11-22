@@ -1,0 +1,487 @@
+<project name="BIGACE" default="help" basedir="..">
+    
+    <description>
+        Build File for the BIGACE Web CMS.
+
+        It helps, deploying parts or the complete application
+        to local or remote destinations.
+    	
+        See http://www.bigace.de/ for further informations.
+
+        BIGACE - a PHP based Web CMS.
+        Copyright (C) 2009-2010 Keleo (www.keleo.de).
+        Distributed under the terms of the GNU General Public License.
+
+        $Id: build.xml 796 2010-05-27 10:11:40Z bigace $
+    </description>
+
+    <!--
+        ##########################################################
+        # Load and prepare the environment through the           #
+        # properties file: build.properties                      #
+        #                                                        #
+        # Customizations should be done in build.properties      #
+        ##########################################################
+    --> 
+    <dirname file="${ant.file}/../" property="sources" />
+    <dirname file="${ant.file.BIGACE}" property="propertiesDir" />
+    <property file="${propertiesDir}/local.properties" />
+    <property file="${propertiesDir}/build.properties" />
+
+    <!--
+    #####################################################
+    ##   [START] LOCAL BUILD TASKS                     ##
+    ##   Only the following tasks are meant to be      ##
+    ##   executed on your local machine                ##
+    #####################################################
+    -->
+	<!-- Release Bigace archives on your local machine -->
+    <target name="release.version" description="Creates BIGACE release archives on your local machine.">
+        <antcall target="release.version.internal">
+            <param name="release.path" value="${target.release.dir}"/>
+            <param name="archive.path" value="${target.archive.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Copies bigace and 3rd-party stuff to a local destination -->
+    <target name="copy.local-all" description="Copies bigace and 3rd-party stuff to a local destination.">
+        <antcall target="release.files">
+            <param name="release.path" value="${target.local.dir}"/>
+        </antcall>
+    </target>
+
+    <!-- Copies all bigace sources to a local destination -->
+    <target name="copy.local-bigace" description="Copies all bigace sources to a local destination.">
+        <antcall target="release.bigace-files">
+            <param name="release.path" value="${target.local.dir}"/>
+            <param name="exclude.pattern" value="always.exclude.files"/>
+        </antcall>
+    </target>
+
+    <!--
+    #####################################################
+    ##   [START] INTERNAL HELPER TASKS                 ##
+    #####################################################
+    -->
+
+	<!-- This task can be triggered to create the releasable Bigace
+	     archives, either through Hudson or manually -->
+    <target name="release.version.internal" depends="archive.check" if="archive.initialized">
+        <antcall target="release.files">
+            <param name="release.path" value="${release.path}"/>
+        </antcall>
+        <antcall target="release.empty-directories">
+            <param name="release.path" value="${release.path}"/>
+        </antcall>
+        <antcall target="release.archives">
+            <param name="release.path" value="${release.path}"/>
+            <param name="archive.path" value="${archive.path}"/>
+        </antcall>
+    </target>
+
+	<!-- TODO replace several usages of target.release.dir with new variables -->
+    <!-- target name="release.aps" description="Creates an APS packaged BIGACE release." if="release.path">
+            <mkdir dir="${target.release.dir}/APS/htdocs/"/>
+            <copy todir="${target.release.dir}/APS/" overwrite="true">
+                <fileset dir="${aps.src}"/>
+            </copy>
+            <antcall target="release.files">
+                    <param name="release.path" value="${target.release.dir}/APS/htdocs/"/>
+            </antcall>
+            <antcall target="release.empty-directories">
+                    <param name="release.path" value="${target.release.dir}/APS/htdocs/"/>
+            </antcall>
+            <copy todir="${target.release.dir}/APS/htdocs/sites/cid1/" overwrite="true" includeemptydirs="true">
+                    <fileset dir="${target.release.dir}/APS/htdocs/sites/cid{CID}/" />
+            </copy>
+            <copy todir="${target.release.dir}/APS/htdocs/public/cid1/" overwrite="true" includeemptydirs="true">
+                    <fileset dir="${target.release.dir}/APS/htdocs/public/cid{CID}/" />
+            </copy>
+            <copy tofile="${target.release.dir}/APS/scripts/XmlToSqlParser.php"
+                    file="${target.release.dir}/APS/htdocs/library/Bigace/Util/XmlToSqlParser.php"/>
+            <copy tofile="${target.release.dir}/APS/scripts/structure.xml"
+                    file="${target.release.dir}/APS/htdocs/system/sql/structure.xml"/>
+            <mkdir dir="${target.release.dir}/APS/scripts/xml/"/>
+            <copy todir="${target.release.dir}/APS/scripts/" overwrite="true">
+                    <fileset dir="${target.release.dir}/APS/htdocs/sites/cid1/install/">
+                            <include name="*.xml"/>
+                    </fileset>
+                    <fileset file="${target.release.dir}/APS/htdocs/system/sql/community.xml"/>
+            </copy>
+            <move tofile="${target.release.dir}/APS/scripts/config.system.php.in"
+                    file="${target.release.dir}/APS/htdocs/system/config/config.system.php"/>
+            <delete file="${target.release.dir}/APS/htdocs/system/config/consumer.ini"/>
+            <delete dir="${target.release.dir}/APS/htdocs/misc/install/"/>
+            <zip destfile="${release.path}/${install.aps.filename}">
+                <fileset dir="${target.release.dir}/APS/" />
+            </zip>
+            <delete dir="${target.release.dir}"/>
+            <echo>${target.release.dir}</echo>
+    </target -->
+
+    <!-- target name="release.upgrade" description="Creates everything for a new SF version.">
+            <antcall target="release.files">
+                    <param name="release.path" value="${target.release.dir}"/>
+            </antcall>
+            <delete dir="${target.release.dir}/misc/install"/>
+            <delete file="${target.release.dir}/install.php"/>
+            <delete file="${target.release.dir}/system/config/config.system.php"/>
+            <delete file="${target.release.dir}/system/config/consumer.ini"/>
+            <copy todir="${target.release.dir}/" overwrite="true">
+                <fileset file="${upgrade.src}/${upgrade.version}/*"/>
+            </copy>
+            <antcall target="release.archives" />
+            <move tofile="${release.directory}/${upgrade.zip.filename}" file="${release.path}/${release.zip.filename}"/>
+            <move tofile="${release.directory}/${upgrade.tar.filename}" file="${release.path}/${release.bz2.filename}"/>
+    </target -->
+
+
+    <!--
+        This task creates a BIGACE release on the local computer.
+        It creates the defined directory and copies the CORE System and 
+        CORE Updates to this location.
+        
+        ATTENTION: All existing resources will be overwritten!
+    -->
+    <target name="release.files" depends="target.check" if="release.initialized">
+        <!-- Create release directory -->
+        <mkdir dir="${release.path}"/>
+
+        <antcall target="release.3rdparty-files">
+            <param name="release.path" value="${release.path}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+
+        <antcall target="release.bigace-files">
+            <param name="release.path" value="${release.path}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+    </target>
+
+	<!-- Copies all Bigace files to the release directory -->
+    <target name="release.bigace-files" depends="release.check" if="release.initialized">
+        <mkdir dir="${release.path}"/>
+
+    	<!-- Copy core files over there -->
+	  	<copy todir="${release.path}" includeemptydirs="true" overwrite="false">
+	  	    <fileset dir="${sources}">
+	  	    	<patternset refid="${exclude.pattern}" />
+	  		</fileset>
+		</copy>
+	</target>
+
+    <!-- 
+		This task creates the BIGACE release like mentioned in the Task "release.files"
+		and creates a ZIP File from all these ressources.
+		After that, the install_bigace.php and README will be copied, all three
+		files will be zipped again (to have one release file) and the original
+		sources will be deleted.
+		
+		Make sure that the release directory is cleaned up before, otherwise you might
+		have data within your release ZIP, which is NOT part of BIGACE!
+    -->
+	<target name="release.archives" depends="archive.check" if="archive.initialized">
+        <mkdir dir="${archive.path}"/>
+        
+		<delete>
+            <fileset file="${archive.path}/${release.zip.filename}"/>
+            <fileset file="${archive.path}/${release.bz2.filename}"/>
+		</delete>
+		
+		<zip destfile="${archive.path}/${release.zip.filename}">
+		    <fileset dir="${release.path}">
+                <exclude name="${install.zip.filename}"/>
+		   	</fileset>
+		</zip>
+		
+        <tar destfile="${archive.path}/${release.bz2.filename}" longfile="gnu" compression="bzip2">
+            <fileset dir="${release.path}">
+                <exclude name="${install.zip.filename}"/>
+            </fileset>
+        </tar>
+
+		<!-- copy todir="${release.directory}">
+			<fileset dir="${install.src}" />
+		</copy>
+		<zip destfile="${release.path}/${release.zip.filename}">
+			<fileset dir="${release.directory}" />
+		</zip-->
+
+		<!-- delete dir="${target.release.dir}"/>
+
+		<delete>
+			<fileset dir="${release.directory}">
+				<include name="*"/>
+				<exclude name="${release.zip.filename}"/>
+				<exclude name="${release.bz2.filename}"/>
+			</fileset>
+		</delete -->
+	</target>
+
+    <!-- Removes all 3rd party stuff from the given release.path -->
+    <target name="remove.3rdparty-files" depends="release.check" if="release.initialized">
+        <delete dir="${release.path}/library/Zend/" />
+        <delete dir="${release.path}/library/zip/" />
+        <delete dir="${release.path}/library/Minify/" />
+        <delete dir="${release.path}/library/phpmailer/"/>
+        <delete dir="${release.path}/public/ckeditor/" />
+        <delete dir="${release.path}/public/jquery/tablesorter/" />
+        <delete dir="${release.path}/public/jquery/multiselect/" />
+        <delete dir="${release.path}/public/jquery/multiselect2/" />
+    </target>
+
+	<!-- Copies all 3rd party stuff to the given release.path -->
+    <target name="release.3rdparty-files" depends="release.check" if="release.initialized">
+        <mkdir dir="${release.path}"/>
+
+        <!-- Copy the Editor -->
+        <mkdir dir="${release.path}/public/ckeditor/"/>
+        <copy todir="${release.path}/public/ckeditor/" overwrite="true">
+            <fileset refid="sources.ckeditor"/>
+        </copy>
+    	
+        <!-- Copy the JS-Editor -->
+        <mkdir dir="${release.path}/public/system/codemirror/"/>
+        <copy todir="${release.path}/public/system/codemirror/" overwrite="true">
+            <fileset refid="sources.codemirror"/>
+        </copy>
+
+        <!-- Zend Framework -->
+        <mkdir dir="${release.path}/library/Zend/"/>
+        <copy todir="${release.path}/library/Zend/" overwrite="true">
+            <fileset refid="sources.zendframework"/>
+        </copy>
+
+        <!-- Zip classes -->
+        <mkdir dir="${release.path}/library/zip/"/>
+        <copy todir="${release.path}/library/zip/" overwrite="true">
+            <fileset refid="sources.zipclasses"/>
+        </copy>
+
+        <!-- The Minify Sources -->
+        <mkdir dir="${release.path}/library/Minify/"/>
+        <copy todir="${release.path}/library/Minify/" overwrite="true">
+            <fileset refid="sources.minify"/>
+        </copy>
+
+        <!-- Dojo -->
+        <copy todir="${release.path}/public/dojo-1.5.0/" overwrite="true">
+            <fileset refid="sources.dojo" />
+        </copy>
+        <!-- JQuery and Plugins -->
+        <copy todir="${release.path}/public/jquery/" overwrite="true">
+            <fileset refid="sources.jquery.core" />
+        </copy>
+        <copy todir="${release.path}/public/jquery/tablesorter/" overwrite="true">
+            <fileset refid="sources.jquery.tablesorter"/>
+        </copy>
+        <copy todir="${release.path}/public/jquery/multiselect/" overwrite="true">
+            <fileset refid="sources.jquery.multiselect"/>
+        </copy>
+        <copy todir="${release.path}/public/jquery/multiselect2/" overwrite="true">
+            <fileset refid="sources.jquery.multiselect2"/>
+        </copy>
+
+        <!-- PHPMailer -->
+        <mkdir dir="${release.path}/library/phpmailer/"/>
+        <copy todir="${release.path}/library/phpmailer/" overwrite="true">
+            <fileset refid="sources.phpmailer"/>
+        </copy>
+    </target>
+    
+    <!-- Creates all required empty directories that might not come from SVN -->
+    <target name="release.empty-directories" if="release.path">
+        <mkdir dir="${release.path}/storage/cache/"/>
+        <mkdir dir="${release.path}/storage/logging/"/>
+        <mkdir dir="${release.path}/storage/updates/"/>
+        <mkdir dir="${release.path}/public/.cache/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/plugins/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/export/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/cache/"/>
+    </target>
+
+    <!--
+    #####################################################
+    ##   [START] CONDITIONAL CHECKS                    ##
+    #####################################################
+    -->
+	
+    <!-- Checks whether all required variables are set -->
+    <target name="target.check">
+        <condition property="release.initialized">
+            <and>
+                <isset property="release.path" />
+            </and>
+        </condition>
+    </target>
+
+    <!-- Checks whether all required variables for the archives task are set -->
+    <target name="archive.check">
+        <condition property="archive.initialized">
+            <and>
+                <isset property="release.path" />
+                <isset property="archive.path" />
+            </and>
+        </condition>
+    </target>
+	
+    <!-- Checks whether all required variables are set -->
+    <target name="release.check">
+        <condition property="release.initialized">
+            <and>
+                <isset property="release.path" />
+                <isset property="exclude.pattern" />
+            </and>
+        </condition>
+    </target>
+
+    <!--
+    #####################################################
+    ##   [START] PATTERNSETS                           ##
+    #####################################################
+    -->
+
+    <!--
+        These files will be excluded for test deploys,
+        because otherwise we would kill the settings of an existing installation.
+    -->
+    <patternset id="exclude.test.files" description="Files to be excluded from the Copy task for local deploys.">
+        <exclude name="**/consumer.ini"/>
+        <exclude name="**/bigace.php"/>
+    </patternset>
+
+    <!--
+        These files will always be excluded from Copy task.
+        Add whatever you might need (e.g. configurations of your IDE or SVN files).
+    -->
+    <patternset id="always.exclude.files" description="Files always to be excluded from the Copy task.">
+        <exclude name=".settings"/>
+        <exclude name=".project"/>
+        <exclude name=".svn"/>
+        <exclude name=".buildpath"/>
+        <exclude name="Entries"/>
+        <exclude name="Repository"/>
+        <exclude name="Root"/>
+        <exclude name="**/bigace.php"/>
+        <exclude name="**/consumer.ini"/>
+        <exclude name="**/cid999"/>
+    </patternset>
+
+    <patternset id="release.exclude.files" description="Files always to be excluded from release tasks.">
+        <exclude name="bigace.php"/>
+        <exclude name="consumer.ini"/>
+        <exclude name=".settings"/>
+        <exclude name=".project"/>
+        <exclude name=".svn"/>
+        <exclude name=".buildpath"/>
+        <exclude name="Entries"/>
+        <exclude name="Repository"/>
+        <exclude name="Root"/>
+        <exclude name="update.ini"/>
+        <exclude name="**/.settings/"/>
+        <exclude name="**/extra/scripts/"/>
+        <exclude name="**/build/"/>
+        <exclude name="**/tests/"/>
+        <exclude name="**/UNUSED/"/>
+        <exclude name="**/bin/"/>
+    </patternset>
+
+    <fileset id="sources.ckeditor" dir="${3rdparty.basepath}${ckeditor.path}">
+        <exclude name="**/_samples/"/>
+        <exclude name="**/_source/"/>
+        <exclude name="**/INSTALL.html"/>
+        <exclude name="**/CHANGES.html"/>
+        <exclude name="**/ckeditor_php4.php"/>
+        <exclude name="**/ckeditor.asp"/>
+    </fileset>
+
+    <fileset id="sources.codemirror" dir="${3rdparty.basepath}${codemirror.path}">
+        <exclude name="**/*.html"/>
+        <exclude name="**/*.ai"/>
+        <exclude name="**/*.png"/>
+        <exclude name="**/*.jpg"/>
+        <exclude name="**/*.ico"/>
+        <exclude name="**/contrib/csharp/"/>
+        <exclude name="**/contrib/groovy/"/>
+        <exclude name="**/contrib/java/"/>
+        <exclude name="**/contrib/lua/"/>
+        <exclude name="**/contrib/ometa/"/>
+        <exclude name="**/contrib/plsql/"/>
+        <exclude name="**/contrib/python/"/>
+        <exclude name="**/contrib/scheme/"/>
+        <exclude name="**/contrib/sql/"/>
+        <exclude name="**/contrib/xquery/"/>
+    </fileset>
+	
+    <fileset id="sources.dojo" dir="${3rdparty.basepath}${dojo.path}" />
+    <fileset id="sources.minify" dir="${3rdparty.basepath}${minify.path}" />
+
+    <fileset id="sources.jquery.core" dir="${3rdparty.basepath}${jquery.core.path}" />
+    <fileset id="sources.jquery.multiselect" dir="${3rdparty.basepath}${jquery.multiselect.path}" />
+    <fileset id="sources.jquery.multiselect2" dir="${3rdparty.basepath}${jquery.multiselect2.path}" />
+
+    <fileset id="sources.jquery.tablesorter" dir="${3rdparty.basepath}${jquery.tablesorter.path}">
+        <exclude name="**/build/"/>
+        <exclude name="**/docs/"/>
+        <exclude name="**/tests/"/>
+        <exclude name="**/themes/"/>
+        <exclude name="**/jquery-latest.js"/>
+        <exclude name="**/build.xml"/>
+    </fileset>
+
+    <fileset id="sources.phpmailer" dir="${3rdparty.basepath}${phpmailer.path}">
+        <include name="**/language/"/>
+        <include name="**/class.*.php"/>
+        <include name="**/readme"/>
+        <exclude name="**/docs/"/>
+        <exclude name="**/examples/"/>
+        <exclude name="**/phpdoc/"/>
+        <exclude name="**/test/"/>
+    </fileset>
+
+    <fileset id="sources.zendframework" dir="${3rdparty.basepath}${zendframework.path}" />
+    <fileset id="sources.zipclasses" dir="${3rdparty.basepath}${zipclasses.path}" />
+
+    <!--
+    #####################################################
+    ##   [START] PROPERTIES                            ##
+    #####################################################
+    -->
+
+    <!-- Directory of the meta-sources -->
+    <!-- property name="install.src" location="META-DATA/PRE-INSTALL"/>
+    <property name="aps.src" location="META-DATA/APS"/ -->
+
+    <!-- Name and location of the release files -->
+    <property name="release.path" location="${release.directory}/"/>
+    <property name="upgrade.zip.filename" value="bigace_update_${upgrade.version}.zip"/>
+    <property name="upgrade.tar.filename" value="bigace_update_${upgrade.version}.tar.bz2"/>
+    <property name="api.zip.filename" value="bigace_phpdoc_${release.version}.zip"/>
+    <property name="install.zip.filename" value="bigace_install_${release.version}.zip"/>
+    <property name="install.aps.filename" value="bigace-${aps.version}.app.zip"/>
+    <property name="release.zip.filename" value="bigace_${release.version}.zip"/>
+    <property name="release.bz2.filename" value="bigace_${release.version}.tar.bz2"/>
+
+    <property name="target.local.dir" location="${local.directory}"/>
+    <property name="target.nightly.dir" location="${nightly.directory}/"/>
+
+    <property name="target.extensions.dir" location="${extensions.directory}/"/>
+    <property name="target.release.dir" location="${release.directory}/temp/"/>
+    <property name="target.archive.dir" location="${release.directory}/artifacts/"/>
+	
+	<!--
+		#####################################################
+        ##   [START] HELP                                  ##
+		#####################################################
+	-->
+	<target name="help">
+		<echo taskname="INFO" level="info">
+BIGACE - a PHP based Web CMS.
+Copyright (C) 2009-2010 Keleo (www.keleo.de).
+Distributed under the terms of the GNU General Public License.
+
+Adjust the settings in build.properties, before executing any Ant task!
+		</echo>
+	</target>
+
+</project>

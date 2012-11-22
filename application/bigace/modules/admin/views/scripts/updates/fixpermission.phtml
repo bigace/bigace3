@@ -1,0 +1,51 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst 
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+echo $this->backlink($this->BACK_URL);
+
+echo '<p><b>'.$this->t('error_fix_file_rights').'</b></p>';
+        
+echo '<ul>';
+foreach($this->FILES_NO_PERMISSION as $filename) {
+    echo '<li>'.$filename.'</li>';
+}
+echo '</ul>';
+        
+if(isset($this->ACTIVE_FTP) && $this->ACTIVE_FTP === true)
+{
+    echo '<p>'.$this->t('ftp_info').'</p>';
+    ?>
+    <form action="<?php echo $this->FTP_ACTION; ?>" method="post">
+	    <table border="0">
+	    <tr>
+		    <td width="170">FTP Host:</td>
+		    <td><?php echo $this->formText('ftp_host', ''); ?></td>
+	    </tr>
+	    <tr>
+        	<td>FTP User:</td>
+		    <td><?php echo $this->formText('ftp_uid', ''); ?></td>
+	    </tr>
+	    <tr>
+        	<td>FTP Password: </td>
+		    <td><?php echo $this->formText('ftp_pwd', ''); ?></td>
+	    </tr>
+	    <tr>
+        	<td>FTP Remote directory: </td>
+		    <td><?php echo $this->formText('ftp_dir', ''); ?></td>
+	    </tr>
+	    </table>
+	    <?php echo $this->formButton('ftpexec', $this->t('ftp_button'), array('type' => 'submit')); ?>
+    </form>
+    <?php
+}
+
+?>
+
+<form action="<?php echo $this->INSTALL_ACTION; ?>" method="post">
+<div align="right">
+<?php echo $this->formButton('exec', $this->t('update_execute'), array('type' => 'submit')); ?>
+</div>
+</form>
+

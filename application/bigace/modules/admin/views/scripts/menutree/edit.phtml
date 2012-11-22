@@ -1,0 +1,109 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+echo $this->partial('partial_header.phtml', array(
+    'STYLE'    => $this->STYLE,
+    'ITEM'     => $this->ITEM,
+    'URL_MOVE' => $this->URL_MOVE,
+    'URL_MODE' => $this->URL_MODE
+));
+
+echo $this->partial('partial_toolbar.phtml', array(
+    'TOOLBAR_ENTRIES' => $this->TOOLBAR_ENTRIES,
+    'ITEM'            => $this->ITEM,
+    'STYLE'           => $this->STYLE
+));
+
+if (isset($this->ERROR))  {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+// deactivate backlinks on all pages
+// echo $this->backlink($this->BACK_URL);
+
+echo $this->partial('partial_properties_start.phtml', array(
+    'STYLE'             => $this->STYLE,
+    'ITEM'              => $this->ITEM,
+    'FORM_ACTION'       => $this->FORM_ACTION,
+    'tempLanguage'      => $this->tempLanguage,
+    'supportUniqueName' => $this->supportUniqueName,
+    'BASE_ITEM_URL'     => $this->BASE_ITEM_URL
+));
+
+?>
+
+    <?php  echo $this->portletHeader($this->t('properties')); ?>
+        <table border="0" cellspacing="0">
+        <col width="170"/>
+        <col />
+            <tr>
+                <td><?php echo $this->t('pagetype'); ?></td>
+                <td><?php echo $this->PAGETYPE_SELECT; ?></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->t('layout'); ?></td>
+                <td><?php echo $this->LAYOUT_SELECT; ?></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->t('modul'); ?></td>
+                <td><?php echo $this->MODUL_SELECT; ?></td>
+            </tr>
+            <tr>
+                <td><?php echo $this->t('display_state'); ?></td>
+                <td><?php echo $this->hiddenOrShown; ?></td>
+            </tr>
+        </table>
+    <?php echo $this->portletFooter(); ?>
+
+
+    <?php echo $this->portletHeader($this->t('properties_meta'), array('closed' => true)); ?>
+    <table border="0" cellspacing="0">
+    <col width="170"/>
+    <col />
+        <tr>
+            <td><?php echo $this->t('meta_title'); ?></td>
+            <td><?php echo $this->formText('projectText[meta_title]', $this->textInput($this->META_TITLE), array('size'=>"35", 'maxlength'=>"250")); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_description'); ?></td>
+            <td><?php echo $this->formTextarea('projectText[meta_description]', $this->textInput($this->META_DESCRIPTION)); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_robots'); ?></td>
+            <td><?php echo $this->META_ROBOTS; ?></td>
+        </tr>
+        <tr>
+            <td><?php echo $this->t('meta_author'); ?></td>
+            <td><?php echo $this->formText('projectText[meta_author]', $this->textInput($this->META_AUTHOR), array('size'=>"35", 'maxlength'=>"250")); ?></td>
+        </tr>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+
+<?php
+echo $this->partial('partial_properties_hooks.phtml', array(
+    'META_VALUES' => $this->META_VALUES
+));
+
+echo $this->partial('partial_properties_end.phtml', array(
+    'SUPPORT_UPLOAD' => $this->SUPPORT_UPLOAD,
+    'ITEM'           => $this->ITEM,
+    'UPLOAD_URL'     => $this->UPLOAD_URL
+));
+
+echo $this->partial('partial_metainfo.phtml', array(
+    'ITEM'        => $this->ITEM,
+    'ITEM_URL'    => $this->ITEM_URL,
+    'LAST_USER'   => $this->LAST_USER,
+    'CREATE_USER' => $this->CREATE_USER
+));
+
+echo $this->partial('partial_footer.phtml', array(
+    'BASE_ITEM_URL'   => $this->BASE_ITEM_URL,
+    'REMOVE_LANGUAGE' => $this->REMOVE_LANGUAGE
+));

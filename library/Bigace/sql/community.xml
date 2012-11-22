@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content version="1.0">
+<!--
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License 
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ * 
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id: ApplicationController.php 22 2010-01-20 18:16:32Z bigace $
+-->
+    <table name="groups">
+        <row update="true">
+            <group_id key="true">0</group_id>
+            <cid key="true">{CID}</cid>
+            <group_name>Anonymous</group_name>
+        </row>
+        <row update="true">
+            <group_id key="true">20</group_id>
+            <cid key="true">{CID}</cid>
+            <group_name>Editor</group_name>
+        </row>
+        <row update="true">
+            <group_id key="true">40</group_id>
+            <cid key="true">{CID}</cid>
+            <group_name>Administrator</group_name>
+        </row>
+    </table>
+
+
+    <table name="frights">
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">editor</name>
+            <description>Allows to edit page content with an editor.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">search</name>
+            <description>Allows to administrate the search (e.g. reindex all items).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">pages</name>
+            <description>Allows access to menu administration (create, edit and delete are based on item permissions).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">category</name>
+            <description>Administrate categories (edit, create, move and delete).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">user</name>
+            <description>Administrate user (edit, create and delete user; change user-group mapping).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">media.image</name>
+            <description>Allows access to image administration (create, edit and delete are based on item permissions).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">media.file</name>
+            <description>Allows access to file administration (create, edit and delete are based on item permissions).</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">media.import</name>
+            <description>Allows to upload and import new files.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">media.permission</name>
+            <description>Allows to edit default permissions of images and files.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">permission</name>
+            <description>Edit permissions for usergroups. SECURITY WARNING!</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">language</name>
+            <description>Administrate the available system languages.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">module</name>
+            <description>Allows to view, create and edit modules.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">backup</name>
+            <description>Create a full community backup including filesystem and database.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">user.own.profile</name>
+            <description>Allows to edit the Users own Profile.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">extension</name>
+            <description>Manage existing, search and install new extensions.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">configuration</name>
+            <description>Edit community configurations.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">editor.sourcecode</name>
+            <description>Allows to access the HTML Sourcecode for a page.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">widget</name>
+            <description>Allows to open, edit the widget settings for every page the user has write permissions for.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">community</name>
+            <description>Configure communities, install and uninstall and edit domain mappings.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">maintenance</name>
+            <description>Edit the website maintenance state and message.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">usergroup</name>
+            <description>Allows to edit the Usergroups and their Member links.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">logging</name>
+            <description>Read and clean up log entries.</description>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">layout</name>
+            <description>Administrate page layouts.</description>
+        </row>
+    </table>    
+
+    <table name="group_frights" update="false">
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">editor</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">search</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">pages</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">category</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">user</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">media.image</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">media.file</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">media.import</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">permission</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">language</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">module</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">backup</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">user.own.profile</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">extension</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">configuration</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">editor.sourcecode</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">widget</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">community</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">maintenance</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">usergroup</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">logging</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">40</group_id>
+            <fright key="true">layout</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">category</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">editor.sourcecode</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">widget</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">editor</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">pages</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">media.import</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">media.image</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">media.file</fright>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <group_id key="true">20</group_id>
+            <fright key="true">user.own.profile</fright>
+        </row>
+    </table>
+    
+    <table name="user" mode="install">
+        <row>
+            <id key="true">1</id>
+            <cid>{CID}</cid>
+            <username>{CID_ADMIN}</username>
+            <password>{CID_PW}</password>
+            <language>{DEFAULT_LANGUAGE}</language>
+            <active>1</active>
+            <email>{CID_WEBMASTER_EMAIL}</email>
+        </row>
+        <row>
+            <id key="true">2</id>
+            <cid>{CID}</cid>
+            <username>anonymous</username>
+            <password>6bb61e3b7bce0931da574d19d1d82c88</password>
+            <language>{DEFAULT_LANGUAGE}</language>
+            <active>1</active>
+            <email>@</email>
+        </row>
+    </table>    
+
+    <table name="user_group_mapping">
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">1</userid>
+            <group_id key="true">40</group_id>
+            <group_id>40</group_id>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">2</userid>
+            <group_id key="true">0</group_id>
+            <group_id>0</group_id>
+        </row>
+    </table>    
+
+    <table name="user_attributes" update="false">
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">1</userid>
+            <attribute_name key="true">firstname</attribute_name>
+            <attribute_value>Administrator</attribute_value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">1</userid>
+            <attribute_name key="true">email</attribute_name>
+            <attribute_value>@</attribute_value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">1</userid>
+            <attribute_name key="true">hidebio</attribute_name>
+            <attribute_value>1</attribute_value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">2</userid>
+            <attribute_name key="true">firstname</attribute_name>
+            <attribute_value>Anonymous</attribute_value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">2</userid>
+            <attribute_name key="true">email</attribute_name>
+            <attribute_value>@</attribute_value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <userid key="true">1</userid>
+            <attribute_name key="true">hidebio</attribute_name>
+            <attribute_value>2</attribute_value>
+        </row>
+    </table>    
+
+    <table name="category">
+        <row update="false">
+            <id key="true">-1</id>
+            <cid key="true">{CID}</cid>
+            <parentid>-9999</parentid>
+            <name>Categories</name>
+            <description>Category root item</description>
+        </row>
+    </table>
+
+    <table name="group_right" update="false">
+        <row>
+            <itemtype key="true">1</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">0</group_id>
+            <value>1</value>
+        </row>
+        <row>
+            <itemtype key="true">1</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">20</group_id>
+            <value>3</value>
+        </row>
+        <row>
+            <itemtype key="true">1</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">40</group_id>
+            <value>7</value>
+        </row>
+        <row>
+            <itemtype key="true">4</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">0</group_id>
+            <value>1</value>
+        </row>
+        <row>
+            <itemtype key="true">4</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">20</group_id>
+            <value>7</value>
+        </row>
+        <row>
+            <itemtype key="true">4</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">40</group_id>
+            <value>7</value>
+        </row>
+        <row>
+            <itemtype key="true">5</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">0</group_id>
+            <value>1</value>
+        </row>
+        <row>
+            <itemtype key="true">5</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">20</group_id>
+            <value>7</value>
+        </row>
+        <row>
+            <itemtype key="true">5</itemtype>
+            <cid key="true">{CID}</cid>
+            <itemid key="true">-1</itemid>
+            <group_id key="true">40</group_id>
+            <value>7</value>
+        </row>
+    </table>
+
+    <table name="configuration" update="false">
+        <row mode="install">
+            <cid key="true">{CID}</cid>
+            <package key="true">community</package>
+            <name key="true">contact.email</name>
+            <value>{CID_WEBMASTER_EMAIL}</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">community</package>
+            <name key="true">accept.browser.language</name>
+            <value>0</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row mode="install">
+            <cid key="true">{CID}</cid>
+            <package key="true">community</package>
+            <name key="true">default.language</name>
+            <value>{DEFAULT_LANGUAGE}</value>
+            <type>language</type>
+            <extended></extended>
+        </row>
+        <row mode="install">
+            <cid key="true">{CID}</cid>
+            <package key="true">community</package>
+            <name key="true">sitename</name>
+            <value><![CDATA[{SITE_NAME}]]></value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">community</package>
+            <name key="true">copyright.holder</name>
+            <value>BIGACE CMS</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">system</package>
+            <name key="true">hide.footer</name>
+            <value>0</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">system</package>
+            <name key="true">send.no.cache.header</name>
+            <value>TRUE</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">login</package>
+            <name key="true">failures.before.deactivate</name>
+            <value>5</value>
+            <type>integer</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">login</package>
+            <name key="true">deactivate.on.failures</name>
+            <value>0</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">admin</package>
+            <name key="true">check.csrf</name>
+            <value>1800</value>
+            <type>integer</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">admin</package>
+            <name key="true">theme</name>
+            <value>theme_blue</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">admin</package>
+            <name key="true">feedback.email</name>
+            <value>feedback@bigace.de</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">admin</package>
+            <name key="true">max.upload.size</name>
+            <value>10000000</value>
+            <type>integer</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">editor</package>
+            <name key="true">default.editor</name>
+            <value>{DEFAULT_EDITOR}</value>
+            <type>editor</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">system</package>
+            <name key="true">show.default.content</name>
+            <value>TRUE</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">admin</package>
+            <name key="true">menutree.open.on.select</name>
+            <value>TRUE</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">templates</package>
+            <name key="true">default</name>
+            <value>default</value>
+            <type>layout</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">allow.self.registration</name>
+            <value>0</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">admin.password.reset</name>
+            <value>0</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">default.group.registration</name>
+            <value>10</value>
+            <type>group</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">username.minimum.length</name>
+            <value>5</value>
+            <type>integer</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">password.minimum.length</name>
+            <value>5</value>
+            <type>integer</type>
+            <extended></extended>
+        </row>
+        <row mode="install">
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">welcome.email.sitename</name>
+            <value><![CDATA[{SITE_NAME}]]></value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">welcome.email.from</name>
+            <value>{CID_WEBMASTER_EMAIL}</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">authentication</package>
+            <name key="true">registration.additional.fields</name>
+            <value></value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">seo</package>
+            <name key="true">word.delimiter</name>
+            <value>-</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">seo</package>
+            <name key="true">url.lowercase</name>
+            <value>TRUE</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">seo</package>
+            <name key="true">menu.default.extension</name>
+            <value>/</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">content.type</name>
+            <value>text/html</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">character.set</name>
+            <value>UTF-8</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">encoding</name>
+            <value>8bit</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">smtp.server</name>
+            <value>127.0.0.1</value>
+            <type>string</type>
+            <extended>mail,smtp,sendmail,qmail</extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">from.name</name>
+            <value>{CID_WEBMASTER_EMAIL}</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">email</package>
+            <name key="true">from.address</name>
+            <value>{CID_WEBMASTER_EMAIL}</value>
+            <type>string</type>
+            <extended></extended>
+        </row>
+    </table>    
+
+    <table name="id_gen" update="false">
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">item_1</name>
+            <value>0</value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">item_4</name>
+            <value>0</value>
+        </row>
+        <row>
+            <cid key="true">{CID}</cid>
+            <name key="true">item_5</name>
+            <value>0</value>
+        </row>
+    </table>
+
+<!-- 
+######################################################################
+###########################  APPLICATIONS  ###########################
+######################################################################
+-->
+
+    <table name="configuration">
+        <row>
+            <cid key="true">{CID}</cid>
+            <package key="true">search</package>
+            <name key="true">find.hidden</name>
+            <value>1</value>
+            <type>boolean</type>
+            <extended></extended>
+        </row>
+    </table>  
+
+</content>

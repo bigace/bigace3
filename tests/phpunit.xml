@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit 
+    bootstrap="./bootstrap.php"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    backupStaticAttributes="false"
+    backupGlobals="false"
+    stopOnFailure="false"
+    syntaxCheck="true"
+    colors="false"
+    strict="true">
+
+    <!-- 
+        Available Test @groups:
+         - Environment        - environment specific (OS and Bigace code)
+         - Controllers        - all controllers
+         - Administration     - all that belongs to the administration
+         - Modules            - all that has to do with community modules
+         - Authenticator      - all authenticator specific
+         - Editor             - all editor specific
+         - Classes            - all API classes
+         - Models             - all classes with database access
+    -->
+        
+    <testsuite name="Bigace">
+        <directory suffix="Test.php">./application/</directory>
+        <directory suffix="Test.php">./library/</directory>
+    </testsuite>
+
+    <!-- Excluding 3rd party stuff from Code-Coverage report -->
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../library/Minify</directory>
+            <directory suffix=".php">../library/Zend</directory>
+            <directory suffix=".php">../library/zip</directory>
+            <directory suffix=".php">../application/bigace/configs</directory>
+            <file>../public/ckeditor/ckeditor_php5.php</file>
+        </blacklist>
+    </filter>
+
+</phpunit>

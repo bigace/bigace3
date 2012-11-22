@@ -1,0 +1,45 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/** @var $formUrl string */
+$formUrl     = $this->formUrl;
+/** @var $langChooser string */
+$langChooser = $this->langChooser;
+/** @var $nextLink string */
+$nextLink    = $this->nextLink;
+
+echo '<h1>' . installTranslate('introduction'). '</h1>';
+echo installTranslate('index');
+
+echo '<h1>' . installTranslate('help_title'). '</h1>';
+echo '<p>' . installTranslate('help_text') . getHelpImage( installTranslate('help_demo') ) . '</p>';
+
+echo '<h1>'.installTranslate('language_choose').'</h1>';
+echo '<p>'.installTranslate('language_text');
+echo '<form method="post" action="'.$formUrl.'" style="display:inline">';
+echo $langChooser;
+echo '</form>';
+echo '</p>';
+
+echo $nextLink;
+
+?>

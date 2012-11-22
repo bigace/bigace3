@@ -1,0 +1,120 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+?>
+<script type="text/javascript">
+    <!--
+    function <?php echo $this->CHOOSE_ID_JS; ?>(userfunc, inputid)
+    {
+        <?php echo $this->MENU_CHOOSER_JS; ?> = userfunc;
+        fenster = open(<?php echo $this->MENU_CHOOSER_LINK; ?>,"SelectParent","menubar=no,toolbar=no,statusbar=no,directories=no,location=no,scrollbars=yes,resizable=no,height=350,width=400,screenX=0,screenY=0");
+        bBreite=screen.width;
+        bHoehe=screen.height;
+        fenster.moveTo((bBreite-400)/2,(bHoehe-350)/2);
+    }
+
+
+    function submitConfigForm(name)
+    {
+        if(document.getElementById(name) != null) {
+            document.getElementById(name).submit();
+        }
+    }
+
+
+    // -->
+</script>
+
+<?php foreach($this->CONFIGURATIONS as $package) { ?>
+    <a name="conf<?php echo $package['name']; ?>"></a>
+    <?php echo $this->portletHeader($package['name']); ?>
+        <form action="<?php echo $package['action']; ?>#conf<?php echo $package['name']; ?>" method="post">
+        <input type="hidden" name="<?php echo $this->PARAM_PACKAGE; ?>" value="<?php echo $package['name']; ?>">
+
+        <table width="100%" border="0" cellspacing="2" cellpadding="2">
+	        <col width="250"/>
+	        <col />
+	        <tbody>
+		        <?php $i = 0;
+		              foreach($package['configs'] as $configEntry) {
+		                $label = $package['name'] . $i++;
+		                ?>
+	                <tr>
+	                    <td>
+                            <label for="<?php echo $label; ?>">
+                                <?php echo $configEntry['name']; ?>
+                                <?php
+                                    $confUrl = preg_replace('|[^a-z0-9_.]|i', '', $package['name']);
+                                    $confUrl .= ':' . preg_replace('|[^a-z0-9_.]|i', '', $configEntry['name']);
+                                    echo '<a target="_blank" href="'.Bigace_Core::manual('configurations:'.$confUrl).'" class="manual_inline">?</a>';                                ?>
+                            </label>
+	                    </td>
+	                    <td>
+	                        <?php
+	                            switch($configEntry['type']) {
+	                                case CONFIG_TYPE_STRING:
+	                                    echo $this->formText($configEntry['inputName'], $configEntry['value'], array('id' => $label, 'maxlength' => 200));
+                                        echo ' ' . getTranslation('type_string');
+                                        break;
+	                                case CONFIG_TYPE_INT:
+	                                    echo $this->formText($configEntry['inputName'], $configEntry['value'], array('id' => $label, 'maxlength' => 200));
+                                        echo ' ' . getTranslation('type_int');
+                                        break;
+                                    case CONFIG_TYPE_MENU_ID:
+	                                    echo $this->itemChooser($configEntry['inputName'], $configEntry['value'], array('itemtype' => _BIGACE_ITEM_MENU));
+                                        break;
+	                                default:
+    	                                echo $configEntry['formInput'];
+                                        break;
+    	                        }
+    	                    ?>
+	                    </td>
+	                </tr>
+	                <?php } ?>
+	        </tbody>
+        </table>
+        <?php echo $this->saveButton('save'.$package['name']); ?>
+
+        </form>
+    <?php echo $this->portletFooter(); ?>
+<?php } ?>
+
+<br/>
+
+
+<form action="<?php echo $this->NEW_URL; ?>" method="POST">
+<fieldset>
+<legend><?php echo $this->t('create_new_configuration'); ?></legend>
+<table width="100%" cellspacing="0">
+<tbody>
+    <tr>
+        <td>
+            <label><?php echo $this->t('config_package'); ?></label>
+            <?php echo $this->formText("entryPackage"); ?>
+        </td>
+        <td>
+            <label><?php echo $this->t('name'); ?></label>
+            <?php echo $this->formText("entryName"); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label><?php echo $this->t('value'); ?></label>
+            <?php echo $this->formText("entryValue"); ?>
+        </td>
+        <td>
+            <label><?php echo $this->t('type'); ?></label>
+        	<select name="<?php echo $this->NEW_PARAM; ?>">
+        	<?php foreach($this->NEW_TYPES as $type) { ?>
+        		<option value="<?php echo $type; ?>"<?php echo ($type == 'string') ? ' selected' : ''; ?>><?php echo $type; ?></option>
+        	<?php } ?>
+        	</select>
+        </td>
+    </tr>
+	</tbody>
+</table>
+<?php echo $this->formButton('create', $this->t('create'), array('type' => "submit")); ?>
+</fieldset>
+</form>
+

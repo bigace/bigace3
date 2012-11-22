@@ -1,0 +1,201 @@
+#baAdminBar * {
+    outline: none;
+}
+#baAdminBar {
+    position: fixed;
+    height:31px;
+    left: 0;
+    z-index: 9999;
+    font: 10px normal Verdana, Arial, Helvetica, sans-serif;
+    width: 100%;
+    margin: 0;
+    top: 0;
+    border: none;
+    background: url(images/bg.png) 0 0 repeat-x #e3e2e2;
+}
+#baAdminBar img {border: none;}
+
+/* IE6 Hack for bottom positioning - Fixed Positioning to the Bottom. Prevents IE6 from having an infinity scroll bar - due to 1px border on #baAdminBar */
+/*
+*html #baAdminBar {
+    margin-top: -1px;
+    position: absolute;
+    top:expression(eval(document.compatMode &&document.compatMode=='CSS1Compat') ?documentElement.scrollTop+(documentElement.clientHeight-this.clientHeight) : document.body.scrollTop +(document.body.clientHeight-this.clientHeight));
+}
+* */
+
+#baAdminBar ul {
+    border-bottom: 1px solid #c3c3c3;
+    padding: 0;
+    margin: 0;
+    float: left;
+    width: 100%;
+    list-style: none;
+    font-size: 1.1em;
+}
+#baAdminBar ul li{
+    padding: 0;
+    margin: 0;
+    float: left;
+    position: relative;
+    border-right: 1px solid #666;
+    background: none;
+}
+#baAdminBar ul li a {
+    line-height:20px;
+    padding: 5px;
+    float: left;
+    height: 20px;
+    text-decoration: none;
+    color: #ccc;
+    position: relative;
+}
+#baAdminBar ul li a small {
+    font-size:14px !important;
+    font-family: sans-serif !important;
+    font-weight: normal !important;
+}
+html #baAdminBar ul li a:hover{ color:#efefef; }
+html #baAdminBar ul li a.active { /* Active state when subpanel is open */
+    background-color: #fff;
+    height: 17px;
+    margin-top: -2px; /* Push it up 2px to attach the active button to subpanel */
+    border: 1px solid #555;
+    border-top: none;
+    z-index: 200; /* Keeps the active area on top of the subpanel */
+    position: relative;
+}
+
+#baAdminBar a.toolicon    { background:url(../images/toolsprites.png) center center no-repeat; padding-left: 25px; }
+#baAdminBar a.toolicon:hover  { background-color: #000; }
+#baAdminBar a.editor      { background-position:5px 5px; }
+#baAdminBar a.home        { background-position:5px -20px; }
+#baAdminBar a.login       { background-position:5px -46px; }
+#baAdminBar a.logout      { background-position:5px -73px; }
+#baAdminBar a.widgets     { background-position:5px -98px; }
+#baAdminBar a.search      { background-position:5px -125px; }
+#baAdminBar a.admin       { background-position:5px -150px; }
+#baAdminBar a.alerts      { background: url(images/balloon.png) no-repeat center center; }
+#baAdminBar a.profile     { background: url(images/user.png) no-repeat center center; }
+#baAdminBar a.editprofile { background: url(images/wrench_screwdriver.png) no-repeat center center; }
+#baAdminBar a.module      { background-position:5px -175px; }
+#baAdminBar a.chat{
+    background: url(images/balloon.png) no-repeat 15px center;
+    width: 126px;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    padding-left: 40px;
+    text-indent: 0; /* Reset text indent */
+}
+
+/* Right align the chat and alert panels */
+#baAdminBar li#chatpanel, #baAdminBar li#alertpanel {
+    float: right;
+}
+
+
+#baAdminBar ul li div a {
+    /* Reset link style for subpanel links */
+    text-indent: 0;
+    width: auto;
+    height: auto;
+    padding: 0;
+    float: none;
+    color: #00629a;
+    position: static;
+}
+#baAdminBar ul li div a:hover {
+    /* Reset link style for subpanel links */
+    text-decoration: underline;
+}
+
+#baAdminBar .subpanel {
+    position: absolute;
+    left: 0; bottom: 27px;
+    display: none;  /* Hide by default */
+    width: 198px;
+    border: 1px solid #555;
+    background: #fff;
+    overflow: hidden;
+    padding-bottom: 2px;
+}
+#baAdminBar h3 {
+    background: #526ea6;
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin: 0px;
+}
+#baAdminBar h3 span {
+    font-size: 1.5em;
+    float: right;
+    line-height: 0.6em;
+    font-weight: normal;
+}
+#baAdminBar .subpanel ul{
+    padding: 0; margin: 0;
+    background: #fff;
+    width: 100%;
+    overflow: auto;
+}
+#baAdminBar .subpanel li{
+    float: none; /* Reset float */
+    display: block;
+    padding: 0; margin: 0;
+    overflow: hidden;
+    clear: both;
+    background: #fff;
+    position: static;  /* Reset relative positioning */
+    font-size: 0.9em;
+}
+
+#chatpanel .subpanel li { background: url(images/dash.gif) repeat-x left center; }
+#chatpanel .subpanel li span {
+    padding: 5px;
+    background: #fff;
+    color: #777;
+    float: left;
+}
+#chatpanel .subpanel li a img {
+    float: left;
+    margin: 0 5px;
+}
+#chatpanel .subpanel li a{
+    padding: 3px 0; margin: 0;
+    line-height: 22px;
+    height: 22px;
+    background: #fff;
+    display: block;
+}
+#chatpanel .subpanel li a:hover {
+    background: #3b5998;
+    color: #fff;
+    text-decoration: none;
+}
+
+#alertpanel .subpanel {
+    /* Reset left positioning and make it right positioned */
+    right: 0; left: auto;
+}
+#alertpanel .subpanel li {
+    border-top: 1px solid #f0f0f0;
+    display: block;
+}
+#alertpanel .subpanel li p {
+    padding: 5px 10px;
+    margin: 0px;
+}
+#alertpanel .subpanel li a.delete {
+    background: url(images/delete_x.gif) no-repeat;
+    float: right;
+    width: 13px; height: 14px;
+    margin: 5px;
+    text-indent: -9999px;
+    visibility: hidden;
+}
+#alertpanel .subpanel li a.delete:hover { background-position: left bottom; }
+#baAdminBar #alertpanel li.view {
+    text-align: right;
+    padding: 5px 10px 5px 0;
+}

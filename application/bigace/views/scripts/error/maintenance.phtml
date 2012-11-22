@@ -1,0 +1,58 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License 
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ * 
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/** @var $baseUrl string */
+$baseUrl = $this->baseUrl().'/';
+
+?><!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta name="generator" content="BIGACE <?php echo Bigace_Core::VERSION; ?>">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>system/css/error.css" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo $baseUrl; ?>system/images/favicon.ico" />
+	<title><?php echo $this->title; ?></title>
+</head>
+<body>
+    <p id="backtosite">
+        <?php if(isset($this->backlink)) : ?>
+        <a href="<?php echo $this->backlink; ?>">&laquo; Back to Homepage</a>
+        <?php endif; ?>
+    </p>
+    
+    <div class="content">
+
+        <h2><?php echo $this->message; ?></h2>
+        
+        <?php if(isset($this->maintenance)) : ?>
+        <div>
+            <?php echo $this->maintenance; ?>
+        <div>
+        <?php endif; ?>
+
+    </div>
+
+    <?php echo $this->footer; ?>
+
+</body>
+</html>

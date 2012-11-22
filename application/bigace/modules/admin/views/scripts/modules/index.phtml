@@ -1,0 +1,64 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->SUCCESS)) {
+    echo $this->message($this->SUCCESS, 'success');
+}
+
+?>
+<?php echo $this->portletHeader($this->t('module_header'), array('full' => true)); ?>
+<table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+<colgroup>
+	<col width="200"/>
+	<col />
+	<col />
+	<col width="75"/>
+</colgroup>
+<thead>
+	<tr>
+		<th><?php echo $this->t('name'); ?></th>
+		<th><?php echo $this->t('module_title'); ?></th>
+		<th><?php echo $this->t('description'); ?></th>
+		<th align="center"><?php echo $this->t('state'); ?></th>
+	</tr>
+</thead>
+<tbody>
+    <?php foreach($this->MODULES as $module) { ?>
+    <tr>
+        <td>
+            <a href="<?php echo $module['edit']; ?>" class="edit"><?php echo $module['name']; ?></a>
+        </td>
+        <td><?php echo $module['title']; ?></td>
+        <td><?php echo $module['description']; ?></td>
+        <td align="center">
+			<?php if($module['active']) { ?>
+				<a href="<?php echo $module['state']; ?>" title="<?php echo $this->t('modul_active'); ?>" class="tooltip"><img src="<?php echo $this->STYLE; ?>active.png" border="0"></a>
+			<?php } else { ?>
+				<a href="<?php echo $module['state']; ?>" title="<?php echo $this->t('modul_inactive'); ?>" class="tooltip"><img src="<?php echo $this->STYLE; ?>inactive.png" border="0"></a>
+			<?php } ?>
+        </td>
+    </tr>
+    <?php } ?>
+	</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+
+<?php if ($this->ALLOW_CREATE) { ?>
+    <fieldset>
+        <legend><?php echo $this->t('title_create_module'); ?></legend>
+        <p><?php echo $this->t('description_create_module'); ?></p>
+
+        <form action="<?php echo $this->CREATE_URL; ?>" method="post">
+        <label for="newModName"><?php echo $this->t('name'); ?></label>
+        <?php echo $this->formText('name','',array('maxlength'=>"25", 'id'=>"newModName")); ?>
+        <?php echo $this->saveButton('newMod'); ?>
+        </form>
+    </fieldset>
+<?php } ?>

@@ -1,0 +1,39 @@
+<?php 
+/* $Id$ */ 
+
+echo $this->backlink($this->BACK_URL);
+
+echo $this->portletHeader($this->t('category_show_links') . ': <b>&quot;' . $this->CATEGORY_NAME . '&quot;</b>', array('full' => true));
+
+?>
+
+<table class="nicetable" cellspacing="0" width="100%">
+<colgroup>
+    <col width="20px" />
+    <col />
+    <col width="100px" />
+    <col width="100px" />
+</colgroup>
+<thead>
+	<tr>
+		<th>&nbsp;</th>
+		<th><?php echo $this->t('name'); ?></th>
+		<th align="center"><?php echo $this->t('id'); ?></th>
+		<th align="center"><?php echo $this->t('action'); ?></th>
+	</tr>
+</thead>
+<tbody>
+    <?php foreach($this->ENTRIES AS $theRow) { ?>
+    <tr>
+		<td><img src="<?php echo $this->STYLE; ?>item_<?php echo $theRow['ITEMTYPE']; ?>.png" title="<?php echo $this->t('item_'.$theRow['ITEMTYPE']); ?>"></td>
+        <td><?php echo $theRow['ITEM_NAME']; ?></td>
+        <td align="center"><?php echo $theRow['ITEM_ID']; ?></td>
+        <td align="center">
+            <?php echo $this->deleteLink($theRow['DELETE_URL']); ?>
+        </td>
+    </tr>
+    <?php } ?>
+	</tbody>
+</table>
+
+<?php echo $this->portletFooter(); ?>

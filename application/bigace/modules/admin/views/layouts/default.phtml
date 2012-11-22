@@ -1,0 +1,185 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+
+/**
+ * Default admin theme since BIGACE v3.
+ *
+ * HTML5 Doctype, even if it is not yet used ;)
+ */
+
+?><!DOCTYPE html>
+<html>
+<head>
+<?php echo $this->headMeta(); ?>
+
+<?php echo $this->headTitle(); ?>
+<?php echo $this->dojo(); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo BIGACE_HOME; ?>jquery/themes/smoothness/jquery-ui-1.8.custom.css" />
+<?php
+echo $this->fileMerge('system/admin/css/')
+          ->addFile('960.css')
+          ->addFile('reset.css')
+          ->addFile('text.css')
+          ->addFile('style.css')
+          ->addFile('locales.css')
+          ->addFile($this->adminTheme()->getStylesheet())
+          ->withUniqueId(Bigace_Core::VERSION)
+          ->asCss();
+?>
+<?php echo $this->headStyle(); ?>
+<?php echo $this->headLink() ?>
+<?php
+echo $this->fileMerge('jquery/')
+          ->addFile('jquery-1.4.2.min.js')
+          ->addFile('jquery-ui-1.8.custom.min.js')
+          ->withUniqueId(Bigace_Core::VERSION)
+          ->asJavascript();
+?>
+
+<script type="text/javascript" src="<?php echo $this->STYLE; ?>js/effects.js"></script>
+<?php echo $this->headScript(); ?>
+<?php /* FIXME: remove IE6 support - but first test with IE7/8 */ ?>
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->STYLE; ?>css/iefix.css" />
+<script src="<?php echo $this->STYLE; ?>js/iefix.js"></script>
+<![endif]-->
+<?php Bigace_Hooks::do_action('admin_html_head'); ?>
+</head>
+<body<?php echo $this->adminTheme()->getBodyClass(); ?>>
+<?php /*  WRAPPER START */ ?>
+    <div class="container_16" id="wrapper">
+        <div style="position:relative;">
+            <div id="lchooser">
+                <?php foreach($this->ADMIN_LANGUAGES as $lang): ?>
+                <a class="bigaceIcon bigaceIconLocale bigaceIconLocale<?php echo ucfirst($lang['locale']); ?>" href="<?php echo $this->url(array('lang' => $lang['locale'])); ?>"><?php echo $lang['name']; ?></a>
+                <?php endforeach; ?>
+                <a class="langcloser lchooselast" href="#"><?php echo $this->t('close'); ?></a>
+            </div>
+        </div>
+        <div class="grid_10" id="logo">
+            <a href="<?php echo $this->WEBSITE; ?>" target="_blank" class="ba-site"><?php echo $this->t('visit_site'); ?> &raquo;</a>
+        </div>
+        <div class="grid_6">
+            <div id="topTools">
+                <span>
+                    <?php echo $this->t("hello");
+                        if(isset($this->EDIT_PROFILE))
+                            echo ' <a href="'.$this->EDIT_PROFILE.'">'.$this->USERNAME.'</a>';
+                        else
+                            echo ' ' . $this->USERNAME;
+                    ?>
+                    <?php /* <a href="#" class="mail">(1)</a>*/ ?> |
+                    <a class="langcloser" href="#"><?php echo $this->t("language"); ?></a>  |
+                    <a href="<?php echo $this->LOGOUT; ?>"><?php echo $this->t("logout"); ?></a>
+                </span>
+            </div>
+        </div>
+
+<div class="grid_16" id="header">
+<?php /*  MENU START */ ?>
+<div id="menu">
+    <ul class="group" id="menu_group_main">
+        <?php
+        $pages = $this->navigation()->getPages();
+        $last = count($pages)-1;
+        $i = 0;
+        $children = null;
+        $menuHtml = '';
+
+        foreach ($pages as $page) {
+            if($page->getVisible()) {
+                echo '<li class="item ';
+                switch($i++) {
+                    case 0: echo 'first'; break;
+                    case $last: echo 'last'; break;
+                    default: echo 'middle'; break;
+                }
+                echo '"><a href="'.$page->getHref().'" class="main';
+                if($page->isActive(true)) {
+                    echo ' current';
+                    $children = $page;
+                }
+                echo '"><span class="outer"><span class="inner '.$page->getID().'">'.$page->getTitle().'</span></span></a>';
+
+                $it = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
+                $innerHtml = '';
+                foreach ($it as $page2) {
+                    if($page2->isVisible()) {
+                       $innerHtml .= '<li class="submenu-item';
+                       if($page2->isActive(true))
+                           $innerHtml .= ' submenu-item-active';
+                       $innerHtml .= '"><a href="'.$page2->getHref().'">'.$page2->getLabel().'</a></li>';
+                    }
+                }
+
+                if(strlen($innerHtml) > 0) {
+                    echo '<ul class="submenus" id="sub-'.$page->getID().'">'.$innerHtml.'</ul>';
+                }
+                echo '</li>';
+            }
+        }
+        ?>
+    </ul>
+</div>
+<?php /*  MENU END */ ?>
+</div>
+    <div class="grid_16<?php if(strlen($menuHtml) == 0) echo ' ui-corner-top'; ?>" id="content">
+        <div class="grid_9">
+            <h1 class="<?php echo $this->MENU->getID(); ?>"><?php echo $this->MENU->getTitle(); ?></h1>
+        </div>
+
+        <div class="grid_6" id="helpgrid">
+            <?php
+            Bigace_Hooks::do_action('admin_header');
+            ?>
+            <div id="helpbox">
+                <span class="page_help"><?php echo $this->t("help"); ?></span>
+                <div style="position: relative">
+                    <ul style="display:none" id="inline_help">
+                        <li><a href="<?php echo Bigace_Core::manual($this->MENU->getID()); ?>" target="_blank"><?php echo $this->t("manual"); ?></a></li>
+                        <li><a href="<?php echo $this->FORUM; ?>" target="_blank"><?php echo $this->t("forum"); ?></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"> </div>
+          <div id="portlets">
+            <?php
+            echo $this->layout()->content;
+            Bigace_Hooks::do_action('admin_footer');
+            ?>
+          </div>
+        <div class="clear"> </div>
+    </div>
+
+    <div class="clear"> </div>
+
+</div>
+
+<div class="container_16" id="footer">
+    Powered by <a href="http://www.bigace.de/" target="_blank">BIGACE <?php echo Bigace_Core::VERSION; ?></a> |
+    <a href="<?php echo $this->url(array('controller' => 'about', 'action' => 'index')); ?>"><?php echo $this->t("title_about"); ?></a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<?php
+        if(isset($this->META_VALUES) && is_array($this->META_VALUES) && count($this->META_VALUES) > 0) {
+            foreach($this->META_VALUES as $prjTitle => $prjItem) {
+                echo $this->portletHeader($prjTitle, array('closed' => 'true'));
+                echo $prjItem;
+                echo $this->portletFooter();
+            }
+        }
+?>

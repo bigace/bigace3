@@ -1,0 +1,29 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+   
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+
+echo $this->backlink($this->BACK_URL);
+?>
+
+<h2><?php echo $this->t('confirm_title'); ?></h2>
+<p><?php echo $this->t('confirm_info'); ?></p>
+<form action="<?php echo $this->FORM_ACTION; ?>" method="post">
+<fieldset>
+    <legend><?php echo $this->t('uninstall_cid'); ?></legend>
+    <p>
+    <b><?php echo $this->t('id'); ?>:</b> <?php echo $this->ID; ?>
+    <br/>
+    <b><?php echo $this->t('name'); ?>:</b> <?php echo $this->NAME; ?>
+    <br/>
+    <b><?php echo $this->t('uninstall_alias'); ?>:</b> <?php echo $this->ALIAS; ?>
+    </p>
+</fieldset>
+<input type="hidden" name="<?php echo $this->PARAM_ID; ?>" value="<?php echo $this->ID; ?>" />
+<?php echo $this->formButton('deleteCommunity', $this->t('delete'), array('type' => 'submit')); ?>
+</form>
+

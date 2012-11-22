@@ -1,0 +1,23 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+?>
+<link type="text/css" rel="stylesheet" href="<?php echo BIGACE_URL_ADDON; ?>jquery/jstree/themes/bigace/style.css">
+<link type="text/css" rel="stylesheet" href="<?php echo BIGACE_URL_ADDON; ?>jquery/jstree/themes/checkbox/style.css">
+<script type="text/javascript" src="<?php echo BIGACE_HOME; ?>system/javascript/bigace_ajax.js"></script>
+<?php
+
+echo $this->fileMerge('jquery/jstree/')
+          ->addFile('jquery.metadata.js')
+          ->addFile('jquery.cookie.js')
+          ->addFile('jquery.hotkeys.js')
+          ->addFile('jquery.tree.js')
+          ->addFile('jquery.tree.checkbox.js')
+          ->addFile('jquery.tree.contextmenu.js')
+          ->addFile('jquery.tree.metadata.js')
+          ->withUniqueId(Bigace_Core::VERSION)
+          ->asJavascript();
+
+?>

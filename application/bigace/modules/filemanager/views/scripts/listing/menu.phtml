@@ -1,0 +1,43 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->MESSAGE))
+    echo $this->MESSAGE;
+
+if(!isset($this->ITEMS) || count($this->ITEMS) == 0)
+{
+    echo '<b>'.$this->t('no_items_available_'.$this->ITEMTYPE, $this->t('no_items_available')).'</b>';
+}
+else
+{
+    ?>
+    <div style="margin-bottom:5px"><?php echo $this->t("wayhome"); ?>: <?php echo $this->WAYHOME; ?></div>
+    <table class="tablesorter" cellspacing="0">
+    <col width="30" />
+    <col />
+    <col />
+    <thead>
+	    <tr>
+		    <th>&nbsp;</th>
+		    <th align="left"><?php echo $this->t("name"); ?></th>
+	    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->ITEMS as $entry) : ?>
+        <tr>
+            <td width="20" align="left"><?php echo $entry['FOLDER']; ?></td>
+            <td align="left"><a href="<?php echo $entry['ITEM_URL']; ?>" onclick="return chooseItem('<?php echo $entry['ITEM_TYPE']; ?>', '<?php echo $entry['ITEM_ID']; ?>', '<?php echo $entry['ITEM_LANGUAGE']; ?>', '<?php echo $entry['ITEM_MIMETYPE']; ?>', '<?php echo $entry['ITEM_URL']; ?>', '<?php echo $entry['ITEM_MIMETYPE']; ?>', '<?php echo $entry['ITEM_NAME']; ?>');"><?php echo $entry['ITEM_NAME']; ?></a></td>
+        </tr>
+    <?php endforeach; ?>
+	    </tbody>
+    </table>
+
+    <script type="text/javascript">
+    $(document).ready( function() { 
+            $(".tablesorter").tablesorter({ widgets: ['zebra'], headers: { 0: {sorter: false}, 1: {sorter: false}, 2: {sorter: false} }}); 
+        } 
+    );
+    </script>
+<?php
+}
+?>

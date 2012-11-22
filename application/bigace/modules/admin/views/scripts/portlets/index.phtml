@@ -1,0 +1,31 @@
+<?php /* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+  
+$all = count($this->PORTLETS);
+
+$left = intval(($all / 2) + ($all % 2));
+?>
+
+    <div class="column" id="left">
+        <?php
+            for ($i = 0; $i < $left; $i++) {
+                $portlet = $this->PORTLETS[$i];
+                $params = array_merge($portlet->getParameter(), array('STYLE' => $this->STYLE));
+                echo $this->partial($portlet->getFilename(), $params); 
+            }
+        ?>
+    </div>
+
+    <div class="column">
+        <?php
+            for ($i = $left; $i < $all; $i++) {
+                $portlet = $this->PORTLETS[$i];
+                $params = array_merge($portlet->getParameter(), array('STYLE' => $this->STYLE));
+                echo $this->partial($portlet->getFilename(), $params); 
+            }
+        ?>
+    </div>
+
+    <div class="clear"></div>

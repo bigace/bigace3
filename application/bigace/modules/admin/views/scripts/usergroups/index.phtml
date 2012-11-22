@@ -1,0 +1,58 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->ERRORS) && count($this->ERRORS) > 0)
+    foreach($this->ERRORS as $err)
+        echo $this->message($err, 'error');
+
+if(isset($this->INFOS) && count($this->INFOS) > 0)
+    foreach($this->INFOS as $err)
+        echo $this->message($err, 'info');
+?>
+
+<?php echo $this->portletHeader($this->t('user_list'), array('full' => true)); ?>
+<table width="100%" cellspacing="0" class="nicetable">
+<col />
+<col width="50"/>
+<col width="150"/>
+<col width="100"/>
+
+<thead>
+	<tr>
+		<th><?php echo $this->t('name'); ?></th>
+		<th align="center"><?php echo $this->t('id'); ?></th>
+		<th align="center"><?php echo $this->t('member_count'); ?></th>
+		<th align="center"><?php echo $this->t('action'); ?></th>
+	</tr>
+</thead>
+
+<tbody>
+    <?php foreach($this->GROUPS as $theRow) { ?>
+    <tr>
+        <td><a href="<?php echo $theRow['ADMIN_LINK']; ?>"><?php echo $theRow['NAME']; ?></a></td>
+        <td align="center"><?php echo $theRow['ID']; ?></td>
+        <td align="center"><?php echo $theRow['MEMBERS']; ?></td>
+        <td align="center">
+            <?php
+                 
+                echo $this->deleteLink($theRow['DELETE_LINK'], array('onclick' => "return confirm('".$this->t('confirm_delete_group')."')")); 
+            ?>
+        </td>
+    </tr>
+    <?php } ?>
+	</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+
+<br/> 
+
+<fieldset>
+    <legend><?php echo $this->t('add_group'); ?></legend>
+    <p><?php echo $this->t('info_new_group'); ?></p>
+    <form action="<?php echo $this->CREATE_URL; ?>" method="post">
+    <label for="groupName"><?php echo $this->t('name'); ?></label> <?php echo $this->formText('groupName', $this->CREATE_NAME); ?>
+    <?php echo $this->createButton('createGroupBtn'); ?>
+    
+    </form>
+</fieldset>
+

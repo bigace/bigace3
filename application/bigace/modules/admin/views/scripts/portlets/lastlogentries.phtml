@@ -1,0 +1,26 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+  echo $this->portletHeader($this->t('last_logentries'), array('full' => true)); ?>
+  <table width="100%" cellpadding="0" cellspacing="0" class="nicetable">
+    <tbody>
+    <?php foreach($this->LOG_ENTRIES as $theRow) : ?>
+      <tr>
+        <td>
+            <a title="<?php echo $theRow['TIMESTAMP']; ?>" class="preview" href="<?php echo $theRow['INFO_URL']; ?>"><?php echo $theRow['MESSAGE']; ?></a>
+        </td>
+      </tr>
+    <tr>
+    <?php endforeach; ?>
+      <tr class="footer">
+        <td>
+            <a href="<?php echo $this->SHOW_ALL; ?>" class="preview_inline"><?php echo $this->t('show_all'); ?></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p></p>
+<?php echo $this->portletFooter(); ?>

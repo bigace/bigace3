@@ -1,0 +1,188 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->INFO)) {
+    echo $this->message($this->INFO, 'info');
+}
+
+// -------------------- [Default Layout] --------------------
+if (isset($this->DEFAULT_LAYOUT)) {
+    $layout = $this->DEFAULT_LAYOUT;
+    ?>
+
+    <?php echo $this->portletHeader($this->t('default_layout'), array('full' => true)); ?>
+    <table width="100%" cellspacing="0" class="nicetable">
+    <col width="300" />
+    <col />
+
+    <tbody>
+        <tr>
+            <td align="center">
+                <?php
+                if(file_exists($layout['path'] . $layout['preview']) && is_file($layout['path'] . $layout['preview'])) {
+                    echo '<img src="' . $layout['url'] . $layout['preview'] . '" width="250"/>';
+                } else {
+                    echo '<img src="' . $this->STYLE . 'images/250x200.png" width="250"/>';
+                }
+                ?>
+            </td>
+            <td>
+                <h2><?php echo $layout['title']; ?></h2>
+                <p><em><?php echo $layout['description']; ?></em></p>
+                <?php /*
+                <p>
+                <?php
+                    echo $this->t('amount_files') . ': ';
+
+                    if ($layout['files'] == 0) {
+                        echo '0';
+                    } else {
+                        echo $layout['files'];
+                    }
+                ?>
+                </p>
+                <br/>
+                * */ ?>
+                <?php if(count($layout['options']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('options'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['options'] as $k => $v) echo '<li>'.$k.' = '.$v.'</li>'; ?></ul>
+                <?php } ?>
+                <?php if(count($layout['contents']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('contents'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['contents'] as $k ) echo '<li>'.$k.'</li>'; ?></ul>
+                <?php } ?>
+                <?php if(count($layout['widgets']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('widgets'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['widgets'] as $k ) echo '<li>'.$k.'</li>'; ?></ul>
+                <?php } ?>
+                <p>
+                    <?php echo $this->t('url'); ?>:
+                    <b><?php echo $layout['url']; ?></b>
+                    <br/>
+                    <?php echo $this->t('path'); ?>:
+                    <b><?php echo str_replace(BIGACE_ROOT, '', $layout['path']); ?></b>
+                </p>
+                <div>
+                    <form action="<?php echo $this->EDIT_ACTION; ?>" method="post">
+                    <input type="hidden" name="id" value="<?php echo $layout['id']; ?>" />
+                    <?php echo $this->formButton('edit', $this->t('edit'), array('type' => 'submit')); ?>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+    <?php
+}
+?>
+
+<?php
+// -------------------- [All other Layouts] --------------------
+if (count($this->LAYOUTS) > 0) {
+    ?>
+    <?php echo $this->portletHeader($this->t('existing_layouts'), array('full' => true)); ?>
+    <table width="100%" cellspacing="0" class="nicetable">
+    <col width="300" />
+    <col />
+
+    <tbody>
+    <?php
+    foreach($this->LAYOUTS as $layout)
+    {
+        ?>
+        <tr>
+            <td align="center">
+                <?php
+                if(file_exists($layout['path'] . $layout['preview']) && is_file($layout['path'] . $layout['preview'])) {
+                    echo '<img src="' . $layout['url'] . $layout['preview'] . '" width="250"/>';
+                } else {
+                    echo '<img src="' . $this->STYLE . 'images/250x200.png" width="250"/>';
+                }
+                ?>
+            </td>
+            <td>
+                <h2><?php echo $layout['title']; ?></h2>
+                <p><em><?php echo $layout['description']; ?></em></p>
+                <?php /*
+                <p>
+                <?php
+                    echo $this->t('amount_files') . ': ';
+
+                    if ($layout['files'] == 0) {
+                        echo '0';
+                    } else {
+                        echo $layout['files'];
+                    }
+                ?>
+                </p>
+                <br/>
+                * */ ?>
+                <?php if(count($layout['options']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('options'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['options'] as $k => $v) echo '<li>'.$k.' = '.$v.'</li>'; ?></ul>
+                <?php } ?>
+                <?php if(count($layout['contents']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('contents'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['contents'] as $k ) echo '<li>'.$k.'</li>'; ?></ul>
+                <?php } ?>
+                <?php if(count($layout['widgets']) > 0) { ?>
+                <p>
+                    <u><?php echo $this->t('widgets'); ?>:</u>
+                </p>
+                <ul><?php foreach($layout['widgets'] as $k ) echo '<li>'.$k.'</li>'; ?></ul>
+                <?php } ?>
+                <p>
+                    <?php echo $this->t('url'); ?>:
+                    <b><?php echo $layout['url']; ?></b>
+                    <br/>
+                    <?php echo $this->t('path'); ?>:
+                    <b><?php echo str_replace(BIGACE_ROOT, '', $layout['path']); ?></b>
+                </p>
+                <?php /* <p>
+                    <form action="<?php echo $this->ADD_ACTION; ?>" method="post">
+                    <input type="hidden" name="id" value="<?php echo $layout['id']; ?>" />
+                    <?php echo $this->formFile('add'.$layout['id']); ?>
+                    <?php echo $this->formButtonSmall('add', $this->t('add_files'), array('type' => 'submit')); ?>
+                    </form>
+                </p> */
+                ?>
+                <div>
+                    <form action="<?php echo $this->EDIT_ACTION; ?>" method="post" style="display:inline">
+                    <input type="hidden" name="id" value="<?php echo $layout['id']; ?>" />
+                    <?php echo $this->formButton('edit', $this->t('edit'), array('type' => 'submit')); ?>
+                    </form>
+
+                    <form action="<?php echo $this->DEFAULT_ACTION; ?>" method="post"  style="display:inline">
+                    <input type="hidden" name="id" value="<?php echo $layout['id']; ?>" />
+                    <?php echo $this->formButton('default', $this->t('set_default'), array('type' => 'submit')); ?>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+    </table>
+    <?php echo $this->portletFooter(); ?>
+    <?php
+}
+?>

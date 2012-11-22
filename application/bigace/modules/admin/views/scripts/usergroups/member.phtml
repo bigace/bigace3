@@ -1,0 +1,55 @@
+<?php 
+/* $Id$ */ 
+
+
+if(isset($this->INFOS) && count($this->INFOS) > 0)
+    foreach($this->INFOS as $err)
+        echo $this->message($err, 'info');
+        
+echo $this->backlink($this->BACK_URL);
+
+if(isset($this->NO_MEMBERS)) 
+{ 
+    ?>
+    <form action="<?php echo $this->ADD_TO_GROUP_LINK; ?>" method="post">
+        <input type="hidden" name="<?php echo $this->PARAM_GROUP_ID; ?>" value="<?php echo $this->GROUP->getID(); ?>">
+        <?php echo $this->t('add_to_group'); ?> <?php echo $this->NO_MEMBERS; ?>
+        <?php echo $this->formButton('addToGroup', $this->t('add_to_group_button'), array('type' => 'submit')); ?>
+    </form> 
+    <?php 
+}
+
+echo $this->portletHeader($this->t('group_name') . ': ' . $this->GROUP->getName() . ' (' . $this->GROUP->getID() . ')', array('full' => true)); ?>
+<table width="100%" cellspacing="0" class="nicetable">
+<col>
+<col width="200"/>
+<thead>
+	<tr>
+		<th><?php echo $this->t('name'); ?></th>
+		<th align="center"><?php echo $this->t('remove_from_group'); ?></th>
+	</tr>
+</thead>
+
+<tbody>
+    <?php foreach($this->MEMBER as $theRow) { ?>
+    <tr>
+        <td>
+            <?php 
+            if(isset($theRow['EDIT_URL']))
+                echo '<a href="'.$theRow['EDIT_URL'].'">'.$theRow['USER']->getName().'</a>';
+            else
+                echo $theRow['USER']->getName(); 
+            ?>
+        </td>
+        <td align="center">
+            <?php 
+                if(isset($theRow['REMOVE_URL']))
+                    echo $this->deleteLink($theRow['REMOVE_URL']); 
+            ?>
+        </td>
+    </tr>
+    <?php } ?>
+</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+

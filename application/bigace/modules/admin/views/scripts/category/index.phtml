@@ -1,0 +1,96 @@
+<?php 
+/* $Id$ */ 
+
+
+function showRecursive($view, $style, $childs, $level)
+{
+    foreach($childs AS $theRow) 
+    { 
+        ?>
+        <tr>
+            <td><?php
+                for($i=0;$i<$level;$i++)
+                    echo '<img src="'.$style.'images/blank.png" width="16" border="0" />';
+                
+                echo '<a class="level" href="'.$theRow['EDIT'].'">'.$theRow['NAME'].'</a>';
+                ?>
+            </td>
+	        <td><?php echo $theRow['DESCRIPTION']; ?></td>
+	        <td align="center"><?php echo $theRow['ID']; ?></td>
+            <td align="center">
+            <?php 
+                if($theRow['AMOUNT'] > 0)
+                    echo '<a class="preview_inline" href="'.$theRow['LINKED'].'">'.$view->t('category_show_links').'</a>';
+            ?>
+            </td>
+            <td align="center">
+            <?php 
+                if(count($theRow['CHILDS']) == 0 && isset($theRow['DELETE']))
+                    echo $view->deleteLink($theRow['DELETE'], array('onclick' => 'return confirm("'.$view->t('category_ask_for_delete').' '.$theRow['NAME'].'")'));
+            ?>
+            </td>
+        </tr>
+        <?php 
+        if(count($theRow['CHILDS']) > 0)
+        {
+            showRecursive($view, $style, $theRow['CHILDS'], ($level+1));
+        }
+    }
+}
+
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+    
+if(isset($this->INFO)) 
+    echo $this->message($this->INFO, 'info');
+
+if(isset($this->WAYHOME))
+    echo '<div>' . $this->t('you_are_here') . ':' . $this->WAYHOME . '</div>';
+
+if(count($this->CHILDS) > 0)
+{
+    echo $this->portletHeader($this->t('category_browse'), array('full' => true)); ?>
+    <table class="nicetable" cellspacing="0" width="100%">
+    <col />
+    <col />
+    <col width="60" />
+    <col width="120" />
+    <col width="90" />
+    <thead>
+	    <tr>
+		    <th><?php echo $this->t('name'); ?></th>
+		    <th><?php echo $this->t('description'); ?></th>
+		    <th align="center"><?php echo $this->t('id'); ?></th>
+		    <th align="center"><?php echo $this->t('action_linked'); ?></th>
+		    <th align="center"><?php echo $this->t('action'); ?></th>
+	    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+        <?php showRecursive($this, $this->STYLE, $this->CHILDS, 0); ?>
+    </table>
+    <?php 
+    echo $this->portletFooter(); 
+}
+?>
+
+<form action="<?php echo $this->CREATE_URL; ?>" method="post">
+<fieldset>
+    <legend><?php echo $this->t('category_create_new'); ?></legend>
+    <table cellspacing="0" border="0" width="100%">
+    <tr>
+        <td><label for="name"><?php echo $this->t('name'); ?></label></td>
+        <td><label for="description"><?php echo $this->t('description'); ?></label></td>
+        <td align="center"><label><?php echo $this->t('category_child_of'); ?></label></td>
+        <td align="center"><label for="createCat"><?php echo $this->t('action'); ?></label></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formText('name'); ?></td>
+        <td><?php echo $this->formText('description'); ?></td>
+        <td align="center"><?php echo $this->PARENT_SELECT; ?></td>
+        <td align="center"><?php echo $this->createButton('createCat'); ?></td>
+    </tr>
+    </table>
+</fieldset>
+</form>
+

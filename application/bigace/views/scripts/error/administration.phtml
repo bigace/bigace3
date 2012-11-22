@@ -1,0 +1,74 @@
+<?php
+/**
+ * Bigace - a PHP and MySQL based Web CMS.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new GNU General Public License
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.bigace.de/license.html
+ *
+ * Bigace is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @category   Bigace
+ * @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+ * @license    http://www.bigace.de/license.html     GNU Public License
+ * @version    $Id$
+ */
+?><!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta name="generator" content="BIGACE <?php echo Bigace_Core::VERSION; ?>">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <link rel="stylesheet" href="<?php echo BIGACE_HOME; ?>system/css/error.css" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo BIGACE_HOME; ?>system/images/favicon.ico" />
+	<title><?php echo getTranslation('admin') . ' | ' . $this->title; ?></title>
+</head>
+<body>
+
+    <p id="backtosite"><a href="<?php echo $this->backlink; ?>">&laquo; <?php
+    echo getTranslation("menu_index"); ?></a></p>
+
+    <div class="content">
+        <h2>Not found</h2>
+
+        <p class="error">
+          <?php echo $this->exception->getMessage(); ?>
+        </p>
+
+        <?php if(isset($this->error)) : ?>
+        <div class="message">
+            <p>
+                Please try the following link, to see if there is more information available about the
+                <a href="<?php echo Bigace_Core::manual($this->error); ?>" target="_blank">Error
+                Code <?php echo $this->error; ?></a>.
+            </p>
+        </div>
+        <?php endif; ?>
+
+        <div class="spacer">&nbsp;</div>
+
+        <p>Uups, went the wrong way? Go back and start again from the <a href="<?php
+        echo $this->backlink; ?>"><?php echo getTranslation("menu_index"); ?></a>.</p>
+
+        <?php if (Bigace_Core::isDevelopmentSystem()) : ?>
+        <div class="spacer">&nbsp;</div>
+
+        <h3>Please include the following information when you contact your webmaster:</h3>
+
+        <h4>Stack trace</h4>
+        <pre class="stacktrace"><?php echo $this->exception->getTraceAsString(); ?></pre>
+
+        <p><b>Request Parameters</b></p>
+        <pre class="params"><?php var_dump($this->request->getParams()) ?></pre>
+        <?php endif; ?>
+
+    </div>
+
+</body>
+</html>

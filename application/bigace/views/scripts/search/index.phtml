@@ -1,0 +1,136 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+$itemtype = $this->itemtype;
+loadLanguageFile('search');
+
+// FIXME 3.0 - use a viewhelper to set the page title
+$TITLE = $this->t(getTranslation('search_frame'));
+
+$showExtended = $this->extendedForm;
+
+?>
+
+<link href="<?php echo $this->directory('public'); ?>system/css/search.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+<!--
+function readyLoaded() {
+    document.getElementById('searchterm').focus();
+}
+// -->
+</script>
+
+<div id="searchApplication">
+
+    <?php if(!isset($this->SHOW_FORM) || $this->SHOW_FORM === true) { ?>
+    <div id="searchForm">
+        <form method="get" action="<?php echo $this->ACTION_URL; ?>">
+        <?php if (isset($this->language) && $this->language !== null) { ?>
+        <input type="hidden" name="language" value="<?php echo $this->language; ?>">
+        <?php } ?>
+        <h2><?php echo $this->t("search_title"); ?></h2>
+        <table cellpadding="3" cellspacing="0" class="searchTable">
+            <tr>
+                <td colspan="2">
+                    <input type="text" name="q" id="searchterm" maxlength="30" size="35" value="<?php echo $this->textInput($this->searchTerm); ?>" />
+                    <?php if ($showExtended === false) { ?>
+                        <button type="submit"><?php echo $this->t("button_search"); ?></button>
+                    <?php } ?>
+                </td>
+            </tr>
+            <?php if ($showExtended) { ?>
+            <tr>
+                <td></td>
+                <td align="left">
+                    <div class="searchItemtype">
+                        <label><input type="radio" name="itemtype" value="" <?php if($this->itemtype === null) { echo 'checked="checked" '; } ?>/> <?php echo $this->t("itemtype_all"); ?></label>
+                        <label><input type="radio" name="itemtype" value="1" <?php if($this->itemtype === _BIGACE_ITEM_MENU) { echo 'checked="checked" '; } ?>/> <?php echo $this->t("itemtype_1"); ?></label>
+                        <label><input type="radio" name="itemtype" value="4" <?php if($this->itemtype === _BIGACE_ITEM_IMAGE) { echo 'checked="checked" '; } ?>/> <?php echo $this->t("itemtype_4"); ?></label>
+                        <label><input type="radio" name="itemtype" value="5" <?php if($this->itemtype === _BIGACE_ITEM_FILE) { echo 'checked="checked" '; } ?>/> <?php echo $this->t("itemtype_5"); ?></label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="left"><?php echo $this->t("limit_results"); ?></td>
+                <td>
+                    <select name="limit">
+                        <option value="0"<?php if($this->limit==0) { echo ' selected'; } ?>></option>
+                        <option value="5"<?php if($this->limit==5) { echo ' selected'; } ?>>5</option>
+                        <option value="10"<?php if($this->limit==20) { echo ' selected'; } ?>>10</option>
+                        <option value="15"<?php if($this->limit==15) { echo ' selected'; } ?>>15</option>
+                        <option value="20"<?php if($this->limit==20) { echo ' selected'; } ?>>20</option>
+                        <option value="25"<?php if($this->limit==25) { echo ' selected'; } ?>>25</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit"><?php echo $this->t("button_search"); ?></button>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
+        </form>
+    </div>
+    <?php } ?>
+
+    <?php if(isset($this->RESULTS)) { ?>
+    <div id="searchResults">
+        <?php if(count($this->RESULTS) == 0) { ?>
+            <p>
+            <?php if(is_null($this->searchTerm) || strlen($this->searchTerm) == 0) { ?>
+                <b><?php echo sprintf($this->t("msg_empty_term"), $this->MIN_LENGTH); ?></b>
+            <?php } else { ?>
+                <b><?php echo $this->t("msg_no_result"); ?></b>
+            <?php } ?>
+            </p>
+        <?php } else { ?>
+            <?php
+            /* @var $searchResult Bigace_Search_Result */
+            foreach($this->RESULTS as $searchResult)
+            {
+                $title = $searchResult->getTitle();
+                $url   = $searchResult->getUrl();
+                $name  = str_ireplace($this->searchTerm, '<strong>'.$this->searchTerm.'</strong>', $title);
+                ?>
+                <div class="searchResult">
+                    <?php
+                    switch ($searchResult->getType())
+                    {
+                        case Bigace_Search_Result::TYPE_IMAGE:
+                            $thumb = $this->thumbnail(
+                                array(
+                                    'id'       => $searchResult->getField('itemid'),
+                                    'url'      => $searchResult->getField('url'),
+                                    'language' => $searchResult->getField('language')
+                                ),
+                                array('height' => 50)
+                            );
+                            echo '<span>';
+                            echo '<a class="searchImg" title="'. $title .'" href="'. $url .'"><img src="'.$thumb.'" height="50" alt="'.$title.'" /></a>';
+                            echo '<a href="'. $url .'" class="hlink">'. $title .'</a>';
+                            echo '</span>';
+                            break;
+                        default:
+                            echo '<span>';
+                            echo '<a href="'. $url .'" class="hlink">'. $title .'</a>';
+                            echo '</span>';
+                            break;
+                    }
+                    ?>
+                    <p class="info"><?php echo str_ireplace($this->searchTerm, '<strong>'.$this->searchTerm.'</strong>', $searchResult->getTeaser()); ?></p>
+                    <p class="url"><?php echo $url; ?></p>
+                </div>
+                <?php
+            }
+            ?>
+        <?php } ?>
+    </div>
+    <?php } ?>
+
+</div>

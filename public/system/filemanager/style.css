@@ -1,0 +1,110 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+body{font:13px/1.5 Arial, Helvetica, sans-serif}a:focus{outline:1px dotted invert}hr{border:0 #ccc solid;border-top-width:1px;clear:both;height:0}h1{font-size:25px}h2{font-size:23px}h3{font-size:21px}h4{font-size:19px}h5{font-size:17px}h6{font-size:15px}ol{list-style:decimal}ul{list-style:disc}li{margin-left:0px}p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset{margin-bottom:20px}
+body {
+    margin:10px;
+    font-size:13px;
+}
+#topLinkBox {
+    border-top:1px solid #000000;
+    border-bottom:1px solid #000000;
+    margin-bottom:5px;
+    padding:10px;
+}
+#topLinkBox a {
+    border:1px solid #cccccc;
+    background-color:#eeeeee;
+    color:#000000;
+    padding:3px;
+    text-decoration:none;
+}
+#topLinkBox a:hover {
+    border:1px solid #cccccc;
+    background-color:#666666;
+    color:#ffffff;
+    padding:3px;
+    text-decoration:none;
+}
+#scalePreview {
+    visibility:hidden;
+}
+.error { color: #b00; background: #fff url("icon_error.gif") no-repeat 10px 5px; border: 1px solid #fbb; padding: 4px 20px 2px 30px; margin: .5em 0 1em 0; font-size: 13px; font-weight:bold; }
+
+#jgrowlDiv { color: #fff;  }
+#jgrowlDiv img { border-width:0px; margin-right:10px; }
+#jgrowlDiv a { text-decoration:none; color: #fff; font-size:20px; font-weight:bold; }
+#jgrowlDiv a:hover { text-decoration:underline; color: #fff; }
+#jgrowlDiv a:hover img { text-decoration:none;}
+
+/* The folder frame */
+body.FileArea { padding:5px; margin:0px; }
+body.FileArea h1 {
+    font-size: 14px;
+    text-decoration:none;
+    font-weight:bold;
+    margin:0px;
+}
+body.FileArea ul {
+    font-size: 13px;
+    margin-bottom:15px;
+    padding-right:0px;
+    padding-left:25px;
+    list-style-position:outside;
+}
+button {
+    font-family:Verdana,Arial,sans-serif;
+    font-size:1em;
+    outline: 0; 
+    margin: 5px 4px 5px 0; 
+    padding: .4em 1em; 
+    text-decoration:none !important; 
+    text-align: center; 
+    outline: none !important;
+    color: #555;
+    cursor: pointer;
+}
+/* Tablesorter */
+table.tablesorter { width: 100%; text-align: left; border: 1px solid #ccc; padding:2px; margin-bottom: 0px; }
+table.tablesorter thead { background-color:#ddd; }
+table.tablesorter td, table.tablesorter th { padding:2px 2px 2px 5px; }
+table.tablesorter td { background-color:#ffffff; }
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+    background-color:#DDDDDD; font-size:13px; font-weight:bold; margin:0 0 10px; padding: 2px 2px 2px 5px;
+    border:	1px solid; border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+}
+table.tablesorter thead tr .header { background: url(bg.gif) no-repeat center right #ddd; cursor: pointer; }
+table.tablesorter tbody td { padding: 4px; vertical-align: top; }
+table.tablesorter thead tr .headerSortUp { background-image: url(asc.gif); }
+table.tablesorter thead tr .headerSortDown { background-image: url(desc.gif); }
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp { background-color: #8dbdd8; }
+table.tablesorter tbody tr.odd td { background-color: #EEEEEE; }
+table.tablesorter tbody tr.even td { background-color: #FFFFFF; }
+table.tablesorter tbody tr.row2 td { background-color: #EEEEEE; }
+table.tablesorter tbody tr.row1 td { background-color: #FFFFFF; }
+table.tablesorter tbody tr.buttons td { background-color: #FFFFFF; text-align:center; }
+
+/*******************************************************************************
+  PAGINATION
+*******************************************************************************/
+.pagination {
+    border:0; margin:0 0 10px 0; padding:0; font-size:10px;
+}
+.pagination a {
+    border:solid 1px #DEDEDE; margin:2px 0 0 0;
+}
+.pagination .previous-off, .pagination .next-off { 
+    color:#888888; display:inline-block; font-weight:normal; padding:3px 4px;
+}
+.pagination .next a,.pagination .previous a {
+    font-weight:bold; border:solid 1px #FFFFFF;
+}
+.pagination .active{
+    border:1px solid #EEE; color:#000000; font-weight:bold; 
+    display:inline-block; padding:3px 6px;
+}
+.pagination a:link, .pagination a:visited {
+    display:inline-block; padding:3px 6px; text-decoration:none;
+}
+.pagination a:hover{
+    text-decoration:none; border: 1px solid #999;
+}
+

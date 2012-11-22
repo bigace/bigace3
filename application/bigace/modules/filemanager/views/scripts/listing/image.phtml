@@ -1,0 +1,67 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->MESSAGE))
+    echo $this->MESSAGE;
+
+if(!isset($this->ITEMS) || count($this->ITEMS) == 0)
+{
+    echo '<b>'.getTranslation('no_items_available_'.$this->ITEMTYPE, getTranslation('no_items_available')).'</b>';
+}
+else
+{
+    if(isset($this->PAGINATOR))
+    {
+        echo $this->paginationControl($this->PAGINATOR, 'Sliding', 'paginator.phtml');
+        
+        ?>
+        <script type="text/javascript">
+            function changePage(amount, page)
+            {
+                $('#limitFrom').val(page);
+                $('#limitTo').val(amount);
+                $('#paginator').submit();
+            }
+        </script>
+        <form id="paginator" action="" method="post">
+            <input type="hidden" id="limitFrom" name="limitFrom" value="<?php echo $this->LIMIT_FROM; ?>" />
+            <input type="hidden" id="limitTo" name="limitTo" value="<?php echo $this->LIMIT_TO; ?>" />
+            <?php if(isset($this->selectedID) && $this->selectedID !== null) { ?>
+            <input type="hidden" id="selectedID" name="selectedID" value="<?php echo $this->selectedID; ?>" />
+            <?php } ?>
+        </form>
+        
+        <?php
+    }
+    ?>    
+    <table class="tablesorter" cellspacing="0">
+    <col width="30" />
+    <col />
+    <col />
+    <thead>
+    <tr>
+	    <th>&nbsp;</th>
+	    <th align="left"><?php echo $this->t("name"); ?></th>
+	    <th align="left"><?php echo $this->t("filename"); ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->ITEMS as $entry) : ?>
+    <tr>
+        <td align="left"><a href="<?php echo $entry['ITEM_URL']; ?>" onclick="chooseItem('<?php echo $entry['ITEM_TYPE']; ?>', '<?php echo $entry['ITEM_ID']; ?>', '<?php echo $entry['ITEM_LANGUAGE']; ?>', '<?php echo $entry['ITEM_FILENAME']; ?>', '<?php echo $entry['ITEM_URL']; ?>', '<?php echo $entry['ITEM_MIMETYPE']; ?>', '<?php echo $entry['ITEM_NAME']; ?>'); return false;"><img src="<?php echo $this->thumbnail($entry['ITEM'], array('height'=>40,'width'=>40)); ?>" border="0"></a></td>
+        <td align="left"><a href="<?php echo $entry['ITEM_URL']; ?>" onclick="chooseItem('<?php echo $entry['ITEM_TYPE']; ?>', '<?php echo $entry['ITEM_ID']; ?>', '<?php echo $entry['ITEM_LANGUAGE']; ?>', '<?php echo $entry['ITEM_FILENAME']; ?>', '<?php echo $entry['ITEM_URL']; ?>', '<?php echo $entry['ITEM_MIMETYPE']; ?>', '<?php echo $entry['ITEM_NAME']; ?>'); return false;"><?php echo $entry['ITEM_NAME']; ?></a></td>
+        <td align="left"><?php echo $entry['ITEM_FILENAME']; ?></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+    </table>
+
+    <script type="text/javascript">
+    $(document).ready( function() { 
+        $(".tablesorter").tablesorter({ widgets: ['zebra'], headers: { 0: {sorter: false} }}); 
+    } 
+    );
+    </script>
+<?php
+}
+?>

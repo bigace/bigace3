@@ -1,0 +1,173 @@
+<?php
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+*/
+
+?>
+
+        <h1 class="loginTitle"><?php echo $this->t("register_title"); ?></h1>
+
+
+        <script type="text/javascript">
+        <!--
+        var text_username = '<?php echo $this->t("login_username_check"); ?>';
+        var text_password = '<?php echo $this->t("login_password_check"); ?>';
+        var text_pwdmatch = '<?php echo $this->t("register_password_match"); ?>';
+        var text_email = '<?php echo $this->t("register_enter_email"); ?>';
+        var text_captcha = '<?php echo $this->t("register_enter_catcha"); ?>';
+        var pwdlentgh = <?php echo $this->PASSWORD_LENGTH; ?>;
+        var uidlength = <?php echo $this->USERNAME_LENGTH; ?>;
+
+        <?php /*
+        function checkValues()
+        {
+            // removed unused client side checks
+            if (document.getElementById('username').value.length < uidlength) {
+                alert(text_username);
+                document.getElementById('username').focus();
+                return false;
+            }
+
+            if (document.getElementById('password').value.length < pwdlength) {
+                alert(text_password);
+                document.getElementById('password').focus();
+                return false;
+            }
+
+            if (document.getElementById('email').value.length < 1) {
+                alert(text_email);
+                document.getElementById('email').focus();
+                return false;
+            }
+
+            if (document.getElementById('captcha').value.length < 1) {
+                alert(text_captcha);
+                document.getElementById('captcha').focus();
+                return false;
+            }
+
+            if (document.getElementById('password').value != document.getElementById('pwdrecheck').value) {
+                alert(text_pwdmatch);
+                document.getElementById('password').focus();
+                return false;
+            }
+
+            return true;
+        }
+        // <form action="<?php echo $this->ACTION; ?>" method="post" name="register" id="register" onSubmit="javascript:return checkValues();">
+        */
+        ?>
+        //-->
+        </script>
+
+        <?php
+        if(isset($this->ERROR) && $this->ERROR != '')
+        {
+            if($this->ERROR == 'register_password_short') {
+                echo '<div class="error">';
+                echo sprintf($this->t($this->ERROR), $this->PASSWORD_LENGTH);
+                echo '</div>';
+            }
+            else if($this->ERROR == 'register_username_short') {
+                echo '<div class="error">';
+                echo sprintf($this->t($this->ERROR), $this->USERNAME_LENGTH);
+                echo '</div>';
+            } else {
+                echo '<div class="error">' . $this->t($this->ERROR) . '</div>';
+            }
+        }
+        ?>
+
+        <form action="<?php echo $this->ACTION; ?>" method="post" name="login">
+            <?php
+            if (isset($this->HIDDEN)) {
+                foreach($this->HIDDEN as $hiddenParam) {
+                    echo $hiddenParam;
+                }
+            }
+            ?>
+            <p><label><?php echo $this->t("login_username"); ?><br/>
+            <input id="username" name="username" value="<?php echo $this->USERNAME; ?>" class="input" maxlength="100" size="20" type="text" /></label></p>
+
+            <p><label><?php echo $this->t("login_email"); ?><br/>
+            <input id="email" name="email" value="<?php echo $this->EMAIL; ?>" class="input" maxlength="200" size="20" type="text" /></label></p>
+
+            <p><label><?php echo $this->t("login_password"); ?><br/>
+            <input id="password" name="password" class="input" maxlength="50" size="15" type="password"></label></p>
+
+            <p><label><?php echo $this->t("register_pwd_check"); ?><br/>
+            <input id="pwdrecheck" name="pwdrecheck" class="input" maxlength="50" size="15" type="password"></label></p>
+
+            <?php
+            foreach($this->ADDITIONAL_FIELDS as $addField)
+            {
+                ?>
+                <p><label><?php echo $addField['title']; ?><br/>
+                    <?php
+                        echo '<input name="'.$addField['name'].'" class="';
+                        if($addField['type'] == "checkbox") { echo 'checkbox'; } else { echo 'input'; }
+                        echo '" type="'. $addField['type'].'" ';
+                        if($addField['value'] != "")
+                        {
+                            if($addField['type'] == "checkbox") {
+                                echo $addField['value'] .'="' . $addField['value'] . '"';
+                            } else {
+                                echo 'value="' . $addField['value'] . '"';
+                            }
+                        }
+                        echo '>';
+
+                        if($addField['desc'] != "") {
+                            echo $addField['desc'];
+                        }
+                    ?>
+                </label></p>
+                <?php
+            }
+
+            echo '<p><label for="captcha">'.$this->t("register_captcha").'</label></p>'."\n";
+            echo $this->CAPTCHA->render();
+            echo '
+                <p>
+                <input name="approval[id]" type="hidden" value="'.$this->CAPTCHA_ID.'" />
+                <input id="captcha" name="approval[input]" class="input" maxlength="30" size="15" type="text" />
+                </p>
+            ';
+
+        ?>
+
+            <p class="langp">
+                <select id="LANG" name="language">
+                    <?php
+                    $allLang = $this->languages();
+                    foreach($allLang as $loc => $lang)
+                    {
+                        echo '<option value="'.$loc.'"';
+                        if(_ULC_ == $loc) {
+                            echo ' selected';
+                        }
+                        echo '>'.$lang.'</option>';
+                    }
+                    ?>
+                </select>
+            </p>
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('register_button'); ?>" type="submit" />
+            </p>
+        </form>
+
+        <p id="specials">
+           <a href="<?php echo $this->LOGIN_URL; ?>"><?php echo $this->t("login"); ?></a>
+           | <a href="<?php echo $this->PASSWORD_URL; ?>"><?php echo $this->t("login_forgot_pwd"); ?></a>
+        </p>
+
+    <script type="text/javascript">
+    <!--
+       try {
+        document.getElementById('username').select();
+        document.getElementById('username').focus();
+       }catch(e){}
+    //-->
+    </script>

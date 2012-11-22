@@ -1,0 +1,41 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+
+    echo $this->portletHeader($this->TITLE . ' - ' . $this->t('item_'.$this->ITEMTYPE), array('full' => true));
+
+    if(count($this->ITEMS) > 0) { ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+        <col />
+        <col width="150" />
+        <tbody>
+        <?php 
+            $i=0;
+            foreach($this->ITEMS as $result) 
+            { 
+            $item = $result['item'];
+            ?>
+            <tr<?php if($i==0) echo ' class="first"'; ?>>
+                <td>
+                    <img src="<?php echo $this->STYLE; ?>languages/<?php echo $item->getLanguageID(); ?>.gif" style="margin-right:10px" />
+                    <a href="<?php echo $result['edit']; ?>" class="edit"><?php echo $item->getName(); ?></a>
+                </td>
+                <td align="right"><a href="<?php echo $this->link($item); ?>"><img src="<?php echo $this->thumbnail($item, array('height' => 35)); ?>" height="35" /></a></td>
+            </tr>
+            <?php 
+            $i++;
+            }
+        ?>
+        </tbody>
+    </table>
+<?php 
+    } 
+    else { 
+        echo '<b>' . $this->t('no_items_found') . '</b>';
+    }
+
+    echo $this->portletFooter();
+
+?>

@@ -1,0 +1,79 @@
+<?php /*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+
+*/
+if(isset($this->SHOW_TRANSLATOR) && $this->SHOW_TRANSLATOR != '')
+{
+    ?>
+    <style type="text/css">
+    .cke_skin_v2 .cke_editor {width:inherit !important;}
+    </style>
+    <?php
+}
+
+    $MENU        = $this->MENU;
+    $LANGUAGE    = $this->LANGUAGE;
+    $passID      = $MENU->getID();
+
+    $editorClass = new Bigace_Editor_CkEditor();
+    $config      = $editorClass->getDefaultConfig('SetUrl', $passID);
+
+    $viewEngine  = Bigace_Services::get()->getService('view');
+    $LAYOUT      = $viewEngine->getLayout($MENU->getLayoutName());
+
+    if(isset($this->OPTIONS['styles']))
+    {
+        $config['stylesSet'] = 'bigace:'.$this->OPTIONS['styles'];
+    }
+
+    if(isset($this->OPTIONS['templates']))
+    {
+        $config['templates_files'] = array($this->OPTIONS['templates']);
+    }
+
+    if(isset($this->OPTIONS['css']))
+    {
+        $config['contentsCss'] = $this->OPTIONS['css'];
+    }
+
+    /* ============ EDITOR CONFIGURATION ============ */
+    $config['defaultLanguage'] = $this->LANGUAGE->getID();
+    $config['language']        = _ULC_;
+    $config['height']          = '290px'; //((count($this->addContent) > 1) ? '290px' : '100%')
+    $config['toolbar']         = '@@ToolbarBigace';
+
+    /* ============ CKEDITOR JAVASCRIPT ============ */
+    ?>
+    <script type="text/javascript">
+        ToolbarBigace = <?php echo $editorClass->getToolbarAsJson(); ?>;
+
+        function SetUrl(url, editorName, funcNumber) {
+            CKEDITOR.tools.callFunction( funcNumber, url );
+        }
+        function isDirtyEditor() {
+<?php
+            foreach($this->addContent as $contentPiece)
+            {
+                echo "            if(CKEDITOR.instances.".$contentPiece['param'].".checkDirty()) return true; \n";
+            }
+            ?>
+            return false;
+        }
+        function resetIsDirtyEditor() {
+<?php
+            foreach($this->addContent as $contentPiece) {
+                echo "            CKEDITOR.instances.".$contentPiece['param'].".resetDirty(); \n";
+            }
+            ?>
+        }
+    </script>
+    <?php
+
+    $editor = $editorClass->getNewInstance();
+
+    foreach($this->addContent as $contentPiece)
+    {
+        echo $editor->replace($contentPiece['param'], $config);
+    }

@@ -1,0 +1,70 @@
+<?php 
+/* 
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id$
+*/ 
+
+if(isset($this->SUCCESS) && $this->SUCCESS) 
+{ 
+    ?>
+
+        <h1 class="loginTitle"><?php echo $this->t("activate_title_done"); ?></h1>  
+
+        <?php
+        if(isset($this->ERROR) && $this->ERROR != '') {
+            echo '<div class="error">' . $this->t($this->ERROR) . '</div>';
+        }
+        ?>
+
+        <form action="<?php echo $this->HOME; ?>" method="post" name="activate" id="activate">
+            <p><?php echo sprintf($this->t("activate_intro"), $this->USERNAME); ?></p>
+            <p><?php echo $this->t("activate_welcome"); ?></p>
+
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('register_link_home'); ?>" type="submit" />
+            </p>
+        </form>
+
+    <?php
+}
+else
+{
+    ?>
+
+        <h1 class="loginTitle"><?php echo $this->t("activate_title"); ?></h1>  
+
+        <?php
+        if(isset($this->ERROR) && $this->ERROR != '') {
+            echo '<div class="error">' . $this->t($this->ERROR) . '</div>';
+        }
+        ?>
+
+        <form action="<?php echo $this->ACTION; ?>" method="post" name="activate" id="activate">
+            <p><label><?php echo $this->t("activate_enter_code"); ?><br/>
+            <input id="activation" name="activation" value="" class="input" maxlength="50" size="20" type="text" /></label></p>
+
+            <p class="subp">
+                <input class="submit" value="<?php echo $this->t('activate_button'); ?>" type="submit" />
+            </p>
+        </form>
+
+        <script type="text/javascript">
+        <!--
+            document.getElementById('activation').select();
+            document.getElementById('activation').focus();
+        //-->
+        </script>
+
+
+    <?php
+}
+?>
+
+        <p id="specials">
+           <a href="<?php echo $this->LOGIN_URL; ?>"><?php echo $this->t("login"); ?></a>
+           <?php if($this->ALLOW_REGISTRATION) { ?>
+           | <a href="<?php echo $this->REGISTRATION_URL; ?>"><?php echo $this->t("login_register"); ?></a>
+           <?php } ?>
+        </p>
+

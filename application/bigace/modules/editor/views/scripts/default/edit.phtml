@@ -1,0 +1,17 @@
+<script type="text/javascript">
+var isDirty = false;
+$(document).ready(function()    {
+<?php
+    foreach($this->addContent as $contentPiece) 
+    {
+        echo "    $('#".$contentPiece['param']."').change(function() { isDirty = true; });\n";
+    }
+?>
+});
+function resetIsDirtyEditor() {
+    isDirty = false;
+}   
+function isDirtyEditor() {
+    return isDirty;
+}
+</script>

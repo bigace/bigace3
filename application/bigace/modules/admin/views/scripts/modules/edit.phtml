@@ -1,0 +1,34 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+
+if (isset($this->ERROR)) {
+    echo $this->message($this->ERROR, 'error');
+}
+
+if (isset($this->SUCCESS)) {
+    echo $this->message($this->SUCCESS, 'success');
+}
+
+?>
+
+<?php echo $this->backlink($this->CANCEL_URL); ?>
+
+<form action="<?php echo $this->SAVE_URL; ?>" method="post">
+    <input type="hidden" name="modulID" value="<?php echo $this->module->getID(); ?>">
+    <p>
+        <?php echo $this->t('name'); ?>:
+        <b><?php echo $this->module->getName(); ?></b>
+        <br/>
+        <?php echo $this->t('filename'); ?>:
+        <b><?php echo $this->filename($this->module->getFullURL()); ?></b>
+    </p>
+    <?php
+        echo $this->codeEditor(
+            'moduleContent', $this->MODULE_CONTENT, array('id' => 'moduleContent')
+        );
+    ?>
+    <?php echo $this->saveButton('saveModule'); ?>
+</form>

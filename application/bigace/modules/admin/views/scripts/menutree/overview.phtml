@@ -1,0 +1,60 @@
+<?php
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */
+   
+
+if (count($this->LAST_EDITED) > 0)
+{
+    echo '<h3>' . $this->t('welcome_tab_lastchanged') . '</h3>'; 
+    ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+        <col />
+        <col width="150" />
+        <tbody>
+        <?php 
+            $i=0;
+            foreach($this->LAST_EDITED as $item) { 
+            ?>
+            <tr<?php if($i++ == 0) echo ' class="first"'; ?>>
+                <td>
+                    <a onclick="Panel.openMenuAdministrationRaw(<?php echo $item->getID(); ?>, '<?php echo $item->getLanguageID(); ?>', '<?php echo $item->getName(); ?>'); return false;" href="<?php echo $this->adminUrl('menutree', 'edit', array('data[id]' => $item->getID(), 'data[langid]' => $item->getLanguageID())); ?>">
+                        <?php echo $item->getName(); ?>
+                    </a>
+                </td>
+                <td align="right"><?php echo $this->actionLink($this->t('preview'), 'preview', $this->link($item), array('target' => '_blank')); ?>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <?php 
+}
+    
+if (count($this->LAST_CREATED) > 0)
+{
+    echo '<h3>' . $this->t('welcome_tab_lastcreated') . '</h3>'; 
+    ?>
+    <table class="nicetable" width="100%" cellspacing="0">
+        <col />
+        <col width="150" />
+        <tbody>
+        <?php 
+            $i=0;
+            foreach($this->LAST_CREATED as $item) { 
+            ?>
+            <tr<?php if($i++ == 0) echo ' class="first"'; ?>>
+                <td>
+                    <a onclick="Panel.openMenuAdministrationRaw(<?php echo $item->getID(); ?>, '<?php echo $item->getLanguageID(); ?>', '<?php echo $item->getName(); ?>'); return false;" href="<?php echo $this->adminUrl('menutree', 'edit', array('data[id]' => $item->getID(), 'data[langid]' => $item->getLanguageID())); ?>">
+                    <?php echo $item->getName(); ?>
+                    </a>
+                </td>
+                <td align="right"><?php echo $this->actionLink($this->t('preview'), 'preview', $this->link($item), array('target' => '_blank')); ?>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <?php
+}
+
+?>

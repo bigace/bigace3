@@ -1,0 +1,57 @@
+/*
+   @copyright  Copyright (c) 2009-2010 Keleo (http://www.keleo.de)
+   @license    http://www.bigace.de/license.html     GNU Public License
+   @version    $Id: error.css 66 2010-01-22 11:16:46Z bigace $
+*/
+
+* { margin: 0; padding: 0;  }
+body { font: 12px "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana, sans-serif; }
+img { border-width:0px; }
+.error {
+    color: #b00;
+    background-color: #fdd;
+    border: 1px solid #fbb;
+    padding: 5px 10px 3px 10px;
+    margin: .5em 1em 1em 0;
+    position: relative;
+    font-weight:bold;
+}
+h1 { margin:5px 0 10px 0; }
+h2 { margin:5px 0 10px 0; }
+h3 { margin:20px 0 6px 0; }
+p { font-size:12px; }
+div.message { background-color: #fcfdbe; border:1px solid #ddde74; padding:0 0 10px 10px; margin-right: 1em; margin-top:10px;}
+div.content { margin: 10px 0px 0px 20px; }
+pre { font-size:11px; line-height:20px; }
+pre.stacktrace, pre.params { padding:2px; border:1px solid #ccc; background-color: #eee; margin-right: 1em; }
+.content p { margin-top: 10px; font-size:14px; }
+div.spacer { margin: 10px 0 10px 0; }
+.CopyrightFooter { margin-top:10px; }
+.copyright { font-size:11px; color:#444444; }
+.exception { color:red; margin-left:10px; }
+#backtosite {
+    margin:0px;
+    padding: 0px;
+    background-color:#464646;
+    border-bottom:1px solid #ccc;
+    height:30px;
+    font-size:12px;
+}
+#backtosite span {
+	position: absolute;
+	top: 6px;
+	left: 15px;
+	text-decoration: none;
+	color: #ccc;
+    font-size:14px;
+}
+#backtosite a {
+	position: absolute;
+	top: 8px;
+	left: 15px;
+	text-decoration: none;
+	color: #ccc;
+    font-size:12px;
+}
+#backtosite a:hover { color: #fff; }
+

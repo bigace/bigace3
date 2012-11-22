@@ -1,0 +1,46 @@
+<?php 
+/* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   @author Kevin Papst
+   @copyright Copyright (C) Kevin Papst
+   @version $Id$ */ 
+   
+if(isset($this->ERROR)) 
+    echo $this->message($this->ERROR, 'error');
+
+if(isset($this->INFO)) 
+    echo $this->message($this->INFO, 'info');
+
+if(count($this->COMMUNITIES) > 0)
+{
+    echo $this->portletHeader($this->t('uninstall_cid'), array('full' => true)); ?>
+
+    <table class="nicetable" width="100%" cellspacing="0">
+     <col width="50"/>
+     <col />
+     <col />
+     <col width="200"/>
+     <thead>
+	    <tr>
+		    <th align="center"><?php echo $this->t('id'); ?></th>
+		    <th><?php echo $this->t('community_url'); ?></th>
+		    <th><?php echo $this->t('uninstall_alias'); ?></th>
+		    <th align="center"><?php echo $this->t('action'); ?></th>
+	    </tr>
+     </thead>
+     <tbody>
+        <?php foreach($this->COMMUNITIES AS $theRow) { ?>
+        <tr>
+            <td align="center" valign="top"><?php echo $theRow['ID']; ?></td>
+            <td valign="top"><?php echo $theRow['NAME']; ?></td>
+            <td valign="top"><?php echo $theRow['ALIAS']; ?></td>
+            <td valign="top" align="center">
+                <?php echo $this->deleteLink($theRow['DELETE']); ?>
+            </td>
+        </tr>
+        <?php } ?>
+     </tbody>
+    </table>
+
+    <?php echo $this->portletFooter(); 
+}
+?>

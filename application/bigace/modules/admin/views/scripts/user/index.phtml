@@ -1,0 +1,86 @@
+<?php 
+/* $Id$ */ 
+
+if(isset($this->INFO))
+    $this->message()->info($this->INFO);
+?>
+
+<form action="<?php echo $this->ACTION_CHOOSE_GROUP; ?>" method="post">
+<p>
+    <?php echo $this->t('choose_group'); ?> <b><?php echo $this->GROUP_SELECT; ?></b>
+    <noscript><?php echo $this->formButton('changeGroup', $this->t('show'), array('type' => 'submit')); ?></noscript>
+</p>
+</form>
+
+<?php echo $this->portletHeader(sprintf("%s (%d)", $this->panelTitle, count($this->USER_LIST)), array('full' => true)); ?>
+<table width="100%" cellspacing="0" class="nicetable">
+  <thead>
+      <tr>
+        <!-- th width="35"><input type="checkbox" class="bulkcheck" /></th -->
+        <th width="170"><?php echo $this->t('name'); ?></th>
+        <th width="30"><?php echo $this->t('id'); ?></th>
+        <th width="180"><?php echo $this->t('email'); ?></th>
+        <th align="center" width="80"><?php echo $this->t('language'); ?></th>
+        <th align="center" width="80"><?php echo $this->t('state'); ?></th>
+        <th align="center" width="80"><?php echo $this->t('action'); ?></th>
+      </tr>
+  </thead>
+  <tbody>
+    <?php foreach($this->USER_LIST as $row) { ?>
+    <tr>
+        <!-- td><input type="checkbox" name="bulkuser" value="<?php echo $row['USER']->getID(); ?>" /></td -->
+        <td>
+        <?php if(isset($row['PROFILE'])) { ?>
+        <a class="useredit" href="<?php echo $row['PROFILE']; ?>"><?php echo $row['USER']->getName(); ?></a>
+        <?php } else { ?>
+            <?php echo $row['USER']->getName(); ?>
+        <?php } ?>
+        </td>
+        <td><?php echo $row['USER']->getID(); ?></td>
+        <td><?php echo $row['USER']->getEmail(); ?></td>
+        <td align="center">
+            <img src="<?php echo $this->STYLE; ?>languages/<?php echo $row['LANGUAGE']->getLocale(); ?>.gif" border="0" alt="<?php echo $row['LANGUAGE']->getName(); ?>" title="<?php echo $row['LANGUAGE']->getName(); ?>" class="tooltip" />
+        </td>
+        <?php if($row['USER']->isActive()) { ?>
+        <td align="center">
+            <img src="<?php echo $this->STYLE; ?>active.png" border="0" alt="<?php echo $this->t('user_active'); ?>" title="<?php echo $this->t('user_active'); ?>" class="tooltip" />
+        </td>
+        <?php } else { ?>
+        <td align="center">
+            <img src="<?php echo $this->STYLE; ?>inactive.png" border="0" alt="<?php echo $this->t('user_inactive'); ?>" title="<?php echo $this->t('user_inactive'); ?>" class="tooltip" />
+        </td>
+        <?php } ?>
+        <td align="center">
+            <?php 
+                if(isset($row['DELETE'])) { 
+                    echo $this->deleteLink($row['DELETE']); 
+                } 
+            ?>
+        </td>
+    </tr>
+    <?php } /* ?>
+    <tr class="footer">
+        <td colspan="3">
+            <a href="#" class="edit_inline">Edit all</a>
+            <a href="#" class="add_inline">Add all</a>
+            <a href="#" class="delete_inline">Delete all</a>
+            <a href="#" class="approve_inline">Approve all</a>
+            <a href="#" class="reject_inline">Reject all</a>
+        </td>
+        <td align="right">&nbsp;</td>
+        <td colspan="4" align="right">
+            <div class="pagination">
+                <span class="previous-off">&laquo; Vorherige</span>
+                <span class="active">1</span>
+                <a href="?page=2">2</a>
+                <a href="?page=3">3</a>
+                <a href="?page=4">4</a>
+                <a href="?page=5">5</a>
+                <a href="?page=2" class="next">Nächste &raquo;</a>
+            </div>  
+        </td>
+    </tr> */ ?>
+	</tbody>
+</table>
+<?php echo $this->portletFooter(); ?>
+
