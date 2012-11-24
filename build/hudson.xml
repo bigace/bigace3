@@ -52,10 +52,10 @@
         <mkdir dir="${buildDir}/temp"/>
     </target>
 
-    <!-- Ccopy all 3rd party libs -->
+    <!-- Copy all 3rd party libs -->
     <target name="prepare-artifacts" depends="prepare">
         <antcall target="release.3rdparty-files">
-            <param name="release.path" value="${workspace}/svn"/>
+            <param name="release.path" value="${workspace}"/>
             <param name="exclude.pattern" value="release.exclude.files"/>
         </antcall>
     </target>
@@ -82,8 +82,8 @@
         <exec dir="${workspace}" executable="phpcs" output="${buildDir}/logs/checkstyle.xml">
             <arg line="--standard=Bigace 
                        --tab-width=4
-                       --ignore=public/*,*.phtml,Zend_Validate.php
-                       --report=checkstyle svn"/>
+                       --ignore=public/*,*.phtml,artifacts/*,Zend_Validate.php
+                       --report=checkstyle ."/>
         </exec>
     </target>
 	
@@ -96,7 +96,7 @@
                        -f ${srcDir}/library/Bigace/constants.inc.php,${srcDir}/library/Bigace/functions.inc.php 
                        -d ${srcDir}/library/Bigace/
                        -dn Bigace
-                       -i .htaccess,.svn/,*.svn-base,Entries,Root,Repository,DBItem.php,DBFright.php,DBGroup.php,UpdateManager.php,UpdateModul.php
+                       -i .htaccess,.svn/,.artifacts/,*.svn-base,Entries,Root,Repository,DBItem.php,DBFright.php,DBGroup.php,UpdateManager.php,UpdateModul.php
                        -ct deprecated 
                        -o HTML:frames:earthli"/>
         </exec>
@@ -106,14 +106,14 @@
     <target name="phpcpd" depends="prepare">
         <exec dir="${workspace}" executable="phpcpd">
             <arg line="--exclude library/
-                       --log-pmd build/logs/pmd-cpd.xml ."/>
+                       --log-pmd ${buildDir}/logs/pmd-cpd.xml ."/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend" depends="prepare">
         <exec dir="${workspace}" executable="pdepend">
-            <arg line="--jdepend-xml=build/logs/jdepend.xml ."/>
+            <arg line="--jdepend-xml=${buildDir}/logs/jdepend.xml ."/>
         </exec>
     </target>
 
@@ -121,7 +121,7 @@
     <!-- PHP Mess Detector -->
     <target name="phpmd" depends="prepare">
         <exec dir="${workspace}" executable="phpmd">
-            <arg line="svn xml codesize,unusedcode --reportfile build/logs/pmd.xml" />
+            <arg line=". xml codesize,unusedcode --reportfile ${buildDir}/logs/pmd.xml" />
         </exec>
     </target>
 
@@ -174,8 +174,10 @@
     </target>
 
     <!-- All tasks that should be executed -->
-    <target name="build" depends="clean,prepare,phpcs,phpdoc,pdepend,phpcpd,phpmd,prepare-artifacts,artifacts,phpunit,phpcb,nightly,cleanup" />
+    <target name="full" depends="clean,prepare,phpcs,phpdoc,pdepend,phpcpd,phpmd,prepare-artifacts,artifacts,phpunit,phpcb,nightly,cleanup" />
 	<!-- Quick build with Unit-Tests and CodeSniffer only -->
-    <target name="hudson" depends="clean,prepare,prepare-artifacts,phpcs,phpunit,cleanup" />
+    <target name="quality" depends="clean,prepare,prepare-artifacts,phpcs,phpunit,cleanup" />
+    <!-- Quick build Bigace only -->
+    <target name="build" depends="clean,prepare,prepare-artifacts,artifacts,nightly,cleanup" />
 
 </project>
