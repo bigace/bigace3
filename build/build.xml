@@ -194,11 +194,11 @@
 		   	</fileset>
 		</zip>
 		
-        <tar destfile="${archive.path}/${release.bz2.filename}" longfile="gnu" compression="bzip2">
+        <!-- tar destfile="${archive.path}/${release.bz2.filename}" longfile="gnu" compression="bzip2">
             <fileset dir="${release.path}">
                 <exclude name="${install.zip.filename}"/>
             </fileset>
-        </tar>
+        </tar -->
 
 		<!-- copy todir="${release.directory}">
 			<fileset dir="${install.src}" />
