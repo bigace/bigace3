@@ -92,7 +92,7 @@
         <exec dir="${workspace}" executable="phpdoc">
             <arg line="--title 'BIGACE 3.0 dev' 
                        -ue on 
-                       -t ${buildDir}/api/
+                       -t ${buildDir}/api
                        -f ${srcDir}/library/Bigace/constants.inc.php,${srcDir}/library/Bigace/functions.inc.php 
                        -d ${srcDir}/library/Bigace/
                        -dn Bigace
@@ -178,6 +178,6 @@
 	<!-- Quick build with Unit-Tests and CodeSniffer only -->
     <target name="quality" depends="clean,prepare,prepare-artifacts,phpcs,phpunit,cleanup" />
     <!-- Quick build Bigace only -->
-    <target name="build" depends="clean,prepare,prepare-artifacts,artifacts,nightly,cleanup" />
+    <target name="build" depends="clean,prepare,phpdoc,prepare-artifacts,artifacts,nightly,cleanup" />
 
 </project>
