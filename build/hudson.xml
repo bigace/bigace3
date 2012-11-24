@@ -14,16 +14,16 @@
 
     <!-- Location of all related directories -->
     <property name="workspace" location="${basedir}" />
-    <property name="buildDir" location="${workspace}/build" />
+    <property name="buildDir" location="${workspace}/artifacts" />
     <property name="srcDir" location="${workspace}" />
 	
 	<!-- Load the default build tasks -->
-    <import file="${buildDir}/build.xml" />
+    <import file="${basedir}/build/build.xml" />
 
     <!-- Delete all 3rd party libraries -->
     <target name="cleanup.3rdparty">
         <antcall target="remove.3rdparty-files">
-            <param name="release.path" value="${workspace}/svn"/>
+            <param name="release.path" value="${workspace}"/>
             <param name="exclude.pattern" value="release.exclude.files"/>
         </antcall>
     </target>
