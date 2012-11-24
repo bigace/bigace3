@@ -1,4 +1,4 @@
-<project name="Bigace-Hudson" default="build">
+<project name="Bigace-Hudson" default="build" basedir="..">
 
     <description>
         BIGACE - a PHP based Web CMS.
@@ -13,12 +13,12 @@
     </description>
 
     <!-- Location of all related directories -->
-    <property name="workspace" location="${basedir}/../.." />
+    <property name="workspace" location="${basedir}" />
     <property name="buildDir" location="${workspace}/build" />
-    <property name="srcDir" location="${workspace}/svn" />
+    <property name="srcDir" location="${workspace}" />
 	
 	<!-- Load the default build tasks -->
-    <import file="${basedir}/build.xml" />
+    <import file="${buildDir}/build.xml" />
 
     <!-- Delete all 3rd party libraries -->
     <target name="cleanup.3rdparty">
@@ -82,7 +82,7 @@
         <exec dir="${workspace}" executable="phpcs" output="${buildDir}/logs/checkstyle.xml">
             <arg line="--standard=Bigace 
                        --tab-width=4
-                       --ignore=svn/public/*,*.phtml,Zend_Validate.php 
+                       --ignore=public/*,*.phtml,Zend_Validate.php
                        --report=checkstyle svn"/>
         </exec>
     </target>
@@ -105,15 +105,15 @@
     <!-- phpcpd: Copy and Paste Detection -->
     <target name="phpcpd" depends="prepare">
         <exec dir="${workspace}" executable="phpcpd">
-            <arg line="--exclude svn/library/
-                       --log-pmd build/logs/pmd-cpd.xml svn"/>
+            <arg line="--exclude library/
+                       --log-pmd build/logs/pmd-cpd.xml ."/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend" depends="prepare">
         <exec dir="${workspace}" executable="pdepend">
-            <arg line="--jdepend-xml=build/logs/jdepend.xml svn"/>
+            <arg line="--jdepend-xml=build/logs/jdepend.xml ."/>
         </exec>
     </target>
 
