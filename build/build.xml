@@ -357,11 +357,8 @@
     <patternset id="always.exclude.files" description="Files always to be excluded from the Copy task.">
         <exclude name=".settings"/>
         <exclude name=".project"/>
-        <exclude name=".svn"/>
+        <exclude name=".git"/>
         <exclude name=".buildpath"/>
-        <exclude name="Entries"/>
-        <exclude name="Repository"/>
-        <exclude name="Root"/>
         <exclude name="**/bigace.php"/>
         <exclude name="**/consumer.ini"/>
         <exclude name="**/cid999"/>
@@ -372,7 +369,7 @@
         <exclude name="consumer.ini"/>
         <exclude name=".settings"/>
         <exclude name=".project"/>
-        <exclude name=".svn"/>
+        <exclude name=".git"/>
         <exclude name=".buildpath"/>
         <exclude name="Entries"/>
         <exclude name="Repository"/>
@@ -479,11 +476,6 @@
 BIGACE - a PHP based Web CMS.
 Copyright (C) 2009-2012 Keleo (www.keleo.de).
 Distributed under the terms of the GNU General Public License.
-
-==> Base tasks to build the software package.
-
-Properties fetched from:   ${propertiesDir}
-Source files fetched from: ${sources}
 		</echo>
 	</target>
 

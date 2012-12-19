@@ -1,4 +1,4 @@
-<project name="Bigace-Hudson" default="info">
+<project name="Bigace-Hudson" default="build">
 
     <description>
         BIGACE - a PHP based Web CMS.
@@ -179,16 +179,13 @@
 
     <target name="info" depends="help">
         <echo>
-BIGACE - a PHP based Web CMS.
-Copyright (C) 2009-2012 Keleo (www.keleo.de).
-Distributed under the terms of the GNU General Public License.
-
 ==> Continuous integration suite.
 
-Workspace: ${workspace}
-Results:   ${buildDir}
-Checkout:  ${srcName}
-Sources:   ${srcDir}
+Workspace:  ${workspace}
+Results:    ${buildDir}
+Checkout:   ${srcName}
+Sources:    ${srcDir}
+Properties: ${propertiesDir}
         </echo>
     </target>
 
