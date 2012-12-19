@@ -71,7 +71,6 @@
                        --bootstrap ${srcDir}/tests/bootstrap.php 
                        --strict 
                        --no-globals-backup 
-                       --syntax-check 
                        --colors ." />
         </exec>
     </target>
