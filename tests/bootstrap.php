@@ -54,6 +54,8 @@ set_include_path(
     )
 );
 
+ini_set('memory_limit', -1);
+
 // now bootstrap the "fake" Bigace environment with initial community and database
 $bs = new Bigace_PHPUnit_Bootstrapper();
 
