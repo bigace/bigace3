@@ -475,12 +475,15 @@
 		#####################################################
 	-->
 	<target name="help">
-		<echo taskname="INFO" level="info">
+		<echo>
 BIGACE - a PHP based Web CMS.
-Copyright (C) 2009-2010 Keleo (www.keleo.de).
+Copyright (C) 2009-2012 Keleo (www.keleo.de).
 Distributed under the terms of the GNU General Public License.
 
-Adjust the settings in build.properties, before executing any Ant task!
+==> Base tasks to build the software package.
+
+Properties fetched from:   ${propertiesDir}
+Source files fetched from: ${sources}
 		</echo>
 	</target>
 
