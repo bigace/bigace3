@@ -65,7 +65,7 @@ class Bigace_Search_Engine_LuceneTest extends Bigace_PHPUnit_TestCase
     public function testGetIndexForDefaultName()
     {
         $index = $this->search->getIndex();
-        $this->assertType('Zend_Search_Lucene_Interface', $index);
+        $this->assertInstanceOf('Zend_Search_Lucene_Interface', $index);
         $this->assertEquals(0, $index->numDocs());
     }
 
@@ -126,7 +126,7 @@ class Bigace_Search_Engine_LuceneTest extends Bigace_PHPUnit_TestCase
         $query->setSearchterm('beautiful');
         $this->search->addDocument($this->createDocument(uniqid()));
         $results = $this->search->find($query);
-        $this->assertType('array', $results);
+        $this->assertInternalType('array', $results);
         $this->assertContainsOnly('Bigace_Search_Result', $results);
         $this->assertEquals(1, count($results));
     }

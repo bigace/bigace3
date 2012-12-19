@@ -87,9 +87,7 @@ class Bigace_EnvironmentTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('database', $config);
         $this->assertArrayHasKey('ssl', $config);
         $this->assertArrayHasKey('rewrite', $config);
-        $this->assertType(
-            PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY,
-            $config['database']
+        $this->assertInternalType('array', $config['database']
         );
 
         $database =  array (

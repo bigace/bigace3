@@ -118,7 +118,7 @@ class Bigace_Installation_DatabaseTest extends PHPUnit_Framework_TestCase
     public function testGetAllTableNamesReturnsCorrectArray()
     {
         $tableNames = $this->installer->getAllTableNames();
-        $this->assertType('array', $tableNames);
+        $this->assertInternalType('array', $tableNames);
         $this->assertEquals(21, count($tableNames));
     }
 

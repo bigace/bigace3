@@ -79,7 +79,7 @@ class Bigace_Search_Engine_ItemTest extends Bigace_PHPUnit_TestCase
     {
         $item = $this->getItem(_BIGACE_ITEM_MENU, _BIGACE_TOP_LEVEL, 'de');
         $doc = $this->search->createDocument($item);
-        $this->assertType('Zend_Search_Lucene_Document', $doc);
+        $this->assertInstanceOf('Zend_Search_Lucene_Document', $doc);
     }
 
     /**
@@ -207,7 +207,7 @@ class Bigace_Search_Engine_ItemTest extends Bigace_PHPUnit_TestCase
         $query->setSearchterm($term);
         $results = $this->search->find($query);
 
-        $this->assertType('array', $results);
+        $this->assertInternalType('array', $results);
         $this->assertContainsOnly('Bigace_Search_Result', $results);
         $this->assertEquals($amount, count($results));
     }

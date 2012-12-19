@@ -105,7 +105,7 @@ class Bigace_Locale_ServiceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->service->isValid('sv'));
         $locale = $this->service->create('sv');
-        $this->assertType('Bigace_Locale', $locale);
+        $this->assertInstanceOf('Bigace_Locale', $locale);
         $this->assertTrue($this->service->isValid('sv'), 'Locale was not created');
 
         // make sure the locale is not stored persistently
@@ -130,13 +130,13 @@ class Bigace_Locale_ServiceTest extends PHPUnit_Framework_TestCase
     public function testGetAll()
     {
         $all = $this->service->getAll();
-        $this->assertType('array', $all);
+        $this->assertInternalType('array', $all);
         $this->assertContainsOnly('Bigace_Locale', $all);
         $this->assertEquals(count($this->default), count($all));
         $locale = $this->service->create('sv');
 
         $allNew = $this->service->getAll();
-        $this->assertType('array', $all);
+        $this->assertInternalType('array', $all);
         $this->assertContainsOnly('Bigace_Locale', $all);
         $this->assertEquals(count($this->default)+1, count($allNew));
 

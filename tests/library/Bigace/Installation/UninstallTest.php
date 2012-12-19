@@ -188,7 +188,7 @@ class Bigace_Installation_UninstallTest extends PHPUnit_Framework_TestCase
 
         // make sure the hook received the correct community to be deleted
         $this->assertNotNull($this->hookCommunity);
-        $this->assertType('Bigace_Community', $this->hookCommunity);
+        $this->assertInstanceOf('Bigace_Community', $this->hookCommunity);
         $this->assertEquals($this->hookCommunity, $community);
     }
 

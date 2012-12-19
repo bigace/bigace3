@@ -44,7 +44,7 @@ class Bigace_Zend_View_Helper_DojoTest extends Bigace_PHPUnit_ViewHelperTestCase
     public function testBigaceContainerWasRegistered()
     {
         $obj = $this->helper->dojo();
-        $this->assertType('Bigace_Zend_View_Helper_Dojo_Container', $obj);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_Dojo_Container', $obj);
     }
 
     /**

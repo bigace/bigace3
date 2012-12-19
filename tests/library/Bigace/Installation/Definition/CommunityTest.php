@@ -69,7 +69,7 @@ class Bigace_Installation_Definition_CommunityTest extends PHPUnit_Framework_Tes
         $setter = array('id', 'host', 'language', 'username', 'password', 'email');
         foreach ($setter as $name) {
             $method = 'set'.ucfirst($name);
-            $this->assertType(
+            $this->assertInstanceOf(
                 'Bigace_Installation_Definition_Community',
                 $this->definition->$method('')
             );
@@ -81,7 +81,7 @@ class Bigace_Installation_Definition_CommunityTest extends PHPUnit_Framework_Tes
      */
     public function testSetOptionalImplementFluentInterface()
     {
-        $this->assertType(
+        $this->assertInstanceOf(
             'Bigace_Installation_Definition_Community',
             $this->definition->setOptional('foo', 'bar')
         );
@@ -219,7 +219,7 @@ class Bigace_Installation_Definition_CommunityTest extends PHPUnit_Framework_Tes
     public function testGetOptionalReturnsEmptyArray()
     {
         $optional = $this->definition->getOptionals();
-        $this->assertType('array', $optional);
+        $this->assertInternalType('array', $optional);
         $this->assertEquals(0, count($optional));
     }
 
@@ -234,7 +234,7 @@ class Bigace_Installation_Definition_CommunityTest extends PHPUnit_Framework_Tes
 
         $optional = $this->definition->getOptionals();
 
-        $this->assertType('array', $optional);
+        $this->assertInternalType('array', $optional);
         $this->assertArrayHasKey('foo', $optional);
         $this->assertArrayHasKey('hello', $optional);
         $this->assertEquals('bar', $optional['foo']);

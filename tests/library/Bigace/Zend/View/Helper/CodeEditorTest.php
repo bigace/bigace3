@@ -44,7 +44,7 @@ class Bigace_Zend_View_Helper_CodeEditorTest extends Bigace_PHPUnit_ViewHelperTe
     public function testEntryPointImplementsFluentInterface()
     {
         $type = $this->helper->codeEditor('Test');
-        $this->assertType('Bigace_Zend_View_Helper_CodeEditor', $type);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_CodeEditor', $type);
     }
 
     /**
@@ -78,7 +78,7 @@ class Bigace_Zend_View_Helper_CodeEditorTest extends Bigace_PHPUnit_ViewHelperTe
     public function testSetHighlighterImplementsFluentInterface()
     {
         $type = $this->helper->codeEditor('Test')->setHighlighter('php');
-        $this->assertType('Bigace_Zend_View_Helper_CodeEditor', $type);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_CodeEditor', $type);
     }
 
     /**

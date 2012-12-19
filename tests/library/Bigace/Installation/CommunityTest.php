@@ -145,7 +145,7 @@ class Bigace_Installation_CommunityTest extends PHPUnit_Framework_TestCase
 
         $manager   = new Bigace_Community_Manager();
         $community = $manager->getByName(self::TEST_HOST);
-        $this->assertType('Bigace_Community', $community);
+        $this->assertInstanceOf('Bigace_Community', $community);
         $this->assertEquals(42, $community->getId());
 
         $this->uninstallCommunity($community);

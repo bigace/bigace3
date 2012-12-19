@@ -44,7 +44,7 @@ class Bigace_Zend_View_Helper_DateTest extends Bigace_PHPUnit_ViewHelperTestCase
     public function testDateImplementsFluentInterface()
     {
         $obj = $this->helper->date();
-        $this->assertType('Bigace_Zend_View_Helper_Date', $obj);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_Date', $obj);
     }
 
     /**
@@ -53,7 +53,7 @@ class Bigace_Zend_View_Helper_DateTest extends Bigace_PHPUnit_ViewHelperTestCase
     public function testWithTimeImplementsFluentInterface()
     {
         $obj = $this->helper->date()->withTime(true);
-        $this->assertType('Bigace_Zend_View_Helper_Date', $obj);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_Date', $obj);
     }
 
     /**
@@ -62,7 +62,7 @@ class Bigace_Zend_View_Helper_DateTest extends Bigace_PHPUnit_ViewHelperTestCase
     public function testWithFormatImplementsFluentInterface()
     {
         $obj = $this->helper->date()->withFormat(null);
-        $this->assertType('Bigace_Zend_View_Helper_Date', $obj);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_Date', $obj);
     }
 
     /**
@@ -71,7 +71,7 @@ class Bigace_Zend_View_Helper_DateTest extends Bigace_PHPUnit_ViewHelperTestCase
     public function testWithLocaleImplementsFluentInterface()
     {
         $obj = $this->helper->date()->withLocale(new Zend_Locale('en'));
-        $this->assertType('Bigace_Zend_View_Helper_Date', $obj);
+        $this->assertInstanceOf('Bigace_Zend_View_Helper_Date', $obj);
     }
 
     /**

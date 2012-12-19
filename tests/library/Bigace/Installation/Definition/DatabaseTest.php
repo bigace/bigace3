@@ -69,7 +69,7 @@ class Bigace_Installation_Definition_DatabaseTest extends PHPUnit_Framework_Test
         $setter = array('type', 'host', 'database', 'username', 'password', 'prefix');
         foreach ($setter as $name) {
             $method = 'set'.ucfirst($name);
-            $this->assertType(
+            $this->assertInstanceOf(
                 'Bigace_Installation_Definition_Database',
                 $this->definition->$method('')
             );
