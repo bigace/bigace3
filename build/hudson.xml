@@ -79,7 +79,7 @@
     <!-- phpcs: Code Sniffer -->
     <target name="phpcs" depends="prepare">
         <exec dir="${workspace}" executable="phpcs" output="${buildDir}/logs/checkstyle.xml">
-            <arg line="--standard=Bigace 
+            <arg line="--standard=PSR2
                        --tab-width=4
                        --ignore=svn/public/*,*.phtml,Zend_Validate.php 
                        --report=checkstyle svn"/>
