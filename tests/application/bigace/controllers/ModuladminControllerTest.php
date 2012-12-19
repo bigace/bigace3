@@ -91,7 +91,7 @@ class ModuladminControllerTest extends Bigace_PHPUnit_ControllerTestCase
         $this->initBigaceWithUglyHack();
         $this->impersonateSuperAdmin();
         $this->setExpectedException(
-            'Bigace_Zend_Controller_Exception', 'Could not find requested menu'
+            'Bigace_Zend_Controller_Exception', 'Could not find requested menu', 403
         );
         $this->dispatch('/moduladmin/index/mid/100/mlang/en/');
     }
@@ -105,7 +105,8 @@ class ModuladminControllerTest extends Bigace_PHPUnit_ControllerTestCase
         $this->impersonateSuperAdmin();
         $this->setExpectedException(
             'Bigace_Zend_Controller_Exception',
-            'This page has no module assigned'
+            'This page has no module assigned',
+            500
         );
         $this->dispatch('/moduladmin/index/mid/-1/mlang/en/');
     }
