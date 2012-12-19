@@ -71,8 +71,7 @@
                        --configuration ${srcDir}/tests/phpunit.xml 
                        --bootstrap ${srcDir}/tests/bootstrap.php 
                        --strict 
-                       --no-globals-backup 
-                       --colors ." />
+                       --no-globals-backup ." />
         </exec>
     </target>
 
