@@ -192,7 +192,7 @@ class Bigace_Session
 
         $opts = self::getOptions();
         if ($opts['strict'] === false && count($_COOKIE) == 0) {
-            LinkHelper::addGlobalParam($options['name'], Zend_Session::getId());
+            LinkHelper::addGlobalParam($opts['name'], Zend_Session::getId());
         }
     }
 
