@@ -552,9 +552,9 @@
     <create>
         <mysql>
             `id` varchar(32) NOT NULL,
-            `cid` int(11) NOT NULL,
-            `userid` int(11) NOT NULL,
-            `ip` varchar(20) NOT NULL,
+            `cid` int(11) DEFAULT NULL,
+            `userid` int(11) DEFAULT NULL,
+            `ip` varchar(20) DEFAULT NULL,
             `data` text,
             `modified` int(11) NOT NULL,
             `timestamp` int(11) NOT NULL DEFAULT '0',
