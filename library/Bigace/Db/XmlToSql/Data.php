@@ -730,7 +730,7 @@ class XmlDbRow extends XmlDbObject
                 if ($column['null'] === false) {
                     $value = $column['value'];
                 } else {
-                    $value = "null";
+                    $value = null;
                 }
             } else {
                 $value = new Zend_Db_Expr($column['value']);
