@@ -95,7 +95,11 @@ class Bigace_Db_XmlToSql_Table
             $name        = (string)$table['name'];
             $description = (isset($table->description) ? $table->description : '');
             $todo        = (isset($table->todo) ? $table->todo : '');
-			$columns     = (string)$table->create->$columnDef;
+            if (isset($table->create->$columnDef)) {
+                $columns     = (string)$table->create->$columnDef;
+            } else {
+                $columns     = (string)$table->create;
+            }
 
             $all[] = array(
                 'name'        => $prefix.$name,
