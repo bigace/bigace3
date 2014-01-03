@@ -214,8 +214,10 @@ abstract class Bigace_Zend_Controller_Page_Action extends Bigace_Zend_Controller
         Bigace_Hooks::do_action('init_view', $this->view);
 
         // register a frontcontroller plugin, that allows bigace plugins to parse page content
-        $front = Zend_Controller_Front::getInstance();
-        $front->registerPlugin(new Bigace_Zend_Controller_Plugin_ParseContent($this->menu));
+        if ($this->menu !== null) {
+            $front = Zend_Controller_Front::getInstance();
+            $front->registerPlugin(new Bigace_Zend_Controller_Plugin_ParseContent($this->menu));
+        }
 
         $layout = $this->getLayoutName();
 
