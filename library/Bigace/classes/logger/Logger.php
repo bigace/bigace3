@@ -261,7 +261,7 @@ class Logger
                     $error .= $value;
                     break;
                 case 'args':
-                    $error .= '(' . $value . ')';
+                    $error .= '(' . (is_array($value) ? print_r($value, true) : $value) . ')';
                     break;
                 default:
                     // we don't need to support the object
