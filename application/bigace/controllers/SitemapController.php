@@ -61,15 +61,13 @@ class Bigace_SitemapController extends Bigace_Zend_Controller_Page_Action
             $layout->disableLayout();
         }
 
-        $this->getResponse()->setHeader('Content-Type', 'text/xml', true);
-
         $allPages  = array();
         $languages = array();
         $request   = $this->getRequest();
 
         $level     = $request->getParam('level', 10);
         $language  = $request->getParam('lang', null);
-        $startId   = $request->getParam('id', _BIGACE_TOP_LEVEL);
+        $startId   = $request->getParam('menu', _BIGACE_TOP_LEVEL);
         $topUnique = false;
 
         // calculate the languaes we will include in the sitemap
@@ -88,12 +86,14 @@ class Bigace_SitemapController extends Bigace_Zend_Controller_Page_Action
         }
 
         foreach ($languages AS $locale) {
+
             $topLevel = Bigace_Item_Basic::get(_BIGACE_ITEM_MENU, $startId, $locale);
 
-            // if this menu really exist, display it and its subtree
+            // ONLY if this menu really exist, display it and its subtree
             if ($topLevel === null) {
                 continue;
             }
+
             if (!$topLevel->isHidden() || $this->includeHiddenPages || $this->includeHiddenChildren) {
 
                 if ((!$topLevel->isHidden() || $this->includeHiddenPages) &&
@@ -123,6 +123,7 @@ class Bigace_SitemapController extends Bigace_Zend_Controller_Page_Action
             }
         }
 
+        $this->getResponse()->setHeader('Content-Type', 'text/xml', true);
         $this->view->pages = $allPages;
     }
 
@@ -145,7 +146,6 @@ class Bigace_SitemapController extends Bigace_Zend_Controller_Page_Action
 
         /* @var $temp Bigace_Item */
         foreach ($menuInfo as $temp) {
-
             if ((!$temp->isHidden() || $this->includeHiddenPages) &&
                 ($temp->getType() != 'redirect' || $this->includeRedirectPages)) {
                     $allPages[] = array(
@@ -170,5 +170,11 @@ class Bigace_SitemapController extends Bigace_Zend_Controller_Page_Action
     {
         // no footer in xml sitemap
     }
+
+    public function preDispatch()
+    {
+        // no check for menu
+    }
+
 
 }
