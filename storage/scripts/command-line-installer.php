@@ -156,5 +156,7 @@ if ($config['rewrite']) {
 $set = new Bigace_Installation_FileSet();
 $all = array_merge($set->getDirectories(), $set->getCommunityDirectories($id));
 foreach ($all as $dirName) {
-    chmod($dirName, 0777);
+    if (!@chmod($dirName, 0777)) {
+        die ('Could not chmod directory: ' . $dirName);
+    }
 }
