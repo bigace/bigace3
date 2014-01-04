@@ -83,7 +83,7 @@ $config = array (
   array (
     'id'       => 1,
     'email'    => 'nightly@dev.bigace.org',
-    'host'     => 'dev.bigace.org',
+    'host'     => 'demo.bigace.org',
     'user'     => 'admin',
     'pass'     => 'admin',
     'language' => 'en',
