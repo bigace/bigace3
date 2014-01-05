@@ -158,6 +158,18 @@
         </antcall>
     </target>
 
+    <!-- Copies all required 3rd-party files to a Bigace directory -->
+    <target name="3rdpartyfiles.nightly" depends="target.check" if="release.initialized">
+        <antcall target="release.3rdparty-files">
+            <param name="release.path" value="${nightly.directory}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+        <antcall target="release.empty-directories">
+            <param name="release.path" value="${nightly.directory}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+    </target>
+
 	<!-- Copies all Bigace files to the release directory -->
     <target name="release.bigace-files" depends="release.check" if="release.initialized">
         <mkdir dir="${release.path}"/>
