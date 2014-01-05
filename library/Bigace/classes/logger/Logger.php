@@ -261,7 +261,14 @@ class Logger
                     $error .= $value;
                     break;
                 case 'args':
-                    $error .= '(' . (is_array($value) ? print_r($value, true) : $value) . ')';
+                    if (is_array($value))
+                        $error .= '(Array)';
+                    else if (is_string($value))
+                        $error .= '(' . $value . ')';
+                    else if (is_object($value))
+                        $error .= '(' . get_class($value) . ')';
+                    else
+                        $error .= '(unknown)';
                     break;
                 default:
                     // we don't need to support the object
