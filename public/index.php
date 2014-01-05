@@ -35,7 +35,9 @@ set_include_path(
         PATH_SEPARATOR,
         array(
             realpath(APPLICATION_PATH . '/../library'),
-            get_include_path(),
+            // uncomment, if you want to include from outside the app.
+            // example: use a global installation of Zend Framework (not recommended yet!)
+            // get_include_path(),
         )
     )
 );
