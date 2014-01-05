@@ -82,8 +82,8 @@ $config = array (
   'community' =>
   array (
     'id'       => 1,
-    'email'    => 'nightly@dev.bigace.org',
-    'host'     => 'demo.bigace.org',
+    'email'    => 'nightly@bigace.de',
+    'host'     => 'demo.bigace.de',
     'user'     => 'admin',
     'pass'     => 'admin',
     'language' => 'en',
