@@ -1,6 +1,4 @@
-
 $(function() {
-		   
 	$("ul#navi li:has(ul)").mouseover(function(e) {
 		$(this).find("a:first").addClass("active").next().show();
 	}).mouseleave(function() {
@@ -14,6 +12,4 @@ $(function() {
 	}).mouseout(function() {
 		$(this).removeClass("sbmt-hover");
 	});
-  
-});​
-
+});
