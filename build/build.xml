@@ -383,4 +383,87 @@
             <move tofile="${release.directory}/${upgrade.zip.filename}" file="${release.path}/${release.zip.filename}"/>
     </target -->
 
+    <!-- Copies all required 3rd-party files to a Bigace directory -->
+    <target name="3rdpartyfiles.nightly" depends="target.check" if="release.initialized">
+        <antcall target="release.3rdparty-files">
+            <param name="release.path" value="${nightly.directory}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+        <antcall target="release.empty-directories">
+            <param name="release.path" value="${nightly.directory}"/>
+            <param name="exclude.pattern" value="release.exclude.files"/>
+        </antcall>
+    </target>
+
+
+    <!-- Copies all 3rd party stuff to the given release.path -->
+    <target name="release.3rdparty-files" depends="release.check" if="release.initialized">
+        <mkdir dir="${release.path}"/>
+
+        <!-- Copy the Editor -->
+        <mkdir dir="${release.path}/public/ckeditor/"/>
+        <copy todir="${release.path}/public/ckeditor/" overwrite="true">
+            <fileset refid="sources.ckeditor"/>
+        </copy>
+
+        <!-- Copy the JS-Editor -->
+        <mkdir dir="${release.path}/public/system/codemirror/"/>
+        <copy todir="${release.path}/public/system/codemirror/" overwrite="true">
+            <fileset refid="sources.codemirror"/>
+        </copy>
+
+        <!-- Zend Framework -->
+        <mkdir dir="${release.path}/library/Zend/"/>
+        <copy todir="${release.path}/library/Zend/" overwrite="true">
+            <fileset refid="sources.zendframework"/>
+        </copy>
+
+        <!-- Zip classes -->
+        <mkdir dir="${release.path}/library/zip/"/>
+        <copy todir="${release.path}/library/zip/" overwrite="true">
+            <fileset refid="sources.zipclasses"/>
+        </copy>
+
+        <!-- The Minify Sources -->
+        <mkdir dir="${release.path}/library/Minify/"/>
+        <copy todir="${release.path}/library/Minify/" overwrite="true">
+            <fileset refid="sources.minify"/>
+        </copy>
+
+        <!-- Dojo -->
+        <copy todir="${release.path}/public/dojo-1.5.0/" overwrite="true">
+            <fileset refid="sources.dojo" />
+        </copy>
+        <!-- JQuery and Plugins -->
+        <copy todir="${release.path}/public/jquery/" overwrite="true">
+            <fileset refid="sources.jquery.core" />
+        </copy>
+        <copy todir="${release.path}/public/jquery/tablesorter/" overwrite="true">
+            <fileset refid="sources.jquery.tablesorter"/>
+        </copy>
+        <copy todir="${release.path}/public/jquery/multiselect/" overwrite="true">
+            <fileset refid="sources.jquery.multiselect"/>
+        </copy>
+        <copy todir="${release.path}/public/jquery/multiselect2/" overwrite="true">
+            <fileset refid="sources.jquery.multiselect2"/>
+        </copy>
+
+        <!-- PHPMailer -->
+        <mkdir dir="${release.path}/library/phpmailer/"/>
+        <copy todir="${release.path}/library/phpmailer/" overwrite="true">
+            <fileset refid="sources.phpmailer"/>
+        </copy>
+    </target>
+
+    <!-- Creates all required empty directories that might not come from SVN -->
+    <target name="release.empty-directories" if="release.path">
+        <mkdir dir="${release.path}/storage/cache/"/>
+        <mkdir dir="${release.path}/storage/logging/"/>
+        <mkdir dir="${release.path}/storage/updates/"/>
+        <mkdir dir="${release.path}/public/.cache/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/plugins/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/export/"/>
+        <mkdir dir="${release.path}/sites/cid{CID}/cache/"/>
+    </target>
+
 </project>
